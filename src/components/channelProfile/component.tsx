@@ -1,3 +1,4 @@
+import Button from '../button/component';
 import ChannelIcon from '../channelIcon/component';
 import styles from './style.module.css';
 
@@ -16,6 +17,11 @@ export default function ChannelProfile({
   description,
   created,
 }: ChannelProfileProps) {
+  async function subscribe() {
+    'use server';
+    // Server action
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.icon}>
@@ -24,19 +30,28 @@ export default function ChannelProfile({
           alt={`${name} icon`}
         />
       </div>
-      <div>
+      <div className={styles.content}>
         <div className={styles.name}>
           {name}
         </div>
         <div className={styles.subscriberCount}>
+          구독자
+          {' '}
           {subscriberCount}
+          명
         </div>
         <div className={styles.description}>
           {description}
         </div>
         <div className={styles.created}>
+          가입일
+          {' '}
           {created}
         </div>
+        <Button
+          clickAction={subscribe}
+          content="구독"
+        />
       </div>
     </div>
   );

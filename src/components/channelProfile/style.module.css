@@ -1,13 +1,35 @@
 .container {
   display: flex;
   align-items: center;
-  height: 128px;
-  gap: 1rem;
+  gap: 2rem;
   white-space: nowrap;
+  padding: 2rem;
 }
 
 .icon {
-  position: relative;
   width: 128px;
   aspect-ratio: 1;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.subscriberCount {
+  font-weight: 700;
+}
+
+.description {
+
+}
+
+.created {
+  font-size: 0.875rem;
 }

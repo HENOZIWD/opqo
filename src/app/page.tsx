@@ -5,9 +5,9 @@ export default function Home() {
     <div>
       <ChannelProfile
         icon="/next.svg"
-        name="ChannelName"
+        name="채널 이름"
         subscriberCount="100"
-        description="Channel description"
+        description="채널 설명"
         created="2024-12-31"
       />
     </div>
