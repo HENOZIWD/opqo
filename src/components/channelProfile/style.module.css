@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 128px;
+  gap: 1rem;
+  white-space: nowrap;
+}
+
+.icon {
+  position: relative;
+  width: 128px;
+  aspect-ratio: 1;
+}
