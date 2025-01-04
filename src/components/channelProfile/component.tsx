@@ -1,6 +1,6 @@
-import Button from '../button/component';
 import ChannelIcon from '../channelIcon/component';
 import styles from './style.module.css';
+import CustomButton from '../customButtom/component';
 
 interface ChannelProfileProps {
   icon: string;
@@ -48,7 +48,8 @@ export default function ChannelProfile({
           {' '}
           {created}
         </div>
-        <Button
+        <CustomButton
+          type="button"
           clickAction={subscribe}
           content="구독"
         />
