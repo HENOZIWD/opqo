@@ -4,14 +4,23 @@
 }
 
 .input {
-  outline: 1px solid var(--text-black);
-  border: 2px solid transparent;
-  border-radius: 0.25rem;
+  border: 1px solid var(--gray);
+  outline: none;
+  /* border: 2px solid transparent; */
+  border-radius: 0.5rem;
   padding: 0.75rem 0.875rem;
   font-size: 1.125rem;
   width: 100%;
+  transition: box-shadow 0.25s
 }
 
 .input:focus {
-  border: 2px solid var(--text-black);
+  box-shadow: var(--shadow-border);
 }
+
+.label {
+  display: flex;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
