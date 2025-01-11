@@ -1,0 +1,17 @@
+.button {
+  display: flex;
+  border-radius: 9999px;
+  background-color: var(--black);
+  color: var(--white);
+  border: none;
+  outline: none;
+  align-self: start;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1.125rem;
+}
+
+.button:disabled {
+  background-color: var(--lightgray);
+}
