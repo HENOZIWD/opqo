@@ -25,11 +25,7 @@ const myFont = localFont({
   display: 'swap',
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko">
       <body className={`${myFont.className}`}>
