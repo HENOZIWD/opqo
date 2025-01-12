@@ -35,6 +35,8 @@ const eslintConfig = [
       '@stylistic/object-curly-newline': ['error', { multiline: true }],
       '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
       'newline-destructuring/newline': 'error',
+      'no-else-return': ['error', { allowElseIf: false }],
+      '@stylistic/function-paren-newline': ['error', 'multiline'],
     },
   }),
 ];
