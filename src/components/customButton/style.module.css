@@ -5,11 +5,11 @@
   color: var(--white);
   border: none;
   outline: none;
-  align-self: start;
   padding: 0.625rem 1.25rem;
   cursor: pointer;
   font-weight: 900;
   font-size: 1.125rem;
+  white-space: nowrap;
 }
 
 .button:disabled {
