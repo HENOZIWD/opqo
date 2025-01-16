@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
 import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/signup';
 import Link from 'next/link';
+import CustomInput from '@/components/customInput/component';
 
 export default function Page() {
   const {
@@ -96,9 +97,8 @@ export default function Page() {
         >
           휴대전화
         </label>
-        <input
+        <CustomInput
           id="phoneNumber"
-          className={`CustomInput${formState?.errors?.phoneNumber ? ' CustomInputError' : ''}`}
           type="text"
           inputMode="numeric"
           {...register('phoneNumber', {
@@ -107,6 +107,7 @@ export default function Page() {
               message: ERR_MSG_EMPTY_PHONENUMBER,
             },
           })}
+          error={formState?.errors?.phoneNumber !== undefined}
           disabled={signupStep === 1}
         />
         {formState?.errors?.phoneNumber && <div className={styles.error}>{formState.errors.phoneNumber?.message}</div>}
@@ -116,9 +117,8 @@ export default function Page() {
         >
           비밀번호
         </label>
-        <input
+        <CustomInput
           id="password"
-          className={`CustomInput${formState.errors.password ? ' CustomInputError' : ''}`}
           type="password"
           {...register('password', {
             required: {
@@ -130,6 +130,7 @@ export default function Page() {
               message: ERR_MSG_PASSWORD_RULE,
             },
           })}
+          error={formState?.errors?.password !== undefined}
           disabled={signupStep === 1}
         />
         {formState?.errors?.password && <div className={styles.error}>{formState.errors.password?.message}</div>}
@@ -139,9 +140,8 @@ export default function Page() {
         >
           비밀번호 확인
         </label>
-        <input
+        <CustomInput
           id="confirmPassword"
-          className={`CustomInput${formState.errors.confirmPassword ? ' CustomInputError' : ''}`}
           type="password"
           {...register('confirmPassword', {
             validate: {
@@ -149,6 +149,7 @@ export default function Page() {
                 || ERR_MSG_CONFIRMPASSWORD_NOTEQUAL,
             },
           })}
+          error={formState?.errors?.confirmPassword !== undefined}
           disabled={signupStep === 1}
         />
         {formState?.errors?.confirmPassword && <div className={styles.error}>{formState.errors.confirmPassword?.message}</div>}
@@ -173,9 +174,8 @@ export default function Page() {
             인증번호
           </label>
           <div className={styles.verificationCode}>
-            <input
+            <CustomInput
               id="verificationCode"
-              className="CustomInput"
               type="text"
               inputMode="numeric"
               {...verificationRegister('verificationCode')}
