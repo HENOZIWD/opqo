@@ -38,6 +38,7 @@ const eslintConfig = [
       'no-else-return': ['error', { allowElseIf: false }],
       '@stylistic/function-paren-newline': ['error', 'multiline'],
       'no-console': 'error',
+      '@stylistic/jsx-first-prop-new-line': ['error', 'multiprop'],
     },
   }),
 ];

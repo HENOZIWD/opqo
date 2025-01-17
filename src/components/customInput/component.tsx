@@ -8,6 +8,9 @@ export default function CustomInput({
   ...props
 }: CustomInputProps) {
   return (
-    <input className={`${styles.input}${error ? ` ${styles.error}` : ''}`} {...props} />
+    <input
+      className={`${styles.input}${error ? ` ${styles.error}` : ''}`}
+      {...props}
+    />
   );
 }

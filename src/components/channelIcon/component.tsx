@@ -6,10 +6,17 @@ interface ChannelIconProps {
   alt: string;
 }
 
-export default function ChannelIcon({ src, alt }: ChannelIconProps) {
+export default function ChannelIcon({
+  src,
+  alt,
+}: ChannelIconProps) {
   return (
     <div className={styles.container}>
-      <Image src={src} alt={alt} fill />
+      <Image
+        src={src}
+        alt={alt}
+        fill
+      />
     </div>
   );
 }
