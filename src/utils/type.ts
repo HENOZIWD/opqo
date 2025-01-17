@@ -3,3 +3,8 @@ export interface SignupContent {
   password: string;
   confirmPassword: string;
 }
+
+export interface SigninContent {
+  phoneNumber: string;
+  password: string;
+}
