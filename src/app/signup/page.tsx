@@ -10,8 +10,9 @@ import { fetchHandler } from '@/utils/fetchHandler';
 import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/signup';
 import Link from 'next/link';
 import CustomInput from '@/components/customInput/component';
+import { REGEXP_PASSWORD } from '@/utils/regexp';
 
-export default function Page() {
+export default function SignupPage() {
   const {
     register,
     handleSubmit,
@@ -126,7 +127,7 @@ export default function Page() {
               message: ERR_MSG_PASSWORD_RULE,
             },
             pattern: {
-              value: /^[A-Za-z0-9`~!@#$%^&*()\-_=+\[\{\]\}\\|;:'",<.>/?]{8,20}$/,
+              value: REGEXP_PASSWORD,
               message: ERR_MSG_PASSWORD_RULE,
             },
           })}
