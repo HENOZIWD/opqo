@@ -6,3 +6,5 @@ export const ERR_MSG_EMPTY_PASSWORD = '비밀번호를 입력하세요.';
 export const ERR_MSG_PASSWORD_RULE = '비밀번호는 8-20자 영어 대문자, 소문자, 특수문자로 구성되어야 합니다.';
 export const ERR_MSG_CONFIRMPASSWORD_NOTEQUAL = '비밀번호가 일치하지 않습니다.';
 export const ERR_MSG_VERIFICATION_NUMBER = '인증번호가 일치하지 않습니다.';
+
+export const ERR_MSG_CHANNELNAME_RULE = '채널명은 2-20자 한글, 영문, 숫자, 공백, 밑줄(_), 대시(-)로 구성되어야 합니다. 공백으로 시작하거나 끝날 수 없으며, 연속된 공백은 허용되지 않습니다.';

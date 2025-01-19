@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  width: 33rem;
+  margin: 0 auto;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.previewWrapper {
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.preview {
+  object-fit: cover;
+}
+
+.input[type=file] {
+  display: none;
+}
+
+.label {
+  cursor: pointer;
+}

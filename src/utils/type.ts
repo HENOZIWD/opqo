@@ -8,3 +8,8 @@ export interface SigninContent {
   phoneNumber: string;
   password: string;
 }
+
+export interface CreateChannelContent {
+  channelName: string;
+  description: string;
+}
