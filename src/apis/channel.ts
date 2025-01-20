@@ -7,7 +7,7 @@ const mockInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-export async function createChannel(data: CreateChannelContent) {
+export function createChannel(data: CreateChannelContent) {
   console.log(data);
   return mockInstance.post('/posts', {});
 }

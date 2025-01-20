@@ -7,22 +7,22 @@ const mockInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-export async function requestPhoneNumberVerificationCode(phoneNumber: string) {
+export function requestPhoneNumberVerificationCode(phoneNumber: string) {
   console.log(phoneNumber);
   return mockInstance.post('/posts', {});
 }
 
-export async function validatePhoneNumberVerificationCode(verificationCode: string) {
+export function validatePhoneNumberVerificationCode(verificationCode: string) {
   console.log(verificationCode);
   return mockInstance.post('/posts', {});
 }
 
-export async function signup(data: SignupContent) {
+export function signup(data: SignupContent) {
   console.log(data);
   return mockInstance.post('/posts', {});
 }
 
-export async function signin(data: SigninContent) {
+export function signin(data: SigninContent) {
   console.log(data);
   return mockInstance.post('/posts', {});
 }
