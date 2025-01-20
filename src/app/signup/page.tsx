@@ -7,10 +7,10 @@ import styles from './page.module.css';
 import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_PASSWORD_RULE } from '@/utils/message';
 import { useEffect, useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
-import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/signup';
 import Link from 'next/link';
 import CustomInput from '@/components/customInput/component';
 import { REGEXP_PASSWORD } from '@/utils/regexp';
+import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/user';
 
 export default function SignupPage() {
   const {
@@ -51,7 +51,7 @@ export default function SignupPage() {
           });
           setSignupStep(1);
         },
-        onError: () => {},
+        onError: () => { },
       });
     }
   };
@@ -64,10 +64,10 @@ export default function SignupPage() {
             onSuccess: () => {
               setSignupStep(2);
             },
-            onError: () => {},
+            onError: () => { },
           });
         },
-        onError: () => {},
+        onError: () => { },
       });
     }
   };

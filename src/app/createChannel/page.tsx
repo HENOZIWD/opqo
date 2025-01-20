@@ -10,8 +10,8 @@ import { REGEXP_CHANNELNAME } from '@/utils/regexp';
 import ChannelImageSelector from '@/components/channelImageSelector/component';
 import { useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
-import { createChannel } from '@/apis/createChannel';
 import { useRouter } from 'next/navigation';
+import { createChannel } from '@/apis/channel';
 
 export default function CreateChannelPage() {
   const {
@@ -27,7 +27,7 @@ export default function CreateChannelPage() {
   const handleCreateChannel = (data: CreateChannelContent) => {
     fetchHandler(() => createChannel(data), {
       onSuccess: () => { router.push('/selectChannel'); },
-      onError: () => {},
+      onError: () => { },
     });
   };
 

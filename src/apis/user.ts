@@ -21,3 +21,8 @@ export async function signup(data: SignupContent) {
   console.log(data);
   return mockInstance.post('/posts', {});
 }
+
+export async function signin(data: SigninContent) {
+  console.log(data);
+  return mockInstance.post('/posts', {});
+}

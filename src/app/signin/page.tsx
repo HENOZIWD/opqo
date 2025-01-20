@@ -7,8 +7,8 @@ import { SigninContent } from '@/utils/type';
 import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER } from '@/utils/message';
 import { useForm } from 'react-hook-form';
 import { fetchHandler } from '@/utils/fetchHandler';
-import { signin } from '@/apis/signin';
 import { useRouter } from 'next/navigation';
+import { signin } from '@/apis/user';
 
 export default function SigninPage() {
   const {
@@ -22,7 +22,7 @@ export default function SigninPage() {
   const handleSignin = (data: SigninContent) => {
     fetchHandler(() => signin(data), {
       onSuccess: () => { router.push('/'); },
-      onError: () => {},
+      onError: () => { },
     });
   };
 
