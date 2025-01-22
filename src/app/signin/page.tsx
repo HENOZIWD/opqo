@@ -4,11 +4,12 @@ import CustomInput from '@/components/customInput/component';
 import styles from './page.module.css';
 import CustomButton from '@/components/customButton/component';
 import { SigninContent } from '@/utils/type';
-import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER } from '@/utils/message';
+import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER } from '@/utils/message';
 import { useForm } from 'react-hook-form';
 import { fetchHandler } from '@/utils/fetchHandler';
 import { signin } from '@/apis/signin';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function SigninPage() {
   const {
@@ -19,10 +20,20 @@ export default function SigninPage() {
 
   const router = useRouter();
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSignin = (data: SigninContent) => {
+    setErrorMessage('');
     fetchHandler(() => signin(data), {
-      onSuccess: () => { router.push('/'); },
-      onError: () => {},
+      onSuccess: () => { router.push('/selectChannel'); },
+      onError: (error) => {
+        if (error?.status === 401) {
+          setErrorMessage(ERR_MSG_INVALID_USER);
+        }
+        else {
+          setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+        }
+      },
     });
   };
 
@@ -67,6 +78,7 @@ export default function SigninPage() {
           />
         </div>
       </form>
+      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }
