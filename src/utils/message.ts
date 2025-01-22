@@ -15,3 +15,4 @@ export const ERR_MSG_INVALID_USER = '일치하는 계정 정보가 없습니다.
 
 // createChannel
 export const ERR_MSG_CHANNELNAME_RULE = '채널명은 2-20자 한글, 영문, 숫자, 공백, 밑줄(_), 대시(-)로 구성되어야 합니다. 공백으로 시작하거나 끝날 수 없으며, 연속된 공백은 허용되지 않습니다.';
+export const ERR_MSG_DUPLICATED_CHANNELNAME = '이미 존재하는 채널명입니다.';
