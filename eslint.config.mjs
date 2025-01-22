@@ -39,6 +39,7 @@ const eslintConfig = [
       '@stylistic/function-paren-newline': ['error', 'multiline'],
       'no-console': 'error',
       '@stylistic/jsx-first-prop-new-line': ['error', 'multiprop'],
+      'object-shorthand': ['error', 'always'],
     },
   }),
 ];

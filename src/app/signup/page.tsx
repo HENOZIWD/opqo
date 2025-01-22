@@ -4,7 +4,7 @@ import CustomButton from '@/components/customButton/component';
 import { SignupContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
-import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_PASSWORD_RULE } from '@/utils/message';
+import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_DUPLICATED_PHONENUMBER, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_PASSWORD_RULE, ERR_MSG_VALIDATION_TIME_EXPIRED, ERR_MSG_VERIFICATION_NUMBER } from '@/utils/message';
 import { useEffect, useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
 import Link from 'next/link';
@@ -30,6 +30,8 @@ export default function SignupPage() {
 
   const [remainTime, setRemainTime] = useState<number>(300);
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     if (signupStep === 1 && remainTime > 0) {
       const interval = setInterval(() => {
@@ -42,6 +44,7 @@ export default function SignupPage() {
 
   const handleRequestVerificationCode = (data: SignupContent) => {
     if (signupStep === 0) {
+      setErrorMessage('');
       fetchHandler(() => requestPhoneNumberVerificationCode(data.phoneNumber), {
         onSuccess: () => {
           setSignupValue({
@@ -49,25 +52,52 @@ export default function SignupPage() {
             password: data.password,
             confirmPassword: data.confirmPassword,
           });
+          setRemainTime(300);
           setSignupStep(1);
         },
-        onError: () => { },
+        onError: () => { setErrorMessage(ERR_MSG_INTERNAL_SERVER); },
       });
     }
   };
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
     if (signupStep === 1 && signupValue !== null) {
+      setErrorMessage('');
       fetchHandler(() => validatePhoneNumberVerificationCode(data.verificationCode), {
         onSuccess: () => {
           fetchHandler(() => signup(signupValue), {
             onSuccess: () => {
               setSignupStep(2);
             },
+<<<<<<< HEAD
             onError: () => { },
           });
         },
         onError: () => { },
+=======
+            onError: (error) => {
+              if (error?.status === 400) {
+                setErrorMessage(ERR_MSG_DUPLICATED_PHONENUMBER);
+                setSignupStep(0);
+              }
+              else {
+                setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+              }
+            },
+          });
+        },
+        onError: (error) => {
+          if (error?.status === 400) {
+            setErrorMessage(ERR_MSG_VALIDATION_TIME_EXPIRED);
+          }
+          else if (error?.status === 401) {
+            setErrorMessage(ERR_MSG_VERIFICATION_NUMBER);
+          }
+          else {
+            setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+          }
+        },
+>>>>>>> 459718b4cedcd781b59ab0e1e54c8ece8f5429a8
       });
     }
   };
@@ -200,6 +230,7 @@ export default function SignupPage() {
           </div>
         </form>
       )}
+      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }

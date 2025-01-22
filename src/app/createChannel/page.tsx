@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
 import { CreateChannelContent } from '@/utils/type';
 import CustomInput from '@/components/customInput/component';
-import { ERR_MSG_CHANNELNAME_RULE } from '@/utils/message';
+import { ERR_MSG_CHANNELNAME_RULE, ERR_MSG_DUPLICATED_CHANNELNAME, ERR_MSG_INTERNAL_SERVER } from '@/utils/message';
 import CustomButton from '@/components/customButton/component';
 import { REGEXP_CHANNELNAME } from '@/utils/regexp';
 import ChannelImageSelector from '@/components/channelImageSelector/component';
@@ -24,10 +24,20 @@ export default function CreateChannelPage() {
 
   const router = useRouter();
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleCreateChannel = (data: CreateChannelContent) => {
+    setErrorMessage('');
     fetchHandler(() => createChannel(data), {
       onSuccess: () => { router.push('/selectChannel'); },
-      onError: () => { },
+      onError: (error) => {
+        if (error?.status === 400) {
+          setErrorMessage(ERR_MSG_DUPLICATED_CHANNELNAME);
+        }
+        else {
+          setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+        }
+      },
     });
   };
 
@@ -73,6 +83,7 @@ export default function CreateChannelPage() {
           />
         </div>
       </form>
+      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }
