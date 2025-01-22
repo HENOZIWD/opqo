@@ -29,8 +29,14 @@ body {
   margin: 0;
 }
 
-input, textarea, button {
+input,
+textarea,
+button {
   font-family: inherit;
+}
+
+ul {
+  list-style: none;
 }
 
 /* a {

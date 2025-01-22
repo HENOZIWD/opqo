@@ -1,0 +1,15 @@
+.link {
+  display: flex;
+  border-radius: 9999px;
+  background-color: var(--black);
+  color: var(--white);
+  border: none;
+  outline: none;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 1.125rem;
+  white-space: nowrap;
+  justify-self: center;
+  text-decoration: none;
+}
