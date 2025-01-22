@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse, isAxiosError } from 'axios';
 
 export const fetchHandler = async <T>(
   fetchFn: () => Promise<AxiosResponse<T>>,
@@ -7,7 +7,7 @@ export const fetchHandler = async <T>(
     onError,
   }: {
     onSuccess: (response?: AxiosResponse<T>) => void;
-    onError: (error?: unknown) => void;
+    onError: (error?: AxiosError) => void;
   },
 ) => {
   try {
@@ -15,6 +15,11 @@ export const fetchHandler = async <T>(
     onSuccess(response);
   }
   catch (error) {
-    onError(error);
+    if (isAxiosError(error)) {
+      onError(error);
+    }
+    else {
+      console.error(error);
+    }
   }
 };
