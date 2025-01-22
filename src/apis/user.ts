@@ -1,4 +1,4 @@
-import { SignupContent } from '@/utils/type';
+import { SigninContent, SignupContent } from '@/utils/type';
 import axios from 'axios';
 
 const mockInstance = axios.create({
@@ -20,4 +20,8 @@ export async function signup(data: SignupContent) {
     phoneNumber: data.phoneNumber,
     password: data.password,
   });
+}
+
+export async function signin(data: SigninContent) {
+  return mockInstance.post('/signin', data);
 }

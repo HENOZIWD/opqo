@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { fetchHandler } from '@/utils/fetchHandler';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { signin } from '@/apis/signin';
+import { signin } from '@/apis/user';
 
 export default function SigninPage() {
   const {

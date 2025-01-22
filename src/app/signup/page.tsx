@@ -4,7 +4,7 @@ import CustomButton from '@/components/customButton/component';
 import { SignupContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
-import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_DUPLICATED_PHONENUMBER, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_PASSWORD_RULE, ERR_MSG_VALIDATION_TIME_EXPIRED, ERR_MSG_VERIFICATION_NUMBER } from '@/utils/message';
+import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_DUPLICATED_PHONENUMBER, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_PASSWORD_RULE, ERR_MSG_TOO_MANY_REQUEST, ERR_MSG_VALIDATION_TIME_EXPIRED, ERR_MSG_VERIFICATION_NUMBER } from '@/utils/message';
 import { useEffect, useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
 import Link from 'next/link';
@@ -69,12 +69,6 @@ export default function SignupPage() {
             onSuccess: () => {
               setSignupStep(2);
             },
-<<<<<<< HEAD
-            onError: () => { },
-          });
-        },
-        onError: () => { },
-=======
             onError: (error) => {
               if (error?.status === 400) {
                 setErrorMessage(ERR_MSG_DUPLICATED_PHONENUMBER);
@@ -93,11 +87,13 @@ export default function SignupPage() {
           else if (error?.status === 401) {
             setErrorMessage(ERR_MSG_VERIFICATION_NUMBER);
           }
+          else if (error?.status === 429) {
+            setErrorMessage(ERR_MSG_TOO_MANY_REQUEST);
+          }
           else {
             setErrorMessage(ERR_MSG_INTERNAL_SERVER);
           }
         },
->>>>>>> 459718b4cedcd781b59ab0e1e54c8ece8f5429a8
       });
     }
   };
