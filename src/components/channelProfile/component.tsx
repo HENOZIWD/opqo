@@ -1,6 +1,6 @@
 import ChannelIcon from '../channelIcon/component';
 import styles from './style.module.css';
-import CustomButton from '../customButtom/component';
+import CustomButton from '../customButton/component';
 
 interface ChannelProfileProps {
   icon: string;
