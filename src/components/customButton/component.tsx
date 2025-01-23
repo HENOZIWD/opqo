@@ -17,12 +17,12 @@ export default function CustomButton({
   disabled = false,
   size = 'default',
 }: ButtonProps) {
-  if (disabled) {
+  if (!disabled) {
     return (
       <button
-        type="button"
+        type={type}
         className={`${styles.button}${size === 'small' ? ` ${styles.small}` : ''}`}
-        disabled
+        onClick={() => { clickAction?.(); }}
       >
         {content}
       </button>
@@ -31,9 +31,9 @@ export default function CustomButton({
 
   return (
     <button
-      type={type}
+      type="button"
       className={`${styles.button}${size === 'small' ? ` ${styles.small}` : ''}`}
-      onClick={() => { clickAction?.(); }}
+      disabled
     >
       {content}
     </button>
