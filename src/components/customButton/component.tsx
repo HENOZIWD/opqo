@@ -21,7 +21,7 @@ export default function CustomButton({
     return (
       <button
         type="button"
-        className={`${size === 'small' ? styles.small : styles.button}`}
+        className={`${styles.button}${size === 'small' ? ` ${styles.small}` : ''}`}
         disabled
       >
         {content}
@@ -32,7 +32,7 @@ export default function CustomButton({
   return (
     <button
       type={type}
-      className={`${size === 'small' ? styles.small : styles.button}`}
+      className={`${styles.button}${size === 'small' ? ` ${styles.small}` : ''}`}
       onClick={() => { clickAction?.(); }}
     >
       {content}
