@@ -2,10 +2,15 @@ import Link, { LinkProps } from 'next/link';
 import styles from './style.module.css';
 import { AnchorHTMLAttributes } from 'react';
 
-export default function CustomLink({ ...props }: LinkProps & AnchorHTMLAttributes<HTMLAnchorElement>) {
+interface CustomLinkProps extends LinkProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> { size?: 'default' | 'small' }
+
+export default function CustomLink({
+  size = 'default',
+  ...props
+}: CustomLinkProps) {
   return (
     <Link
-      className={styles.link}
+      className={`${styles.link}${size === 'small' ? ` ${styles.small}` : ''}`}
       {...props}
     />
   );
