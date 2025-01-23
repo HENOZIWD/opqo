@@ -6,36 +6,36 @@ interface ButtonProps {
   type: 'button' | 'submit';
   content: string;
   clickAction?: () => void;
-  state?: 'default' | 'disabled';
+  disabled?: boolean;
+  size?: 'default' | 'small';
 }
 
 export default function CustomButton({
   type,
   content,
   clickAction,
-  state = 'default',
+  disabled = false,
+  size = 'default',
 }: ButtonProps) {
-  if (state === 'default') {
-    return (
-      <button
-        type={type}
-        className={styles.button}
-        onClick={() => { clickAction?.(); }}
-      >
-        {content}
-      </button>
-    );
-  }
-
-  if (state === 'disabled') {
+  if (disabled) {
     return (
       <button
         type="button"
-        className={styles.button}
+        className={`${size === 'small' ? styles.small : styles.button}`}
         disabled
       >
         {content}
       </button>
     );
   }
+
+  return (
+    <button
+      type={type}
+      className={`${size === 'small' ? styles.small : styles.button}`}
+      onClick={() => { clickAction?.(); }}
+    >
+      {content}
+    </button>
+  );
 }
