@@ -27,7 +27,7 @@ export default function ChannelSelectButton({
       () => selectChannel(channelId),
       {
         onSuccess: (response) => {
-          localStorage.setItem('channelToken', response?.data.channelToken);
+          sessionStorage.setItem('channelToken', response?.data.channelToken);
           router.push('/');
         },
         onError: (error) => {
