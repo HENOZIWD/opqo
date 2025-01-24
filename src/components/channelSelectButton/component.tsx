@@ -5,6 +5,7 @@ import { selectChannel } from '@/apis/channel';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { ERR_MSG_INTERNAL_SERVER, ERR_MSG_WRONG_CHANNEL } from '@/utils/message';
+import { CHANNEL_TOKEN } from '@/utils/constant';
 
 interface ChannelSelectButtonProps {
   channelId: string;
@@ -27,7 +28,7 @@ export default function ChannelSelectButton({
       () => selectChannel(channelId),
       {
         onSuccess: (response) => {
-          sessionStorage.setItem('channelToken', response?.data.channelToken);
+          sessionStorage.setItem(CHANNEL_TOKEN, response?.data.channelToken);
           router.push('/');
         },
         onError: (error) => {
