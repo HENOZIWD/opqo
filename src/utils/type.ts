@@ -13,3 +13,10 @@ export interface CreateChannelContent {
   channelName: string;
   description: string;
 }
+
+export interface Auth {
+  isSignin: boolean;
+  channelToken: string | null;
+}
+
+export interface AuthAction { type: 'signin' | 'signout' }
