@@ -2,7 +2,7 @@
 
 import ChannelSelectButton from '@/components/channelSelectButton/component';
 import styles from './page.module.css';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import CustomButton from '@/components/customButton/component';
 import { channelPOSTFetcher } from '@/apis/channel';
 import CustomLink from '@/components/customLink/component';
@@ -12,9 +12,15 @@ export default function SelectChannel() {
   const {
     data,
     error,
-  } = useSWR('/myChannelList', channelPOSTFetcher);
+  } = useSWR('/myChannelList', channelPOSTFetcher, { shouldRetryOnError: false });
 
   const [errorMessage, setErrorMessage] = useState('');
+
+  const { mutate } = useSWRConfig();
+
+  const handleRetry = () => {
+    mutate('/myChannelList');
+  };
 
   if (error) {
     return (
@@ -25,6 +31,7 @@ export default function SelectChannel() {
           <CustomButton
             type="button"
             content="재시도"
+            clickAction={handleRetry}
           />
         </div>
       </main>
