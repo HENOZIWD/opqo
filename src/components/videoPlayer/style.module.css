@@ -1,0 +1,29 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.title {
+  position: absolute;
+  top: 0;
+  opacity: 1;
+  width: 100%;
+  transition: opacity 0.5s;
+  font-size: 1.25rem;
+  padding: 1rem;
+  color: var(--white);
+}
+
+.panel {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.video {
+  position: relative;
+  width: 100%;
+}

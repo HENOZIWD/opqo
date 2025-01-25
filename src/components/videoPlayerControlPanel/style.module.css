@@ -1,0 +1,17 @@
+.container {
+  position: absolute;
+  bottom: 0;
+  color: var(--white);
+  padding: 0.5rem 1rem;
+}
+
+.playPauseButton {
+  position: relative;
+  border: none;
+  outline: none;
+  background: inherit;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: inherit;
+  cursor: pointer;
+}
