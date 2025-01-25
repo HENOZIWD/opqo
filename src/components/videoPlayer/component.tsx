@@ -13,6 +13,7 @@ export default function VideoPlayer({
   source,
   title,
 }: VideoPlayerProps) {
+  const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
@@ -29,6 +30,7 @@ export default function VideoPlayer({
   return (
     <figure
       className={styles.container}
+      ref={containerRef}
       onMouseEnter={handleShowPanel}
       onMouseLeave={handleHidePanel}
     >
@@ -38,6 +40,8 @@ export default function VideoPlayer({
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
+        controls={false}
+        playsInline
       >
         <source src={source} />
       </video>
@@ -46,6 +50,7 @@ export default function VideoPlayer({
       </figcaption>
       <div className={`${styles.panel}${isPanelShown ? '' : ` ${styles.hidden}`}`}>
         <VideoPlayerControlPanel
+          containerRef={containerRef}
           videoRef={videoRef}
           isPlaying={isPlaying}
         />
