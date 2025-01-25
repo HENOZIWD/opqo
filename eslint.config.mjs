@@ -30,7 +30,7 @@ const eslintConfig = [
         },
         multilineDetection: 'brackets',
       }],
-      'indent': ['error', 2],
+      '@stylistic/indent': ['error', 2],
       '@stylistic/arrow-parens': ['error', 'always'],
       '@stylistic/object-curly-newline': ['error', { multiline: true }],
       '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
