@@ -5,7 +5,7 @@ interface SliderProps {
   min: number;
   max: number;
   step: number | 'any';
-  value: number | string;
+  value: number;
   onChange: ChangeEventHandler<HTMLInputElement>;
   mouseDownAction?: () => void;
   mouseUpAction?: () => void;
@@ -22,6 +22,10 @@ export default function Slider({
 }: SliderProps) {
   return (
     <div className={styles.container}>
+      <div
+        className={styles.progressbar}
+        style={{ background: `linear-gradient(to right, var(--white), var(--white) ${(value / max) * 100}%, var(--gray) ${(value / max) * 100}%, var(--gray) 100%)` }}
+      />
       <input
         type="range"
         className={styles.slider}
@@ -33,7 +37,6 @@ export default function Slider({
         onMouseDown={() => mouseDownAction?.()}
         onMouseUp={() => mouseUpAction?.()}
       />
-      <div className={styles.progressBar} />
     </div>
   );
 }
