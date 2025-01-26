@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './style.module.css';
 import VideoPlayerControlPanel from '../videoPlayerControlPanel/component';
 
@@ -18,6 +18,28 @@ export default function VideoPlayer({
 
   const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [isSeeking, setIsSeeking] = useState<boolean>(false);
+  const [isPausedBeforeSeek, setIsPausedBeforeSeek] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!isSeeking) {
+      setIsPausedBeforeSeek(!isPlaying);
+    }
+  }, [isSeeking, isPlaying]);
+
+  useEffect(() => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    if (isSeeking) {
+      videoRef.current.pause();
+    }
+    else if (!isPausedBeforeSeek) {
+      videoRef.current.play();
+    }
+  }, [isSeeking, isPausedBeforeSeek]);
 
   const handleShowPanel = () => {
     setIsPanelShown(true);
@@ -40,6 +62,7 @@ export default function VideoPlayer({
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
+        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
         controls={false}
         playsInline
       >
@@ -53,6 +76,9 @@ export default function VideoPlayer({
           containerRef={containerRef}
           videoRef={videoRef}
           isPlaying={isPlaying}
+          currentTime={currentTime}
+          setCurrentTime={setCurrentTime}
+          setIsSeeking={setIsSeeking}
         />
       </div>
     </figure>
