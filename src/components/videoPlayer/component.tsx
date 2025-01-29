@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from './style.module.css';
 import VideoPlayerControlPanel from '../videoPlayerControlPanel/component';
+import { debounce } from '@/utils/debounce';
 
 interface VideoPlayerProps {
   source: string;
@@ -21,6 +22,8 @@ export default function VideoPlayer({
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [isPausedBeforeSeek, setIsPausedBeforeSeek] = useState<boolean>(true);
+
+  const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
   useEffect(() => {
     if (!isSeeking) {
@@ -42,19 +45,19 @@ export default function VideoPlayer({
   }, [isSeeking, isPausedBeforeSeek]);
 
   const handleShowPanel = () => {
-    setIsPanelShown(true);
-  };
+    if (!isPanelShown) {
+      setIsPanelShown(true);
+    }
 
-  const handleHidePanel = () => {
-    setIsPanelShown(false);
+    debouncedHidePanelRef.current();
   };
 
   return (
     <figure
       className={styles.container}
       ref={containerRef}
-      onMouseEnter={handleShowPanel}
-      onMouseLeave={handleHidePanel}
+      onMouseMove={handleShowPanel}
+      onMouseLeave={() => setIsPanelShown(false)}
     >
       <video
         className={styles.video}
