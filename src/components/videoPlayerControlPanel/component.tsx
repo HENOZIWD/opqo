@@ -54,7 +54,7 @@ export default function VideoPlayerControlPanel({
     }
   };
 
-  const handleVolumeMute = () => {
+  const handleMuteVolume = () => {
     if (!videoRef.current) {
       return;
     }
@@ -69,7 +69,7 @@ export default function VideoPlayerControlPanel({
     }
   };
 
-  const handleVolumeChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeVolume = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number.parseFloat(Number.parseFloat(e.target.value).toFixed(2));
 
     if (!videoRef.current || Number.isNaN(value)) {
@@ -120,7 +120,7 @@ export default function VideoPlayerControlPanel({
         </button>
         <button
           className={`${styles.panelButton} ${styles.volumeButton}`}
-          onClick={handleVolumeMute}
+          onClick={handleMuteVolume}
         >
           {isMuted || volume === 0 ? <VolumeMuteIcon /> : <VolumeIcon />}
         </button>
@@ -130,7 +130,7 @@ export default function VideoPlayerControlPanel({
             max={1}
             step={0.05}
             value={isMuted ? 0 : volume}
-            onChange={handleVolumeChange}
+            onChange={handleChangeVolume}
           />
         </div>
         <div>
