@@ -8,6 +8,10 @@
   background-color: #000;
 }
 
+.mouseHidden {
+  cursor: none;
+}
+
 .title {
   position: absolute;
   top: 0;

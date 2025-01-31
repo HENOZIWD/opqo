@@ -54,7 +54,7 @@ export default function VideoPlayer({
 
   return (
     <figure
-      className={styles.container}
+      className={`${styles.container}${isPanelShown ? '' : ` ${styles.mouseHidden}`}`}
       ref={containerRef}
       onMouseMove={handleShowPanel}
       onMouseLeave={() => setIsPanelShown(false)}
