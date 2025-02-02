@@ -1,10 +1,17 @@
 .container {
   display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   width: 33rem;
   margin: 0 auto;
-  align-items: center;
-  gap: 1rem;
   margin-bottom: 2rem;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
 }
 
 .previewWrapper {
@@ -25,4 +32,9 @@
 
 .label {
   cursor: pointer;
+}
+
+.error {
+  color: var(--red);
+  text-align: center;
 }
