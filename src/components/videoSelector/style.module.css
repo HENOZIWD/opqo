@@ -1,0 +1,32 @@
+.container {
+  width: 40rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.previewTitle {
+  font-size: 1.125rem;
+}
+
+.preview {
+  width: 40rem;
+  height: 22.5rem;
+  background-color: var(--lightgray);
+  margin-top: 1rem;
+}
+
+.input[type=file] {
+  display: none;
+}
+
+.label {
+  text-align: center;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.error {
+  color: var(--red);
+  text-align: center;
+  margin-top: 2rem;
+}

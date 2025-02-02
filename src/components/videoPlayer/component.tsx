@@ -60,6 +60,7 @@ export default function VideoPlayer({
       onMouseLeave={() => setIsPanelShown(false)}
     >
       <video
+        key={source}
         className={styles.video}
         ref={videoRef}
         onPlay={() => setIsPlaying(true)}

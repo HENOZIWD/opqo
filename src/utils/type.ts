@@ -20,3 +20,8 @@ export interface Auth {
 }
 
 export interface AuthAction { type: 'signin' | 'signout' }
+
+export interface UploadVideoContent {
+  videoTitle: string;
+  description: string;
+}

@@ -1,6 +1,9 @@
-// common
+// api common
 export const ERR_MSG_INTERNAL_SERVER = '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
 export const ERR_MSG_TOO_MANY_REQUEST = '너무 많이 요청했습니다. 잠시 후 다시 시도해주세요.';
+
+// file common
+export const ERR_MSG_FILE_LOAD_ERROR = '파일을 불러오는 데 실패했습니다.';
 
 // signup
 export const ERR_MSG_EMPTY_PHONENUMBER = '휴대전화를 입력하세요.';
@@ -20,3 +23,8 @@ export const ERR_MSG_DUPLICATED_CHANNELNAME = '이미 존재하는 채널명입�
 
 // selectChannel
 export const ERR_MSG_WRONG_CHANNEL = '잘못된 채널 정보입니다.';
+
+// uploadVideo
+export const ERR_MSG_INVALID_VIDEO_TYPE = '동영상 파일은 .mp4, .webm 확장자만 업로드 가능합니다.';
+export const ERR_MSG_INVALID_VIDEO_SIZE = '업로드 가능한 동영상 파일 크기는 최대 1 GB입니다.';
+export const ERR_MSG_EMPTY_VIDEO_TITLE = '동영상 제목을 입력하세요.';
