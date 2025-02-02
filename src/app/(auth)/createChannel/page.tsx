@@ -20,7 +20,7 @@ export default function CreateChannelPage() {
     formState,
   } = useForm<CreateChannelContent>();
 
-  const [channelImage, setChannelImage] = useState<Blob | null>(null);
+  const [channelImageData, setChannelImageData] = useState<Blob | null>(null);
 
   const router = useRouter();
 
@@ -44,7 +44,7 @@ export default function CreateChannelPage() {
   return (
     <main>
       <h1 className={styles.title}>채널 생성</h1>
-      <ChannelImageSelector setImageData={setChannelImage} />
+      <ChannelImageSelector setImageData={setChannelImageData} />
       <form
         onSubmit={handleSubmit((data) => { handleCreateChannel(data); })}
         className={styles.form}

@@ -8,7 +8,7 @@ import { channelPOSTFetcher } from '@/apis/channel';
 import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
 
-export default function SelectChannel() {
+export default function SelectChannelPage() {
   const {
     data,
     error,

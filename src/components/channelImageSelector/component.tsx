@@ -6,7 +6,7 @@ import { isValidImageSize, isValidImageType } from '@/utils/image';
 interface ChannelImageSelectorProps { setImageData: Dispatch<SetStateAction<Blob | null>> }
 
 export default function ChannelImageSelector({ setImageData }: ChannelImageSelectorProps) {
-  const [previewImageUrl, setPreviewImageUrl] = useState<string>('');
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
 
   const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
@@ -27,7 +27,7 @@ export default function ChannelImageSelector({ setImageData }: ChannelImageSelec
       const url = URL.createObjectURL(fileList[0]);
 
       setImageData(fileList[0]);
-      setPreviewImageUrl(url);
+      setImagePreviewUrl(url);
     }
   };
 
@@ -36,7 +36,7 @@ export default function ChannelImageSelector({ setImageData }: ChannelImageSelec
       <div className={styles.previewWrapper}>
         <Image
           className={styles.preview}
-          src={previewImageUrl || '/assets/lightgray.png'}
+          src={imagePreviewUrl || '/assets/lightgray.png'}
           alt="프로필 이미지 미리보기"
           fill
         />
