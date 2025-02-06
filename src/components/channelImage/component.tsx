@@ -2,7 +2,7 @@ import Image from 'next/image';
 import styles from './style.module.css';
 
 interface ChannelImageProps {
-  src: string;
+  src: string | null;
   channelName: string;
 }
 
