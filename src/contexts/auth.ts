@@ -1,5 +1,3 @@
-'use client';
-
 import { Auth, AuthAction } from '@/utils/type';
 import { ActionDispatch, createContext } from 'react';
 

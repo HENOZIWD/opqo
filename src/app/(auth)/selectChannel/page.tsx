@@ -4,7 +4,7 @@ import ChannelSelectButton from '@/components/channelSelectButton/component';
 import styles from './page.module.css';
 import useSWR, { useSWRConfig } from 'swr';
 import CustomButton from '@/components/customButton/component';
-import { channelPOSTFetcher } from '@/apis/channel';
+import { channelGETFetcher } from '@/apis/channel';
 import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
 
@@ -12,7 +12,7 @@ export default function SelectChannelPage() {
   const {
     data,
     error,
-  } = useSWR('/myChannelList', channelPOSTFetcher, { shouldRetryOnError: false });
+  } = useSWR('/myChannelList', channelGETFetcher, { shouldRetryOnError: false });
 
   const [errorMessage, setErrorMessage] = useState('');
 

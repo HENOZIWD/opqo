@@ -1,25 +1,41 @@
 'use client';
 
-import { AuthContext, AuthDispatchContext } from '@/contexts/auth';
 import CustomButton from '../customButton/component';
 import CustomLink from '../customLink/component';
 import styles from './style.module.css';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChannelImage from '../channelImage/component';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
+import { getAuthSession } from '@/utils/storage';
 
 export default function AuthTopBar() {
-  const auth = useContext(AuthContext);
-  const dispatch = useContext(AuthDispatchContext);
+  const {
+    auth,
+    authDispatch,
+  } = useAuth();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   useEffect(() => {
-    dispatch?.({ type: 'signin' });
-  }, [dispatch]);
+    if (authDispatch) {
+      const {
+        channelToken,
+        channelId,
+        channelName,
+      } = getAuthSession();
+
+      if (channelToken && channelId && channelName) {
+        authDispatch({ type: 'signin' });
+      }
+      else {
+        authDispatch({ type: 'signout' });
+      }
+    }
+  }, [authDispatch]);
 
   const handleSignout = () => {
-    dispatch?.({ type: 'signout' });
+    authDispatch?.({ type: 'signout' });
   };
 
   if (!auth) {

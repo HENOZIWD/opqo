@@ -7,7 +7,7 @@ const mockInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-export const channelPOSTFetcher = (url: string) => mockInstance.post(url).then((res) => res.data);
+export const channelGETFetcher = (url: string) => mockInstance.get(url).then((res) => res.data);
 
 export async function createChannel(data: CreateChannelContent) {
   return mockInstance.post('/createChannel', data);
