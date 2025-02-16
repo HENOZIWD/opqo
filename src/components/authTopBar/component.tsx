@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import ChannelImage from '../channelImage/component';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import { getAuthSession } from '@/utils/storage';
 
 export default function AuthTopBar() {
   const {
@@ -19,18 +18,7 @@ export default function AuthTopBar() {
 
   useEffect(() => {
     if (authDispatch) {
-      const {
-        channelToken,
-        channelId,
-        channelName,
-      } = getAuthSession();
-
-      if (channelToken && channelId && channelName) {
-        authDispatch({ type: 'signin' });
-      }
-      else {
-        authDispatch({ type: 'signout' });
-      }
+      authDispatch({ type: 'signin' });
     }
   }, [authDispatch]);
 
@@ -77,13 +65,23 @@ export default function AuthTopBar() {
       </button>
       {isExpanded
         ? (
-          <div className={styles.menu}>
+          <div className={styles.menuContainer}>
             <div className={styles.channelInfo}>
               <div className={styles.channelName}>{auth.channelName}</div>
               <div className={styles.changeChannel}>
                 <Link href="/selectChannel">채널 변경</Link>
               </div>
             </div>
+            <ul className={styles.menuList}>
+              <li>
+                <Link
+                  href={`/channel/${auth.channelId}`}
+                  className={styles.menu}
+                >
+                  내 채널
+                </Link>
+              </li>
+            </ul>
             <div className={styles.signout}>
               <CustomButton
                 type="button"

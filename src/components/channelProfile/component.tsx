@@ -1,44 +1,30 @@
-import ChannelIcon from '../channelIcon/component';
 import styles from './style.module.css';
-import CustomButton from '../customButton/component';
+import ChannelImage from '../channelImage/component';
 
 interface ChannelProfileProps {
-  icon: string;
-  name: string;
-  subscriberCount: string;
+  channelImageUrl: string;
+  channelName: string;
   description: string;
   created: string;
 }
 
 export default function ChannelProfile({
-  icon,
-  name,
-  subscriberCount,
+  channelImageUrl,
+  channelName,
   description,
   created,
 }: ChannelProfileProps) {
-  async function subscribe() {
-    'use server';
-    // Server action
-  }
-
   return (
     <div className={styles.container}>
-      <div className={styles.icon}>
-        <ChannelIcon
-          src={icon}
-          alt={`${name} icon`}
+      <div className={styles.channelImage}>
+        <ChannelImage
+          src={channelImageUrl}
+          channelName={channelName}
         />
       </div>
       <div className={styles.content}>
-        <div className={styles.name}>
-          {name}
-        </div>
-        <div className={styles.subscriberCount}>
-          구독자
-          {' '}
-          {subscriberCount}
-          명
+        <div className={styles.channelName}>
+          {channelName}
         </div>
         <div className={styles.description}>
           {description}
@@ -48,11 +34,6 @@ export default function ChannelProfile({
           {' '}
           {created}
         </div>
-        <CustomButton
-          type="button"
-          clickAction={subscribe}
-          content="구독"
-        />
       </div>
     </div>
   );
