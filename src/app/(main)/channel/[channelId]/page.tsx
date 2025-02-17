@@ -8,10 +8,10 @@ import ChannelProfile from '@/components/channelProfile/component';
 import VideoCard from '@/components/videoCard/component';
 
 export default function ChannelPage() {
-  const params = useParams<{ channelId: string }>();
+  const { channelId } = useParams<{ channelId: string }>();
 
-  const { data: channelData } = useSWR(`/channel/${params.channelId}`, channelGETFetcher);
-  const { data: videoListData } = useSWR(`/channel/${params.channelId}/videos`, channelGETFetcher);
+  const { data: channelData } = useSWR(`/channel/${channelId}`, channelGETFetcher);
+  const { data: videoListData } = useSWR(`/channel/${channelId}/videos`, channelGETFetcher);
 
   return (
     <main>
