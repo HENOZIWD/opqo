@@ -53,16 +53,25 @@ export default function AuthTopBar() {
 
   return (
     <>
-      <button
-        type="button"
-        className={styles.accountMenu}
-        onClick={() => { setIsExpanded((prev) => !prev); }}
-      >
-        <ChannelImage
-          src={auth.channelImageUrl}
-          channelName={auth.channelName || ''}
-        />
-      </button>
+      <div className={styles.container}>
+        <CustomLink
+          href="/uploadVideo"
+          size="small"
+          prefetch={false}
+        >
+          동영상 업로드
+        </CustomLink>
+        <button
+          type="button"
+          className={styles.accountMenu}
+          onClick={() => { setIsExpanded((prev) => !prev); }}
+        >
+          <ChannelImage
+            src={auth.channelImageUrl}
+            channelName={auth.channelName || ''}
+          />
+        </button>
+      </div>
       {isExpanded
         ? (
           <div className={styles.menuContainer}>
