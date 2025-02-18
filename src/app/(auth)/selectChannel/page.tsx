@@ -2,11 +2,11 @@
 
 import ChannelSelectButton from '@/components/channelSelectButton/component';
 import styles from './page.module.css';
-import useSWR, { useSWRConfig } from 'swr';
-import CustomButton from '@/components/customButton/component';
+import useSWR from 'swr';
 import { channelGETFetcher } from '@/apis/channel';
 import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
+import WarningIcon from '@/icons/warningIcon';
 
 export default function SelectChannelPage() {
   const {
@@ -16,23 +16,15 @@ export default function SelectChannelPage() {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { mutate } = useSWRConfig();
-
-  const handleRetry = () => {
-    mutate('/myChannelList');
-  };
-
   if (error) {
     return (
       <main>
         <h1 className={styles.title}>채널 선택</h1>
-        <div className={styles.container}>
+        <div className={styles.channelLoadError}>
+          <div className={styles.warningIcon}>
+            <WarningIcon />
+          </div>
           <div className={styles.error}>채널 목록을 불러오지 못했습니다.</div>
-          <CustomButton
-            type="button"
-            content="재시도"
-            clickAction={handleRetry}
-          />
         </div>
       </main>
     );
@@ -42,20 +34,24 @@ export default function SelectChannelPage() {
     <main>
       <h1 className={styles.title}>채널 선택</h1>
       <ul className={styles.channelList}>
-        {data && data.data.map(({
-          id,
-          name,
-          image,
-        }) => (
-          <li key={id}>
-            <ChannelSelectButton
-              channelId={id}
-              channelImageUrl={image}
-              channelName={name}
-              setErrorMessage={setErrorMessage}
-            />
-          </li>
-        ))}
+        {data
+          ? (data.data.length > 0
+            ? data.data.map(({
+              id,
+              name,
+              image,
+            }) => (
+              <li key={id}>
+                <ChannelSelectButton
+                  channelId={id}
+                  channelImageUrl={image}
+                  channelName={name}
+                  setErrorMessage={setErrorMessage}
+                />
+              </li>
+            ))
+            : <div className={styles.noChannel}>채널이 없습니다. 채널을 생성해주세요.</div>)
+          : null}
       </ul>
       <CustomLink href="/createChannel">
         새로운 채널 생성

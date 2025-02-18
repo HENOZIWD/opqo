@@ -4,12 +4,18 @@
   margin: 8rem 0 4rem;
 }
 
-.container {
+.channelLoadError {
   display: flex;
   flex-direction: column;
   width: 30rem;
   align-items: center;
   margin: 0 auto;
+  gap: 1.5rem;
+}
+
+.warningIcon {
+  width: 4rem;
+  height: 4rem;
 }
 
 .error {
@@ -23,6 +29,10 @@
   gap: 3rem;
   margin-bottom: 2rem;
   justify-content: center;
+}
+
+.noChannel {
+  font-size: 1.5rem;
 }
 
 .errorMessage {
