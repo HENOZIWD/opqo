@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './style.module.css';
 import Link from 'next/link';
+import ChannelImage from '../channelImage/component';
 
 interface VideoCardProps {
   videoId: string;
@@ -8,6 +9,11 @@ interface VideoCardProps {
   videoDuration: string;
   videoTitle: string;
   uploadDate: string;
+  channelInfo?: {
+    channelId: string;
+    channelImageUrl: string;
+    channelName: string;
+  };
 }
 
 export default function VideoCard({
@@ -16,6 +22,7 @@ export default function VideoCard({
   videoDuration,
   videoTitle,
   uploadDate,
+  channelInfo,
 }: VideoCardProps) {
   return (
     <article className={styles.container}>
@@ -33,13 +40,36 @@ export default function VideoCard({
           <div className={styles.videoDuration}>{videoDuration}</div>
         </div>
       </Link>
-      <Link
-        href={`/video/${videoId}`}
-        prefetch={false}
-      >
-        <h3 className={styles.videoTitle}>{videoTitle}</h3>
-      </Link>
-      <div className={styles.uploadDate}>{uploadDate}</div>
+      <div className={styles.videoCardInfo}>
+        {channelInfo
+          ? (
+            <div className={styles.channelImage}>
+              <ChannelImage
+                src={channelInfo.channelImageUrl}
+                channelName={channelInfo.channelName}
+              />
+            </div>
+          )
+          : null}
+        <div className={styles.infoWrapper}>
+          <Link
+            href={`/video/${videoId}`}
+            prefetch={false}
+          >
+            <h3 className={styles.videoTitle}>{videoTitle}</h3>
+          </Link>
+          {channelInfo
+            ? (
+              <Link href={`/channel/${channelInfo.channelId}`}>
+                <div className={styles.channelName}>
+                  {channelInfo.channelName}
+                </div>
+              </Link>
+            )
+            : null}
+          <div className={styles.uploadDate}>{uploadDate}</div>
+        </div>
+      </div>
     </article>
   );
 }
