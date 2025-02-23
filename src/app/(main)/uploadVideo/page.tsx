@@ -5,12 +5,13 @@ import styles from './page.module.css';
 import { UploadVideoContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
 import CustomInput from '@/components/customInput/component';
-import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_INTERNAL_SERVER } from '@/utils/message';
-import VideoSelector from '@/components/videoSelector/component';
+import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
 import { useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
-import { uploadVideo } from '@/apis/video';
 import { useRouter } from 'next/navigation';
+import ThumbnailSelector from '@/components/thumbnailSelector/component';
+import VideoUploader from '@/components/videoUploader/component';
+import { uploadVideoContent } from '@/apis/video';
 
 export default function UploadVideoPage() {
   const {
@@ -21,16 +22,28 @@ export default function UploadVideoPage() {
 
   const router = useRouter();
 
-  const [videoData, setVideoData] = useState<Blob | null>(null);
+  const [videoHash, setVideoHash] = useState<string | null>(null);
+  const [thumbnailData, setThumbnailData] = useState<Blob | null>(null);
+
+  const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
+
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const handleUploadVideo = (data: UploadVideoContent) => {
+  const handleUploadVideoContent = async (data: UploadVideoContent) => {
+    if (!videoHash || !thumbnailData) {
+      setErrorMessage(ERR_MSG_VIDEO_UPLOAD_FAILED);
+
+      return;
+    }
+
     setErrorMessage('');
 
-    fetchHandler(() => uploadVideo(data), {
-      onSuccess: () => { router.push('/'); },
+    fetchHandler(() => uploadVideoContent(videoHash, thumbnailData, data), {
+      onSuccess: () => {
+        router.push('/');
+      },
       onError: () => {
-        setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+        setErrorMessage(ERR_MSG_VIDEO_UPLOAD_FAILED);
       },
     });
   };
@@ -39,10 +52,18 @@ export default function UploadVideoPage() {
     <main className={styles.container}>
       <h1 className={styles.title}>동영상 업로드</h1>
       <div className={styles.formWrapper}>
-        <VideoSelector setVideoData={setVideoData} />
-        <div>
+        <div className={styles.former}>
+          <VideoUploader
+            isVideoUploadComplete={isVideoUploadComplete}
+            setIsVideoUploadComplete={setIsVideoUploadComplete}
+            setVideoHash={setVideoHash}
+            setThumbnailData={setThumbnailData}
+          />
+        </div>
+        <div className={styles.latter}>
+          <ThumbnailSelector setImageData={setThumbnailData} />
           <form
-            onSubmit={handleSubmit((data) => { handleUploadVideo(data); })}
+            onSubmit={handleSubmit((data) => { handleUploadVideoContent(data); })}
             className={styles.form}
           >
             <label
@@ -74,12 +95,16 @@ export default function UploadVideoPage() {
               type="text"
               {...register('description')}
             />
-            <div className={styles.submitButton}>
-              <CustomButton
-                type="submit"
-                content="업로드"
-              />
-            </div>
+            {isVideoUploadComplete
+              ? (
+                <div className={styles.submitButton}>
+                  <CustomButton
+                    type="submit"
+                    content="업로드"
+                  />
+                </div>
+              )
+              : null}
           </form>
           {errorMessage && <div className={styles.plainError}>{errorMessage}</div>}
         </div>

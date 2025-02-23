@@ -1,5 +1,5 @@
 .container {
-  width: 40rem;
+  width: 32rem;
   display: flex;
   flex-direction: column;
 }
@@ -9,8 +9,8 @@
 }
 
 .preview {
-  width: 40rem;
-  height: 22.5rem;
+  width: 32rem;
+  height: 18rem;
   background-color: var(--lightgray);
   margin-top: 1rem;
 }
@@ -29,4 +29,11 @@
   color: var(--red);
   text-align: center;
   margin-top: 2rem;
+}
+
+.progress {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }

@@ -34,3 +34,10 @@ export interface UploadVideoContent {
   videoTitle: string;
   description: string;
 }
+
+export interface VideoMetadata {
+  videoWidth: number;
+  videoHeight: number;
+  videoDuration: number;
+  videoExtension: string;
+}
