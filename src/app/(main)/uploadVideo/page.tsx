@@ -56,6 +56,7 @@ export default function UploadVideoPage() {
           <VideoUploader
             isVideoUploadComplete={isVideoUploadComplete}
             setIsVideoUploadComplete={setIsVideoUploadComplete}
+            videoHash={videoHash}
             setVideoHash={setVideoHash}
             setThumbnailData={setThumbnailData}
           />

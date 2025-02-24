@@ -17,15 +17,18 @@ export async function prepareVideoUpload(videoHash: string, videoMetadata: Video
   });
 }
 
-export async function checkVideoChunkExist(videoHash: string, chunkIndex: number) {
-  return videoInstance.head(`videos/${videoHash}/${chunkIndex + 1}`);
+export async function checkVideoChunkExist(videoHash: string, chunkIndex: number, controller: AbortController) {
+  return videoInstance.head(`videos/${videoHash}/${chunkIndex + 1}`, { signal: controller.signal });
 }
 
-export async function uploadVideoChunk(videoChunk: Blob, videoHash: string, chunkIndex: number) {
+export async function uploadVideoChunk(videoChunk: Blob, videoHash: string, chunkIndex: number, controller: AbortController) {
   return videoInstance.post(
     `/videos/${videoHash}/${chunkIndex + 1}`,
     { chunkFile: videoChunk },
-    { headers: { 'Content-Type': 'multipart/form-data' } },
+    {
+      signal: controller.signal,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
   );
 }
 
