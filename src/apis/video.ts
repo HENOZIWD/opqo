@@ -1,3 +1,4 @@
+import { setTokenRefreshInterceptor } from '@/utils/interceptor';
 import { UploadVideoContent, VideoMetadata } from '@/utils/type';
 import axios from 'axios';
 
@@ -31,3 +32,5 @@ export async function uploadVideoChunk(videoChunk: Blob, videoHash: string, chun
 export async function uploadVideoContent(videoHash: string, thumbnailData: Blob, videoContent: UploadVideoContent) {
   return videoInstance.post(`/videos/${videoHash}`);
 }
+
+setTokenRefreshInterceptor(videoInstance);
