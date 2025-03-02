@@ -7,15 +7,21 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
   let failedQueue: {
     resolve: (value: unknown) => void;
     reject: (reason?: unknown) => void;
+    controller: AbortController;
   }[] = [];
 
   const processQueue = (error: unknown, token: string | null) => {
-    failedQueue.forEach((fq) => {
+    failedQueue.forEach(({
+      resolve,
+      reject,
+      controller,
+    }) => {
       if (!error) {
-        fq.resolve(token);
+        resolve(token);
       }
       else {
-        fq.reject(token);
+        controller.abort();
+        reject(error);
       }
     });
 
@@ -31,14 +37,18 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
 
       if (error.response.status === 403 && originalRequest._retryCount < 3) {
         if (isRefreshing) {
+          const controller = new AbortController();
+
           return new Promise((resolve, reject) => {
             failedQueue.push({
               resolve,
               reject,
+              controller,
             });
           })
             .then((token) => {
               originalRequest.headers['Authorization'] = `Bearer ${token}`;
+
               return instance(originalRequest);
             }).catch((err) => {
               return Promise.reject(err);
@@ -49,11 +59,15 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
         isRefreshing = true;
 
         return new Promise((resolve, reject) => {
-          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/me/token/channel`)
+          const controller = new AbortController();
+
+          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/me/token/channel`, {}, { signal: controller.signal })
             .then(({ data }) => {
               const token = data.accessToken;
               sessionStorage.setItem(CHANNEL_TOKEN, token);
+
               originalRequest.headers['Authorization'] = `Bearer ${token}`;
+
               processQueue(null, token);
               resolve(instance(originalRequest));
             })
