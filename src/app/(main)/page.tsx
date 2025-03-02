@@ -2,12 +2,12 @@
 
 import VideoCard from '@/components/videoCard/component';
 import styles from './page.module.css';
-import { videoGETFetcher } from '@/apis/video';
 import { VideoCardResponse } from '@/utils/type';
 import useSWRImmutable from 'swr/immutable';
+import { getFetcher } from '@/apis/getFetcher';
 
 export default function MainPage() {
-  const { data: recentVideoData } = useSWRImmutable<VideoCardResponse[]>('/videos/recent', videoGETFetcher);
+  const { data: recentVideoData } = useSWRImmutable<VideoCardResponse[]>('/videos/recent', getFetcher);
 
   return (
     <main>

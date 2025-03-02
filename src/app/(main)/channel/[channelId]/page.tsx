@@ -1,18 +1,18 @@
 'use client';
 
 import styles from './page.module.css';
-import { channelGETFetcher } from '@/apis/channel';
 import { useParams } from 'next/navigation';
 import ChannelProfile from '@/components/channelProfile/component';
 import VideoCard from '@/components/videoCard/component';
 import useSWRImmutable from 'swr/immutable';
 import { ChannelResponse, ChannelVideoCardResponse } from '@/utils/type';
+import { getFetcher } from '@/apis/getFetcher';
 
 export default function ChannelPage() {
   const { channelId } = useParams<{ channelId: string }>();
 
-  const { data: channelData } = useSWRImmutable<ChannelResponse>(`/channel/${channelId}`, channelGETFetcher);
-  const { data: videoListData } = useSWRImmutable<ChannelVideoCardResponse[]>(`/channel/${channelId}/videos`, channelGETFetcher);
+  const { data: channelData } = useSWRImmutable<ChannelResponse>(`/channel/${channelId}`, getFetcher);
+  const { data: videoListData } = useSWRImmutable<ChannelVideoCardResponse[]>(`/channel/${channelId}/videos`, getFetcher);
 
   return (
     <main>

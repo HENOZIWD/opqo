@@ -2,18 +2,18 @@
 
 import ChannelSelectButton from '@/components/channelSelectButton/component';
 import styles from './page.module.css';
-import { channelGETFetcher } from '@/apis/channel';
 import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
 import WarningIcon from '@/icons/warningIcon';
 import useSWRImmutable from 'swr/immutable';
 import { MyChannelResponse } from '@/utils/type';
+import { getFetcherWithCredentials } from '@/apis/getFetcher';
 
 export default function SelectChannelPage() {
   const {
     data,
     error,
-  } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', channelGETFetcher);
+  } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', getFetcherWithCredentials);
 
   const [errorMessage, setErrorMessage] = useState('');
 

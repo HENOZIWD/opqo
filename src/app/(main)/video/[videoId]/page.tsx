@@ -3,16 +3,16 @@
 import ChannelImage from '@/components/channelImage/component';
 import styles from './page.module.css';
 import { useParams } from 'next/navigation';
-import { videoGETFetcher } from '@/apis/video';
 import VideoPlayer from '@/components/videoPlayer/component';
 import Link from 'next/link';
 import useSWRImmutable from 'swr/immutable';
 import { VideoResponse } from '@/utils/type';
+import { getFetcher } from '@/apis/getFetcher';
 
 export default function VideoPage() {
   const { videoId } = useParams<{ videoId: string }>();
 
-  const { data } = useSWRImmutable<VideoResponse>(`/video/${videoId}`, videoGETFetcher);
+  const { data } = useSWRImmutable<VideoResponse>(`/video/${videoId}`, getFetcher);
 
   if (!data) {
     return null;

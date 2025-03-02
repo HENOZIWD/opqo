@@ -1,12 +1,5 @@
 import { FetchParams } from '@/utils/type';
-import axios from 'axios';
-
-const userInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-  timeout: 30000,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true,
-});
+import { fetchInstance } from './instance';
 
 interface requestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
 interface requestPhoneNumberVerificationCodeResponse { authToken: string }
@@ -15,7 +8,7 @@ export async function requestPhoneNumberVerificationCode({
   phoneNumber,
   controller,
 }: requestPhoneNumberVerificationCodeParams) {
-  return userInstance.post<requestPhoneNumberVerificationCodeResponse>('/user-auth', { phoneNumber }, { signal: controller.signal });
+  return fetchInstance.post<requestPhoneNumberVerificationCodeResponse>('/user-auth', { phoneNumber }, { signal: controller.signal });
 }
 
 interface validatePhoneNumberVerificationCodeParams extends FetchParams {
@@ -30,7 +23,7 @@ export async function validatePhoneNumberVerificationCode({
   authToken,
   controller,
 }: validatePhoneNumberVerificationCodeParams) {
-  return userInstance.post<void>('/user-auth/valid', {
+  return fetchInstance.post<void>('/user-auth/valid', {
     phoneNumber,
     authCode,
     authToken,
@@ -49,7 +42,7 @@ export async function signup({
   authToken,
   controller,
 }: signupParams) {
-  return userInstance.post<void>('/users', {
+  return fetchInstance.post<void>('/users', {
     phoneNumber,
     password,
     authToken,
@@ -66,7 +59,7 @@ export async function signin({
   password,
   controller,
 }: signinParams) {
-  return userInstance.post<void>('/users/me/token/user', {
+  return fetchInstance.post<void>('/users/me/token/user', {
     phoneNumber,
     password,
   }, { signal: controller.signal });

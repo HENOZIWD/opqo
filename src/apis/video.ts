@@ -1,15 +1,5 @@
-import { setTokenRefreshInterceptor } from '@/utils/interceptor';
 import { FetchParams } from '@/utils/type';
-import axios from 'axios';
-
-const videoInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-  timeout: 30000,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true,
-});
-
-export const videoGETFetcher = (url: string) => videoInstance.get(url).then((res) => res.data);
+import { fetchInstanceWithCredentials } from './instance';
 
 interface prepareVideoUploadParams extends FetchParams {
   hashValue: string;
@@ -27,7 +17,7 @@ export async function prepareVideoUpload({
   extension,
   controller,
 }: prepareVideoUploadParams) {
-  return videoInstance.post<void>('/videos', {
+  return fetchInstanceWithCredentials.post<void>('/videos', {
     hashValue,
     width,
     height,
@@ -46,7 +36,7 @@ export async function checkVideoChunkExist({
   chunkIndex,
   controller,
 }: checkVideoChunkExistParams) {
-  return videoInstance.head<void>(`/videos/${videoHash}/${chunkIndex + 1}`, { signal: controller.signal });
+  return fetchInstanceWithCredentials.head<void>(`/videos/${videoHash}/${chunkIndex + 1}`, { signal: controller.signal });
 }
 
 interface uploadVideoChunkParams extends FetchParams {
@@ -61,7 +51,7 @@ export async function uploadVideoChunk({
   chunkFile,
   controller,
 }: uploadVideoChunkParams) {
-  return videoInstance.post<void>(
+  return fetchInstanceWithCredentials.post<void>(
     `/videos/${videoHash}/${chunkIndex + 1}`,
     { chunkFile },
     {
@@ -85,12 +75,10 @@ export async function uploadVideoContent({
   description,
   controller,
 }: uploadVideoContentParams) {
-  return videoInstance.postForm<void>('/contents', {
+  return fetchInstanceWithCredentials.postForm<void>('/contents', {
     thumbnailImage,
     hashValue,
     title,
     description,
   }, { signal: controller.signal });
 }
-
-setTokenRefreshInterceptor(videoInstance);
