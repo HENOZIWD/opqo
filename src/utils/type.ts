@@ -41,3 +41,5 @@ export interface VideoMetadata {
   videoDuration: number;
   videoExtension: string;
 }
+
+export interface FetchParams { controller: AbortController }

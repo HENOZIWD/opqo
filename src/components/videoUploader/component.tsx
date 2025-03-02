@@ -54,7 +54,11 @@ export default function VideoUploader({
       await Promise.allSettled(videoChunkList.map(async (currentVideoChunk, chunkIndex) => {
         const checkController = createAbortController();
 
-        fetchHandler(() => checkVideoChunkExist(videoHash, chunkIndex, checkController), {
+        fetchHandler(() => checkVideoChunkExist({
+          videoHash,
+          chunkIndex,
+          controller: checkController,
+        }), {
           onSuccess: () => {
             setUploadProgress((prev) => prev + 1);
           },
@@ -66,7 +70,12 @@ export default function VideoUploader({
               await new Promise<void>((resolve, reject) => {
                 const uploadController = createAbortController();
 
-                fetchHandler(() => uploadVideoChunk(currentVideoChunk, videoHash, chunkIndex, uploadController), {
+                fetchHandler(() => uploadVideoChunk({
+                  videoHash,
+                  chunkIndex,
+                  chunkFile: currentVideoChunk,
+                  controller: uploadController,
+                }), {
                   onSuccess: () => {
                     successFlag = true;
                     setUploadProgress((prev) => prev + 1);
@@ -153,7 +162,16 @@ export default function VideoUploader({
         const videoHash = await generateVideoHash(videoFile);
         setVideoHash(videoHash);
 
-        await fetchHandler(() => prepareVideoUpload(videoHash, videoMetadata), {
+        const controller = createAbortController();
+
+        await fetchHandler(() => prepareVideoUpload({
+          hashValue: videoHash,
+          width: videoMetadata.videoWidth,
+          height: videoMetadata.videoHeight,
+          duration: videoMetadata.videoDuration,
+          extension: videoMetadata.videoExtension,
+          controller,
+        }), {
           onSuccess: () => { setIsUploadPrepared(true); },
           onError: () => { setErrorMessage(ERR_MSG_VIDEO_UPLOAD_FAILED); },
         });

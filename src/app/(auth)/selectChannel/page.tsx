@@ -2,17 +2,17 @@
 
 import ChannelSelectButton from '@/components/channelSelectButton/component';
 import styles from './page.module.css';
-import useSWR from 'swr';
 import { channelGETFetcher } from '@/apis/channel';
 import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
 import WarningIcon from '@/icons/warningIcon';
+import useSWRImmutable from 'swr/immutable';
 
 export default function SelectChannelPage() {
   const {
     data,
     error,
-  } = useSWR('/myChannelList', channelGETFetcher, { shouldRetryOnError: false });
+  } = useSWRImmutable('/users/me/channels', channelGETFetcher, { shouldRetryOnError: false });
 
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -35,16 +35,15 @@ export default function SelectChannelPage() {
       <h1 className={styles.title}>채널 선택</h1>
       <ul className={styles.channelList}>
         {data
-          ? (data.data.length > 0
-            ? data.data.map(({
+          ? (data.length > 0
+            ? data.map(({
               id,
               name,
-              image,
             }) => (
               <li key={id}>
                 <ChannelSelectButton
                   channelId={id}
-                  channelImageUrl={image}
+                  channelImageUrl={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${id}`}
                   channelName={name}
                   setErrorMessage={setErrorMessage}
                 />

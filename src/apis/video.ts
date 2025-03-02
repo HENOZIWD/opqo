@@ -1,30 +1,69 @@
 import { setTokenRefreshInterceptor } from '@/utils/interceptor';
-import { UploadVideoContent, VideoMetadata } from '@/utils/type';
+import { FetchParams } from '@/utils/type';
 import axios from 'axios';
 
 const videoInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_VIDEO_SERVER_URL,
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true,
 });
 
 export const videoGETFetcher = (url: string) => videoInstance.get(url).then((res) => res.data);
 
-export async function prepareVideoUpload(videoHash: string, videoMetadata: VideoMetadata) {
-  return videoInstance.post('/videos', {
-    fileHash: videoHash,
-    ...videoMetadata,
-  });
+interface prepareVideoUploadParams extends FetchParams {
+  hashValue: string;
+  width: number;
+  height: number;
+  duration: number;
+  extension: string;
 }
 
-export async function checkVideoChunkExist(videoHash: string, chunkIndex: number, controller: AbortController) {
-  return videoInstance.head(`videos/${videoHash}/${chunkIndex + 1}`, { signal: controller.signal });
+export async function prepareVideoUpload({
+  hashValue,
+  width,
+  height,
+  duration,
+  extension,
+  controller,
+}: prepareVideoUploadParams) {
+  return videoInstance.post<void>('/videos', {
+    hashValue,
+    width,
+    height,
+    duration,
+    extension,
+  }, { signal: controller.signal });
 }
 
-export async function uploadVideoChunk(videoChunk: Blob, videoHash: string, chunkIndex: number, controller: AbortController) {
-  return videoInstance.post(
+interface checkVideoChunkExistParams extends FetchParams {
+  videoHash: string;
+  chunkIndex: number;
+}
+
+export async function checkVideoChunkExist({
+  videoHash,
+  chunkIndex,
+  controller,
+}: checkVideoChunkExistParams) {
+  return videoInstance.head<void>(`/videos/${videoHash}/${chunkIndex + 1}`, { signal: controller.signal });
+}
+
+interface uploadVideoChunkParams extends FetchParams {
+  videoHash: string;
+  chunkIndex: number;
+  chunkFile: Blob;
+}
+
+export async function uploadVideoChunk({
+  videoHash,
+  chunkIndex,
+  chunkFile,
+  controller,
+}: uploadVideoChunkParams) {
+  return videoInstance.post<void>(
     `/videos/${videoHash}/${chunkIndex + 1}`,
-    { chunkFile: videoChunk },
+    { chunkFile },
     {
       signal: controller.signal,
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -32,8 +71,26 @@ export async function uploadVideoChunk(videoChunk: Blob, videoHash: string, chun
   );
 }
 
-export async function uploadVideoContent(videoHash: string, thumbnailData: Blob, videoContent: UploadVideoContent) {
-  return videoInstance.post(`/videos/${videoHash}`);
+interface uploadVideoContentParams extends FetchParams {
+  thumbnailImage: Blob;
+  hashValue: string;
+  title: string;
+  description: string;
+}
+
+export async function uploadVideoContent({
+  thumbnailImage,
+  hashValue,
+  title,
+  description,
+  controller,
+}: uploadVideoContentParams) {
+  return videoInstance.postForm<void>('/contents', {
+    thumbnailImage,
+    hashValue,
+    title,
+    description,
+  }, { signal: controller.signal });
 }
 
 setTokenRefreshInterceptor(videoInstance);

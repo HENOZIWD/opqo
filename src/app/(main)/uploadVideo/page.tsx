@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import ThumbnailSelector from '@/components/thumbnailSelector/component';
 import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
+import { useAbortController } from '@/hooks/useAbortController';
 
 export default function UploadVideoPage() {
   const {
@@ -24,10 +25,10 @@ export default function UploadVideoPage() {
 
   const [videoHash, setVideoHash] = useState<string | null>(null);
   const [thumbnailData, setThumbnailData] = useState<Blob | null>(null);
-
   const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
-
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const { createAbortController } = useAbortController();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
     if (!videoHash || !thumbnailData) {
@@ -38,7 +39,15 @@ export default function UploadVideoPage() {
 
     setErrorMessage('');
 
-    fetchHandler(() => uploadVideoContent(videoHash, thumbnailData, data), {
+    const controller = createAbortController();
+
+    fetchHandler(() => uploadVideoContent({
+      thumbnailImage: thumbnailData,
+      hashValue: videoHash,
+      title: data.videoTitle,
+      description: data.description,
+      controller,
+    }), {
       onSuccess: () => {
         router.push('/');
       },

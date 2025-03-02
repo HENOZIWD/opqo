@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { ERR_MSG_INTERNAL_SERVER, ERR_MSG_WRONG_CHANNEL } from '@/utils/message';
 import { setAuthSession } from '@/utils/storage';
+import { useAbortController } from '@/hooks/useAbortController';
 
 interface ChannelSelectButtonProps {
   channelId: string;
@@ -21,15 +22,22 @@ export default function ChannelSelectButton({
   setErrorMessage,
 }: ChannelSelectButtonProps) {
   const router = useRouter();
+  const { createAbortController } = useAbortController();
 
   const handleSelectChannel = () => {
     setErrorMessage('');
+
+    const controller = createAbortController();
+
     fetchHandler(
-      () => selectChannel(channelId),
+      () => selectChannel({
+        channelId,
+        controller,
+      }),
       {
         onSuccess: (response) => {
           setAuthSession({
-            channelToken: response?.data.channelToken,
+            channelToken: response?.data.accessToken || null,
             channelId,
             channelImageUrl,
             channelName,

@@ -11,6 +11,7 @@ import Link from 'next/link';
 import CustomInput from '@/components/customInput/component';
 import { REGEXP_PASSWORD } from '@/utils/regexp';
 import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/user';
+import { useAbortController } from '@/hooks/useAbortController';
 
 export default function SignupPage() {
   const {
@@ -27,10 +28,11 @@ export default function SignupPage() {
 
   const [signupStep, setSignupStep] = useState<number>(0);
   const [signupValue, setSignupValue] = useState<SignupContent | null>(null);
-
+  const [authToken, setAuthToken] = useState<string | null>(null);
   const [remainTime, setRemainTime] = useState<number>(300);
-
   const [errorMessage, setErrorMessage] = useState('');
+
+  const { createAbortController } = useAbortController();
 
   useEffect(() => {
     if (signupStep === 1 && remainTime > 0) {
@@ -45,13 +47,20 @@ export default function SignupPage() {
   const handleRequestVerificationCode = (data: SignupContent) => {
     if (signupStep === 0) {
       setErrorMessage('');
-      fetchHandler(() => requestPhoneNumberVerificationCode(data.phoneNumber), {
-        onSuccess: () => {
+
+      const controller = createAbortController();
+
+      fetchHandler(() => requestPhoneNumberVerificationCode({
+        phoneNumber: data.phoneNumber,
+        controller,
+      }), {
+        onSuccess: (response) => {
           setSignupValue({
             phoneNumber: data.phoneNumber,
             password: data.password,
             confirmPassword: data.confirmPassword,
           });
+          setAuthToken(response?.data.authToken || null);
           setRemainTime(300);
           setSignupStep(1);
         },
@@ -61,11 +70,24 @@ export default function SignupPage() {
   };
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
-    if (signupStep === 1 && signupValue !== null) {
+    if (signupStep === 1 && signupValue && authToken) {
       setErrorMessage('');
-      fetchHandler(() => validatePhoneNumberVerificationCode(data.verificationCode), {
+
+      const controller = createAbortController();
+
+      fetchHandler(() => validatePhoneNumberVerificationCode({
+        phoneNumber: signupValue.phoneNumber,
+        authCode: data.verificationCode,
+        authToken,
+        controller,
+      }), {
         onSuccess: () => {
-          fetchHandler(() => signup(signupValue), {
+          fetchHandler(() => signup({
+            phoneNumber: signupValue.phoneNumber,
+            password: signupValue.password,
+            authToken,
+            controller,
+          }), {
             onSuccess: () => {
               setSignupStep(2);
             },

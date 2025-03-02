@@ -10,6 +10,7 @@ import { fetchHandler } from '@/utils/fetchHandler';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { signin } from '@/apis/user';
+import { useAbortController } from '@/hooks/useAbortController';
 
 export default function SigninPage() {
   const {
@@ -22,9 +23,18 @@ export default function SigninPage() {
 
   const [errorMessage, setErrorMessage] = useState('');
 
+  const { createAbortController } = useAbortController();
+
   const handleSignin = (data: SigninContent) => {
     setErrorMessage('');
-    fetchHandler(() => signin(data), {
+
+    const controller = createAbortController();
+
+    fetchHandler(() => signin({
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+      controller,
+    }), {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
         if (error?.status === 401) {

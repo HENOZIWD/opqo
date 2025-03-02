@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { fetchHandler } from '@/utils/fetchHandler';
 import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
+import { useAbortController } from '@/hooks/useAbortController';
 
 export default function CreateChannelPage() {
   const {
@@ -21,14 +22,25 @@ export default function CreateChannelPage() {
   } = useForm<CreateChannelContent>();
 
   const [channelImageData, setChannelImageData] = useState<Blob | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
 
-  const [errorMessage, setErrorMessage] = useState('');
+  const { createAbortController } = useAbortController();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
     setErrorMessage('');
-    fetchHandler(() => createChannel(data), {
+
+    const controller = createAbortController();
+
+    fetchHandler(() => createChannel({
+      imageFile: channelImageData,
+      json: {
+        name: data.channelName,
+        description: data.description,
+      },
+      controller,
+    }), {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
         if (error?.status === 400) {
