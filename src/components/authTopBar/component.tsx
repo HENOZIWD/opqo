@@ -30,7 +30,7 @@ export default function AuthTopBar() {
     return null;
   }
 
-  if (!auth?.isSignin) {
+  if (!auth.isSignin || !auth.channelId || !auth.channelName) {
     return (
       <div className={styles.container}>
         <CustomLink
@@ -67,8 +67,8 @@ export default function AuthTopBar() {
           onClick={() => { setIsExpanded((prev) => !prev); }}
         >
           <ChannelImage
-            src={auth.channelImageUrl}
-            channelName={auth.channelName || ''}
+            channelId={auth.channelId}
+            channelName={auth.channelName}
           />
         </button>
       </div>

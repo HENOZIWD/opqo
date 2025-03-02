@@ -44,7 +44,6 @@ export default function SelectChannelPage() {
               <li key={id}>
                 <ChannelSelectButton
                   channelId={id}
-                  channelImageUrl={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${id}`}
                   channelName={name}
                   setErrorMessage={setErrorMessage}
                 />

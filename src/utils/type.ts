@@ -17,7 +17,6 @@ export interface CreateChannelContent {
 export interface Auth {
   isSignin: boolean;
   channelId: string | null;
-  channelImageUrl: string | null;
   channelName: string | null;
 }
 
@@ -26,7 +25,6 @@ export interface AuthAction { type: 'signin' | 'signout' }
 export interface AuthSession {
   channelToken: string | null;
   channelId: string | null;
-  channelImageUrl: string | null;
   channelName: string | null;
 }
 

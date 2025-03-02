@@ -10,14 +10,12 @@ import { useAbortController } from '@/hooks/useAbortController';
 
 interface ChannelSelectButtonProps {
   channelId: string;
-  channelImageUrl: string;
   channelName: string;
   setErrorMessage: Dispatch<SetStateAction<string>>;
 }
 
 export default function ChannelSelectButton({
   channelId,
-  channelImageUrl,
   channelName,
   setErrorMessage,
 }: ChannelSelectButtonProps) {
@@ -39,7 +37,6 @@ export default function ChannelSelectButton({
           setAuthSession({
             channelToken: response?.data.accessToken || null,
             channelId,
-            channelImageUrl,
             channelName,
           });
 
@@ -65,7 +62,7 @@ export default function ChannelSelectButton({
         onClick={handleSelectChannel}
       >
         <ChannelImage
-          src={channelImageUrl}
+          channelId={channelId}
           channelName={channelName}
         />
       </button>

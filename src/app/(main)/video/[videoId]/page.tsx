@@ -35,7 +35,7 @@ export default function VideoPage() {
             <div className={styles.channelSection}>
               <div className={styles.channelImage}>
                 <ChannelImage
-                  src={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${data.channelId}`}
+                  channelId={data.channelId}
                   channelName={data.channelName}
                 />
               </div>

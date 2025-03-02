@@ -10,7 +10,6 @@ function authReducer(auth: Auth, action: AuthAction): Auth {
     const {
       channelToken,
       channelId,
-      channelImageUrl,
       channelName,
     } = getAuthSession();
 
@@ -20,7 +19,6 @@ function authReducer(auth: Auth, action: AuthAction): Auth {
       return {
         isSignin: false,
         channelId: null,
-        channelImageUrl: null,
         channelName: null,
       };
     }
@@ -28,7 +26,6 @@ function authReducer(auth: Auth, action: AuthAction): Auth {
     return {
       isSignin: true,
       channelId,
-      channelImageUrl,
       channelName,
     };
   }
@@ -39,7 +36,6 @@ function authReducer(auth: Auth, action: AuthAction): Auth {
     return {
       isSignin: false,
       channelId: null,
-      channelImageUrl: null,
       channelName: null,
     };
   }
@@ -50,7 +46,6 @@ function authReducer(auth: Auth, action: AuthAction): Auth {
 const initialAuth: Auth = {
   isSignin: false,
   channelId: null,
-  channelImageUrl: null,
   channelName: null,
 };
 

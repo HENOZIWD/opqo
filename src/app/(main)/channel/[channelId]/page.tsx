@@ -19,7 +19,7 @@ export default function ChannelPage() {
       {channelData
         ? (
           <ChannelProfile
-            channelImageUrl={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${channelData.id}`}
+            channelId={channelData.id}
             channelName={channelData.name}
             description={channelData.description}
             createdDate={channelData.createdDate}

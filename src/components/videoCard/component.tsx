@@ -2,6 +2,7 @@ import Image from 'next/image';
 import styles from './style.module.css';
 import Link from 'next/link';
 import ChannelImage from '../channelImage/component';
+import { SyntheticEvent } from 'react';
 
 interface VideoCardProps {
   videoId: string;
@@ -21,6 +22,10 @@ export default function VideoCard({
   uploadDate,
   channelInfo,
 }: VideoCardProps) {
+  const handleThumbnailError = (e: SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = '/lightgray.png';
+  };
+
   return (
     <article className={styles.container}>
       <Link
@@ -33,6 +38,7 @@ export default function VideoCard({
             src={`${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${videoId}`}
             alt={`${videoTitle} 썸네일`}
             fill
+            onError={handleThumbnailError}
           />
           <div className={styles.videoDuration}>{videoDuration}</div>
         </div>
@@ -42,7 +48,7 @@ export default function VideoCard({
           ? (
             <div className={styles.channelImage}>
               <ChannelImage
-                src={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${channelInfo.channelId}`}
+                channelId={channelInfo.channelId}
                 channelName={channelInfo.channelName}
               />
             </div>

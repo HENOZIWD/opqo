@@ -2,14 +2,14 @@ import styles from './style.module.css';
 import ChannelImage from '../channelImage/component';
 
 interface ChannelProfileProps {
-  channelImageUrl: string;
+  channelId: string;
   channelName: string;
   description: string;
   createdDate: Date;
 }
 
 export default function ChannelProfile({
-  channelImageUrl,
+  channelId,
   channelName,
   description,
   createdDate,
@@ -18,7 +18,7 @@ export default function ChannelProfile({
     <div className={styles.container}>
       <div className={styles.channelImage}>
         <ChannelImage
-          src={channelImageUrl}
+          channelId={channelId}
           channelName={channelName}
         />
       </div>
