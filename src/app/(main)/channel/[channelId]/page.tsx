@@ -6,22 +6,23 @@ import { useParams } from 'next/navigation';
 import ChannelProfile from '@/components/channelProfile/component';
 import VideoCard from '@/components/videoCard/component';
 import useSWRImmutable from 'swr/immutable';
+import { ChannelResponse, ChannelVideoCardResponse } from '@/utils/type';
 
 export default function ChannelPage() {
   const { channelId } = useParams<{ channelId: string }>();
 
-  const { data: channelData } = useSWRImmutable(`/channel/${channelId}`, channelGETFetcher);
-  const { data: videoListData } = useSWRImmutable(`/channel/${channelId}/videos`, channelGETFetcher);
+  const { data: channelData } = useSWRImmutable<ChannelResponse>(`/channel/${channelId}`, channelGETFetcher);
+  const { data: videoListData } = useSWRImmutable<ChannelVideoCardResponse[]>(`/channel/${channelId}/videos`, channelGETFetcher);
 
   return (
     <main>
       {channelData
         ? (
           <ChannelProfile
-            channelImageUrl={channelData.channelImageUrl}
-            channelName={channelData.channelName}
+            channelImageUrl={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${channelData.id}`}
+            channelName={channelData.name}
             description={channelData.description}
-            created={channelData.created}
+            createdDate={channelData.createdDate}
           />
         )
         : null}
@@ -29,22 +30,20 @@ export default function ChannelPage() {
         <h2 className={styles.sectionTitle}>업로드한 동영상</h2>
         <ul className={styles.videoList}>
           {videoListData
-            ? videoListData.data.map(({
-              videoId,
-              thumbnailUrl,
-              videoDuration,
-              videoTitle,
+            ? videoListData.map(({
+              id,
+              duration,
+              title,
               uploadDate,
             }) => (
               <li
                 className={styles.videoCard}
-                key={videoId}
+                key={id}
               >
                 <VideoCard
-                  videoId={videoId}
-                  thumbnailUrl={thumbnailUrl}
-                  videoTitle={videoTitle}
-                  videoDuration={videoDuration}
+                  videoId={id}
+                  videoTitle={title}
+                  videoDuration={duration}
                   uploadDate={uploadDate}
                 />
               </li>

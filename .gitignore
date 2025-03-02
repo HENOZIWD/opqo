@@ -42,3 +42,4 @@ next-env.d.ts
 
 # mock
 /src/app/mockApi
+/src/app/test

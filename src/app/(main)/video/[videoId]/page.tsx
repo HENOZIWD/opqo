@@ -2,20 +2,19 @@
 
 import ChannelImage from '@/components/channelImage/component';
 import styles from './page.module.css';
-import useSWR from 'swr';
 import { useParams } from 'next/navigation';
 import { videoGETFetcher } from '@/apis/video';
-import { channelGETFetcher } from '@/apis/channel';
 import VideoPlayer from '@/components/videoPlayer/component';
 import Link from 'next/link';
+import useSWRImmutable from 'swr/immutable';
+import { VideoResponse } from '@/utils/type';
 
 export default function VideoPage() {
   const { videoId } = useParams<{ videoId: string }>();
 
-  const { data: videoData } = useSWR(`/video/${videoId}`, videoGETFetcher);
-  const { data: channelData } = useSWR(videoData ? `/channel/${videoData.channelId}` : null, channelGETFetcher);
+  const { data } = useSWRImmutable<VideoResponse>(`/video/${videoId}`, videoGETFetcher);
 
-  if (!videoData) {
+  if (!data) {
     return null;
   }
 
@@ -23,35 +22,35 @@ export default function VideoPage() {
     <main>
       <div className={styles.videoWrapper}>
         <VideoPlayer
-          source={videoData.videoUrl}
-          title={videoData.videoTitle}
+          source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}`}
+          title={data.title}
         />
       </div>
       <div className={styles.contentSection}>
         <h1 className={styles.title}>
-          {videoData.videoTitle}
+          {data.title}
         </h1>
-        {channelData
+        {data
           ? (
             <div className={styles.channelSection}>
               <div className={styles.channelImage}>
                 <ChannelImage
-                  src={channelData.channelImageUrl}
-                  channelName={channelData.channelName}
+                  src={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${data.channelId}`}
+                  channelName={data.channelName}
                 />
               </div>
               <Link
                 className={styles.channelName}
-                href={`/channel/${channelData.channelId}`}
+                href={`/channel/${data.channelId}`}
               >
-                {channelData.channelName}
+                {data.channelName}
               </Link>
             </div>
           )
           : null}
         <div className={styles.description}>
-          <div>{videoData.uploadDate}</div>
-          <div>{videoData.description}</div>
+          <div>{data.uploadDate.toLocaleDateString()}</div>
+          <div>{data.description}</div>
         </div>
       </div>
     </main>

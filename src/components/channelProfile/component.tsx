@@ -5,14 +5,14 @@ interface ChannelProfileProps {
   channelImageUrl: string;
   channelName: string;
   description: string;
-  created: string;
+  createdDate: Date;
 }
 
 export default function ChannelProfile({
   channelImageUrl,
   channelName,
   description,
-  created,
+  createdDate,
 }: ChannelProfileProps) {
   return (
     <div className={styles.container}>
@@ -32,7 +32,7 @@ export default function ChannelProfile({
         <div className={styles.created}>
           가입일
           {' '}
-          {created}
+          {createdDate.toLocaleDateString()}
         </div>
       </div>
     </div>

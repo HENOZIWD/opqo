@@ -7,12 +7,13 @@ import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
 import WarningIcon from '@/icons/warningIcon';
 import useSWRImmutable from 'swr/immutable';
+import { MyChannelResponse } from '@/utils/type';
 
 export default function SelectChannelPage() {
   const {
     data,
     error,
-  } = useSWRImmutable('/users/me/channels', channelGETFetcher, { shouldRetryOnError: false });
+  } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', channelGETFetcher);
 
   const [errorMessage, setErrorMessage] = useState('');
 

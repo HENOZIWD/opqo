@@ -5,20 +5,17 @@ import ChannelImage from '../channelImage/component';
 
 interface VideoCardProps {
   videoId: string;
-  thumbnailUrl: string;
   videoDuration: string;
   videoTitle: string;
-  uploadDate: string;
+  uploadDate: Date;
   channelInfo?: {
     channelId: string;
-    channelImageUrl: string;
     channelName: string;
   };
 }
 
 export default function VideoCard({
   videoId,
-  thumbnailUrl,
   videoDuration,
   videoTitle,
   uploadDate,
@@ -33,7 +30,7 @@ export default function VideoCard({
         <div className={styles.thumbnailWrapper}>
           <Image
             className={styles.thumbnail}
-            src={thumbnailUrl || '/assets/lightgray.png'}
+            src={`${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${videoId}`}
             alt={`${videoTitle} 썸네일`}
             fill
           />
@@ -45,7 +42,7 @@ export default function VideoCard({
           ? (
             <div className={styles.channelImage}>
               <ChannelImage
-                src={channelInfo.channelImageUrl}
+                src={`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${channelInfo.channelId}`}
                 channelName={channelInfo.channelName}
               />
             </div>
@@ -67,7 +64,7 @@ export default function VideoCard({
               </Link>
             )
             : null}
-          <div className={styles.uploadDate}>{uploadDate}</div>
+          <div className={styles.uploadDate}>{uploadDate.toLocaleDateString()}</div>
         </div>
       </div>
     </article>
