@@ -1,6 +1,6 @@
+import { CHANNEL_TOKEN } from '@/utils/constant';
+import { getAuthSession } from '@/utils/storage';
 import axios, { AxiosInstance } from 'axios';
-import { CHANNEL_TOKEN } from './constant';
-import { getAuthSession } from './storage';
 
 export function setTokenRefreshInterceptor(instance: AxiosInstance) {
   let isRefreshing = false;

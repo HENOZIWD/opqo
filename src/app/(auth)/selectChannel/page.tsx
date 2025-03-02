@@ -6,8 +6,8 @@ import CustomLink from '@/components/customLink/component';
 import { useState } from 'react';
 import WarningIcon from '@/icons/warningIcon';
 import useSWRImmutable from 'swr/immutable';
-import { MyChannelResponse } from '@/utils/type';
 import { getFetcherWithCredentials } from '@/apis/getFetcher';
+import { MyChannelResponse } from '@/apis/getResponseType';
 
 export default function SelectChannelPage() {
   const {

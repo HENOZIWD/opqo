@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import ChannelProfile from '@/components/channelProfile/component';
 import VideoCard from '@/components/videoCard/component';
 import useSWRImmutable from 'swr/immutable';
-import { ChannelResponse, ChannelVideoCardResponse } from '@/utils/type';
 import { getFetcher } from '@/apis/getFetcher';
+import { ChannelResponse, ChannelVideoCardResponse } from '@/apis/getResponseType';
 
 export default function ChannelPage() {
   const { channelId } = useParams<{ channelId: string }>();

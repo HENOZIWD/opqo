@@ -6,8 +6,8 @@ import { useParams } from 'next/navigation';
 import VideoPlayer from '@/components/videoPlayer/component';
 import Link from 'next/link';
 import useSWRImmutable from 'swr/immutable';
-import { VideoResponse } from '@/utils/type';
 import { getFetcher } from '@/apis/getFetcher';
+import { VideoResponse } from '@/apis/getResponseType';
 
 export default function VideoPage() {
   const { videoId } = useParams<{ videoId: string }>();

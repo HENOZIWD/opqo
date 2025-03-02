@@ -1,5 +1,5 @@
-import { FetchParams } from '@/utils/type';
 import { fetchInstance } from './instance';
+import { FetchParams } from './type';
 
 interface requestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
 interface requestPhoneNumberVerificationCodeResponse { authToken: string }

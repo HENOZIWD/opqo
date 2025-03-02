@@ -1,5 +1,5 @@
-import { setTokenInjectInterceptor, setTokenRefreshInterceptor } from '@/utils/interceptor';
 import axios from 'axios';
+import { setTokenInjectInterceptor, setTokenRefreshInterceptor } from './interceptor';
 
 export const fetchInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,

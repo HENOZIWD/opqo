@@ -1,5 +1,5 @@
-import { FetchParams } from '@/utils/type';
 import { fetchInstanceWithCredentials } from './instance';
+import { FetchParams } from './type';
 
 interface createChannelParams extends FetchParams {
   imageFile: Blob | null;
