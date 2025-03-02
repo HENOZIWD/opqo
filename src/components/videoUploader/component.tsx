@@ -3,11 +3,10 @@ import styles from './style.module.css';
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '@/utils/video';
 import VideoPlayer from '../videoPlayer/component';
 import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
-import { fetchHandler } from '@/utils/fetchHandler';
 import { checkVideoChunkExist, prepareVideoUpload, uploadVideoChunk } from '@/apis/video';
 import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import ProgressBar from '../progressBar/component';
-import { useAbortController } from '@/hooks/useAbortController';
+import { useFetch } from '@/hooks/useFetch';
 
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
@@ -33,7 +32,7 @@ export default function VideoUploader({
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [maxUploadProgress, setMaxUploadProgress] = useState<number>(1);
 
-  const { createAbortController } = useAbortController();
+  const { fetchHandler } = useFetch();
 
   useEffect(() => {
     const uploadVideo = async () => {
@@ -52,12 +51,10 @@ export default function VideoUploader({
       const videoChunkList = await generateVideoChunkList(videoData, totalVideoChunkCount);
 
       await Promise.allSettled(videoChunkList.map(async (currentVideoChunk, chunkIndex) => {
-        const checkController = createAbortController();
-
-        fetchHandler(() => checkVideoChunkExist({
+        fetchHandler((controller) => checkVideoChunkExist({
           videoHash,
           chunkIndex,
-          controller: checkController,
+          controller,
         }), {
           onSuccess: () => {
             setUploadProgress((prev) => prev + 1);
@@ -68,13 +65,11 @@ export default function VideoUploader({
 
             while (!successFlag && retryCount < 3) {
               await new Promise<void>((resolve, reject) => {
-                const uploadController = createAbortController();
-
-                fetchHandler(() => uploadVideoChunk({
+                fetchHandler((controller) => uploadVideoChunk({
                   videoHash,
                   chunkIndex,
                   chunkFile: currentVideoChunk,
-                  controller: uploadController,
+                  controller,
                 }), {
                   onSuccess: () => {
                     successFlag = true;
@@ -101,7 +96,7 @@ export default function VideoUploader({
     if (isUploadPrepared && videoData && videoHash) {
       uploadVideo();
     }
-  }, [isUploadPrepared, videoData, videoHash, createAbortController]);
+  }, [isUploadPrepared, videoData, videoHash, fetchHandler]);
 
   useEffect(() => {
     if (uploadProgress === maxUploadProgress) {
@@ -162,9 +157,7 @@ export default function VideoUploader({
         const videoHash = await generateVideoHash(videoFile);
         setVideoHash(videoHash);
 
-        const controller = createAbortController();
-
-        await fetchHandler(() => prepareVideoUpload({
+        await fetchHandler((controller) => prepareVideoUpload({
           hashValue: videoHash,
           width: videoMetadata.videoWidth,
           height: videoMetadata.videoHeight,

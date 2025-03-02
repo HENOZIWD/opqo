@@ -6,12 +6,11 @@ import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
 import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_DUPLICATED_PHONENUMBER, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_PASSWORD_RULE, ERR_MSG_TOO_MANY_REQUEST, ERR_MSG_VALIDATION_TIME_EXPIRED, ERR_MSG_VERIFICATION_NUMBER } from '@/utils/message';
 import { useEffect, useState } from 'react';
-import { fetchHandler } from '@/utils/fetchHandler';
 import Link from 'next/link';
 import CustomInput from '@/components/customInput/component';
 import { REGEXP_PASSWORD } from '@/utils/regexp';
 import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/user';
-import { useAbortController } from '@/hooks/useAbortController';
+import { useFetch } from '@/hooks/useFetch';
 
 export default function SignupPage() {
   const {
@@ -32,7 +31,7 @@ export default function SignupPage() {
   const [remainTime, setRemainTime] = useState<number>(300);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { createAbortController } = useAbortController();
+  const { fetchHandler } = useFetch();
 
   useEffect(() => {
     if (signupStep === 1 && remainTime > 0) {
@@ -48,9 +47,7 @@ export default function SignupPage() {
     if (signupStep === 0) {
       setErrorMessage('');
 
-      const controller = createAbortController();
-
-      fetchHandler(() => requestPhoneNumberVerificationCode({
+      fetchHandler((controller) => requestPhoneNumberVerificationCode({
         phoneNumber: data.phoneNumber,
         controller,
       }), {
@@ -73,16 +70,14 @@ export default function SignupPage() {
     if (signupStep === 1 && signupValue && authToken) {
       setErrorMessage('');
 
-      const controller = createAbortController();
-
-      fetchHandler(() => validatePhoneNumberVerificationCode({
+      fetchHandler((controller) => validatePhoneNumberVerificationCode({
         phoneNumber: signupValue.phoneNumber,
         authCode: data.verificationCode,
         authToken,
         controller,
       }), {
         onSuccess: () => {
-          fetchHandler(() => signup({
+          fetchHandler((controller) => signup({
             phoneNumber: signupValue.phoneNumber,
             password: signupValue.password,
             authToken,

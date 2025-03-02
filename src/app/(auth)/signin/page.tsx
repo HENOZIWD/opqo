@@ -6,11 +6,10 @@ import CustomButton from '@/components/customButton/component';
 import { SigninContent } from '@/utils/type';
 import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER } from '@/utils/message';
 import { useForm } from 'react-hook-form';
-import { fetchHandler } from '@/utils/fetchHandler';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { signin } from '@/apis/user';
-import { useAbortController } from '@/hooks/useAbortController';
+import { useFetch } from '@/hooks/useFetch';
 
 export default function SigninPage() {
   const {
@@ -23,14 +22,12 @@ export default function SigninPage() {
 
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { createAbortController } = useAbortController();
+  const { fetchHandler } = useFetch();
 
   const handleSignin = (data: SigninContent) => {
     setErrorMessage('');
 
-    const controller = createAbortController();
-
-    fetchHandler(() => signin({
+    fetchHandler((controller) => signin({
       phoneNumber: data.phoneNumber,
       password: data.password,
       controller,

@@ -9,10 +9,9 @@ import CustomButton from '@/components/customButton/component';
 import { REGEXP_CHANNELNAME } from '@/utils/regexp';
 import ChannelImageSelector from '@/components/channelImageSelector/component';
 import { useState } from 'react';
-import { fetchHandler } from '@/utils/fetchHandler';
 import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
-import { useAbortController } from '@/hooks/useAbortController';
+import { useFetch } from '@/hooks/useFetch';
 
 export default function CreateChannelPage() {
   const {
@@ -26,14 +25,12 @@ export default function CreateChannelPage() {
 
   const router = useRouter();
 
-  const { createAbortController } = useAbortController();
+  const { fetchHandler } = useFetch();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
     setErrorMessage('');
 
-    const controller = createAbortController();
-
-    fetchHandler(() => createChannel({
+    fetchHandler((controller) => createChannel({
       imageFile: channelImageData,
       json: {
         name: data.channelName,

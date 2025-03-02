@@ -1,12 +1,11 @@
 import styles from './style.module.css';
 import ChannelImage from '../channelImage/component';
-import { fetchHandler } from '@/utils/fetchHandler';
 import { selectChannel } from '@/apis/channel';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { ERR_MSG_INTERNAL_SERVER, ERR_MSG_WRONG_CHANNEL } from '@/utils/message';
 import { setAuthSession } from '@/utils/storage';
-import { useAbortController } from '@/hooks/useAbortController';
+import { useFetch } from '@/hooks/useFetch';
 
 interface ChannelSelectButtonProps {
   channelId: string;
@@ -20,15 +19,13 @@ export default function ChannelSelectButton({
   setErrorMessage,
 }: ChannelSelectButtonProps) {
   const router = useRouter();
-  const { createAbortController } = useAbortController();
+  const { fetchHandler } = useFetch();
 
   const handleSelectChannel = () => {
     setErrorMessage('');
 
-    const controller = createAbortController();
-
     fetchHandler(
-      () => selectChannel({
+      (controller) => selectChannel({
         channelId,
         controller,
       }),

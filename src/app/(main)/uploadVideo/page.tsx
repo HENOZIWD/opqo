@@ -7,12 +7,11 @@ import { useForm } from 'react-hook-form';
 import CustomInput from '@/components/customInput/component';
 import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
 import { useState } from 'react';
-import { fetchHandler } from '@/utils/fetchHandler';
 import { useRouter } from 'next/navigation';
 import ThumbnailSelector from '@/components/thumbnailSelector/component';
 import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
-import { useAbortController } from '@/hooks/useAbortController';
+import { useFetch } from '@/hooks/useFetch';
 
 export default function UploadVideoPage() {
   const {
@@ -28,7 +27,7 @@ export default function UploadVideoPage() {
   const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const { createAbortController } = useAbortController();
+  const { fetchHandler } = useFetch();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
     if (!videoHash || !thumbnailData) {
@@ -39,9 +38,7 @@ export default function UploadVideoPage() {
 
     setErrorMessage('');
 
-    const controller = createAbortController();
-
-    fetchHandler(() => uploadVideoContent({
+    fetchHandler((controller) => uploadVideoContent({
       thumbnailImage: thumbnailData,
       hashValue: videoHash,
       title: data.videoTitle,
