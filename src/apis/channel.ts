@@ -27,5 +27,5 @@ export async function selectChannel({
   channelId,
   controller,
 }: selectChannelParams) {
-  return fetchInstanceWithCredentials.post<selectChannelResponse>(`/users/me/token/channel/${channelId}`, undefined, { signal: controller.signal });
+  return fetchInstanceWithCredentials.post<selectChannelResponse>(`/users/me/token/channel/${channelId}`, {}, { signal: controller.signal });
 }
