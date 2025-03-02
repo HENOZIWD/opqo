@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { CHANNEL_TOKEN } from './constant';
+import { getAuthSession } from './storage';
 
 export function setTokenRefreshInterceptor(instance: AxiosInstance) {
   let isRefreshing = false;
@@ -67,4 +68,18 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
       return Promise.reject(error);
     },
   );
+}
+
+export function setTokenInjectInterceptor(instance: AxiosInstance) {
+  instance.interceptors.request.use((config) => {
+    const { channelToken } = getAuthSession();
+
+    if (channelToken) {
+      config.headers['Authorization'] = `Bearer ${channelToken}`;
+    }
+
+    return config;
+  }, (error) => {
+    return Promise.reject(error);
+  });
 }
