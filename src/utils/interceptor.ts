@@ -48,9 +48,9 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
         isRefreshing = true;
 
         return new Promise((resolve, reject) => {
-          axios.post('/mockApi/refresh')
+          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/me/token/channel`)
             .then(({ data }) => {
-              const token = data.channelToken;
+              const token = data.accessToken;
               sessionStorage.setItem(CHANNEL_TOKEN, token);
               originalRequest.headers['Authorization'] = `Bearer ${token}`;
               processQueue(null, token);
