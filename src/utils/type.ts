@@ -39,3 +39,5 @@ export interface VideoMetadata {
   videoDuration: number;
   videoExtension: string;
 }
+
+export type ToastType = 'normal' | 'error';
