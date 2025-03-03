@@ -67,9 +67,3 @@
   gap: 2rem;
   justify-content: center;
 }
-
-.errorMessage {
-  color: var(--red);
-  text-align: center;
-  margin-bottom: 1rem;
-}

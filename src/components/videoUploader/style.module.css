@@ -25,12 +25,6 @@
   cursor: pointer;
 }
 
-.error {
-  color: var(--red);
-  text-align: center;
-  margin-top: 2rem;
-}
-
 .progress {
   margin-top: 1.5rem;
   display: flex;

@@ -11,6 +11,7 @@ import CustomInput from '@/components/customInput/component';
 import { REGEXP_PASSWORD } from '@/utils/regexp';
 import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
 
 export default function SignupPage() {
   const {
@@ -29,9 +30,9 @@ export default function SignupPage() {
   const [signupValue, setSignupValue] = useState<SignupContent | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [remainTime, setRemainTime] = useState<number>(300);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (signupStep === 1 && remainTime > 0) {
@@ -45,8 +46,6 @@ export default function SignupPage() {
 
   const handleRequestVerificationCode = (data: SignupContent) => {
     if (signupStep === 0) {
-      setErrorMessage('');
-
       fetchHandler((controller) => requestPhoneNumberVerificationCode({
         phoneNumber: data.phoneNumber,
         controller,
@@ -61,15 +60,18 @@ export default function SignupPage() {
           setRemainTime(300);
           setSignupStep(1);
         },
-        onError: () => { setErrorMessage(ERR_MSG_INTERNAL_SERVER); },
+        onError: () => {
+          showToast({
+            message: ERR_MSG_INTERNAL_SERVER,
+            type: 'error',
+          });
+        },
       });
     }
   };
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
     if (signupStep === 1 && signupValue && authToken) {
-      setErrorMessage('');
-
       fetchHandler((controller) => validatePhoneNumberVerificationCode({
         phoneNumber: signupValue.phoneNumber,
         authCode: data.verificationCode,
@@ -88,27 +90,45 @@ export default function SignupPage() {
             },
             onError: (error) => {
               if (error?.status === 400) {
-                setErrorMessage(ERR_MSG_DUPLICATED_PHONENUMBER);
+                showToast({
+                  message: ERR_MSG_DUPLICATED_PHONENUMBER,
+                  type: 'error',
+                });
                 setSignupStep(0);
               }
               else {
-                setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+                showToast({
+                  message: ERR_MSG_INTERNAL_SERVER,
+                  type: 'error',
+                });
               }
             },
           });
         },
         onError: (error) => {
           if (error?.status === 400) {
-            setErrorMessage(ERR_MSG_VALIDATION_TIME_EXPIRED);
+            showToast({
+              message: ERR_MSG_VALIDATION_TIME_EXPIRED,
+              type: 'error',
+            });
           }
           else if (error?.status === 401) {
-            setErrorMessage(ERR_MSG_VERIFICATION_NUMBER);
+            showToast({
+              message: ERR_MSG_VERIFICATION_NUMBER,
+              type: 'error',
+            });
           }
           else if (error?.status === 429) {
-            setErrorMessage(ERR_MSG_TOO_MANY_REQUEST);
+            showToast({
+              message: ERR_MSG_TOO_MANY_REQUEST,
+              type: 'error',
+            });
           }
           else {
-            setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+            showToast({
+              message: ERR_MSG_INTERNAL_SERVER,
+              type: 'error',
+            });
           }
         },
       });
@@ -243,7 +263,6 @@ export default function SignupPage() {
           </div>
         </form>
       )}
-      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }

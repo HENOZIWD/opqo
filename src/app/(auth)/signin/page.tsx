@@ -7,9 +7,9 @@ import { SigninContent } from '@/utils/type';
 import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER } from '@/utils/message';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
 
 export default function SigninPage() {
   const {
@@ -20,13 +20,10 @@ export default function SigninPage() {
 
   const router = useRouter();
 
-  const [errorMessage, setErrorMessage] = useState('');
-
   const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
 
   const handleSignin = (data: SigninContent) => {
-    setErrorMessage('');
-
     fetchHandler((controller) => signin({
       phoneNumber: data.phoneNumber,
       password: data.password,
@@ -35,10 +32,16 @@ export default function SigninPage() {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
         if (error?.status === 401) {
-          setErrorMessage(ERR_MSG_INVALID_USER);
+          showToast({
+            message: ERR_MSG_INVALID_USER,
+            type: 'error',
+          });
         }
         else {
-          setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+          showToast({
+            message: ERR_MSG_INTERNAL_SERVER,
+            type: 'error',
+          });
         }
       },
     });
@@ -85,7 +88,6 @@ export default function SigninPage() {
           />
         </div>
       </form>
-      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }

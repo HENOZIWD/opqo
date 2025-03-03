@@ -3,7 +3,6 @@
 import ChannelSelectButton from '@/components/channelSelectButton/component';
 import styles from './page.module.css';
 import CustomLink from '@/components/customLink/component';
-import { useState } from 'react';
 import WarningIcon from '@/icons/warningIcon';
 import useSWRImmutable from 'swr/immutable';
 import { getFetcherWithCredentials } from '@/apis/getFetcher';
@@ -14,8 +13,6 @@ export default function SelectChannelPage() {
     data,
     error,
   } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', getFetcherWithCredentials);
-
-  const [errorMessage, setErrorMessage] = useState('');
 
   if (error) {
     return (
@@ -45,7 +42,6 @@ export default function SelectChannelPage() {
                 <ChannelSelectButton
                   channelId={id}
                   channelName={name}
-                  setErrorMessage={setErrorMessage}
                 />
               </li>
             ))
@@ -55,7 +51,6 @@ export default function SelectChannelPage() {
       <CustomLink href="/createChannel">
         새로운 채널 생성
       </CustomLink>
-      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }

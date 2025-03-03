@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
 
 export default function CreateChannelPage() {
   const {
@@ -21,15 +22,13 @@ export default function CreateChannelPage() {
   } = useForm<CreateChannelContent>();
 
   const [channelImageData, setChannelImageData] = useState<Blob | null>(null);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const router = useRouter();
 
   const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
-    setErrorMessage('');
-
     fetchHandler((controller) => createChannel({
       imageFile: channelImageData,
       json: {
@@ -41,10 +40,16 @@ export default function CreateChannelPage() {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
         if (error?.status === 400) {
-          setErrorMessage(ERR_MSG_DUPLICATED_CHANNELNAME);
+          showToast({
+            message: ERR_MSG_DUPLICATED_CHANNELNAME,
+            type: 'error',
+          });
         }
         else {
-          setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+          showToast({
+            message: ERR_MSG_INTERNAL_SERVER,
+            type: 'error',
+          });
         }
       },
     });
@@ -92,7 +97,6 @@ export default function CreateChannelPage() {
           />
         </div>
       </form>
-      <div className={styles.errorMessage}>{errorMessage}</div>
     </main>
   );
 }

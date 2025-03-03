@@ -33,8 +33,3 @@
 .label {
   cursor: pointer;
 }
-
-.error {
-  color: var(--red);
-  text-align: center;
-}

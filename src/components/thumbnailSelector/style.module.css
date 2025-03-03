@@ -38,7 +38,3 @@
   content: "•";
   padding-right: 0.5rem;
 }
-
-.error {
-  color: var(--red);
-}

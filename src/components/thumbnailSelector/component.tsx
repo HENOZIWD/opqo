@@ -3,30 +3,40 @@ import styles from './style.module.css';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INVALID_IMAGE_SIZE, ERR_MSG_INVALID_IMAGE_TYPE } from '@/utils/message';
 import { isValidImageSize, isValidImageType } from '@/utils/image';
+import { useToast } from '@/hooks/useToast';
 
 interface ThumbnailSelectorProps { setImageData: Dispatch<SetStateAction<Blob | null>> }
 
 export default function ThumbnailSelector({ setImageData }: ThumbnailSelectorProps) {
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const { showToast } = useToast();
 
   const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
-    setErrorMessage('');
     const fileList = e.target.files;
 
     if (!fileList) {
-      setErrorMessage(ERR_MSG_FILE_LOAD_ERROR);
+      showToast({
+        message: ERR_MSG_FILE_LOAD_ERROR,
+        type: 'error',
+      });
       return;
     }
 
     if (fileList.length > 0) {
       if (!isValidImageType(fileList[0].type)) {
-        setErrorMessage(ERR_MSG_INVALID_IMAGE_TYPE);
+        showToast({
+          message: ERR_MSG_INVALID_IMAGE_TYPE,
+          type: 'error',
+        });
         return;
       }
 
       if (!isValidImageSize(fileList[0].size)) {
-        setErrorMessage(ERR_MSG_INVALID_IMAGE_SIZE);
+        showToast({
+          message: ERR_MSG_INVALID_IMAGE_SIZE,
+          type: 'error',
+        });
         return;
       }
 
@@ -63,7 +73,6 @@ export default function ThumbnailSelector({ setImageData }: ThumbnailSelectorPro
         </label>
         <div className={styles.description}>썸네일을 선택하지 않으면 동영상 내 무작위 장면으로 자동 설정됩니다.</div>
       </div>
-      {errorMessage && <div className={styles.error}>{errorMessage}</div>}
     </div>
   );
 }

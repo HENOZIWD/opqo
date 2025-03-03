@@ -39,11 +39,11 @@
   font-size: 1.125rem;
 }
 
-.inputError {
+.error {
   color: var(--red);
 }
 
-.inputError::before {
+.error::before {
   content: "•";
   padding-right: 0.5rem;
 }
@@ -53,10 +53,4 @@
   width: 100%;
   margin-top: 1rem;
   justify-content: flex-end;
-}
-
-.plainError {
-  color : var(--red);
-  text-align: center;
-  margin-top: 2rem;
 }

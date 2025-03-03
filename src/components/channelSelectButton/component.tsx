@@ -2,28 +2,26 @@ import styles from './style.module.css';
 import ChannelImage from '../channelImage/component';
 import { selectChannel } from '@/apis/channel';
 import { useRouter } from 'next/navigation';
-import { Dispatch, SetStateAction } from 'react';
 import { ERR_MSG_INTERNAL_SERVER, ERR_MSG_WRONG_CHANNEL } from '@/utils/message';
 import { setAuthSession } from '@/utils/storage';
 import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
 
 interface ChannelSelectButtonProps {
   channelId: string;
   channelName: string;
-  setErrorMessage: Dispatch<SetStateAction<string>>;
 }
 
 export default function ChannelSelectButton({
   channelId,
   channelName,
-  setErrorMessage,
 }: ChannelSelectButtonProps) {
   const router = useRouter();
+
   const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
 
   const handleSelectChannel = () => {
-    setErrorMessage('');
-
     fetchHandler(
       (controller) => selectChannel({
         channelId,
@@ -41,10 +39,16 @@ export default function ChannelSelectButton({
         },
         onError: (error) => {
           if (error?.status === 401) {
-            setErrorMessage(ERR_MSG_WRONG_CHANNEL);
+            showToast({
+              message: ERR_MSG_WRONG_CHANNEL,
+              type: 'error',
+            });
           }
           else {
-            setErrorMessage(ERR_MSG_INTERNAL_SERVER);
+            showToast({
+              message: ERR_MSG_INTERNAL_SERVER,
+              type: 'error',
+            });
           }
         },
       },

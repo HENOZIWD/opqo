@@ -12,6 +12,7 @@ import ThumbnailSelector from '@/components/thumbnailSelector/component';
 import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
 import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
 
 export default function UploadVideoPage() {
   const {
@@ -25,18 +26,19 @@ export default function UploadVideoPage() {
   const [videoHash, setVideoHash] = useState<string | null>(null);
   const [thumbnailData, setThumbnailData] = useState<Blob | null>(null);
   const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
     if (!videoHash || !thumbnailData) {
-      setErrorMessage(ERR_MSG_VIDEO_UPLOAD_FAILED);
+      showToast({
+        message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+        type: 'error',
+      });
 
       return;
     }
-
-    setErrorMessage('');
 
     fetchHandler((controller) => uploadVideoContent({
       thumbnailImage: thumbnailData,
@@ -49,7 +51,10 @@ export default function UploadVideoPage() {
         router.push('/');
       },
       onError: () => {
-        setErrorMessage(ERR_MSG_VIDEO_UPLOAD_FAILED);
+        showToast({
+          message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+          type: 'error',
+        });
       },
     });
   };
@@ -90,7 +95,7 @@ export default function UploadVideoPage() {
               })}
               error={formState?.errors?.videoTitle !== undefined}
             />
-            {formState?.errors?.videoTitle && <div className={styles.inputError}>{formState.errors.videoTitle?.message}</div>}
+            {formState?.errors?.videoTitle && <div className={styles.error}>{formState.errors.videoTitle?.message}</div>}
             <label
               htmlFor="description"
               className={styles.label}
@@ -113,7 +118,6 @@ export default function UploadVideoPage() {
               )
               : null}
           </form>
-          {errorMessage && <div className={styles.plainError}>{errorMessage}</div>}
         </div>
       </div>
     </main>

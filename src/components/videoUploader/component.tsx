@@ -7,6 +7,7 @@ import { checkVideoChunkExist, prepareVideoUpload, uploadVideoChunk } from '@/ap
 import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import ProgressBar from '../progressBar/component';
 import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
 
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
@@ -25,7 +26,6 @@ export default function VideoUploader({
 }: VideoUploaderProps) {
   const [videoData, setVideoData] = useState<Blob | null>(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const [isUploadPrepared, setIsUploadPrepared] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -33,11 +33,15 @@ export default function VideoUploader({
   const [maxUploadProgress, setMaxUploadProgress] = useState<number>(1);
 
   const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const uploadVideo = async () => {
       if (!videoData || !videoHash) {
-        setErrorMessage(ERR_MSG_FILE_LOAD_ERROR);
+        showToast({
+          message: ERR_MSG_FILE_LOAD_ERROR,
+          type: 'error',
+        });
 
         return;
       }
@@ -93,7 +97,7 @@ export default function VideoUploader({
       }));
     };
 
-    if (isUploadPrepared && videoData && videoHash) {
+    if (!isUploading && isUploadPrepared && videoData && videoHash) {
       uploadVideo();
     }
   }, [isUploadPrepared, videoData, videoHash, fetchHandler]);
@@ -109,11 +113,13 @@ export default function VideoUploader({
       return;
     }
 
-    setErrorMessage('');
     const fileList = e.target.files;
 
     if (!fileList || !fileList[0]) {
-      setErrorMessage(ERR_MSG_FILE_LOAD_ERROR);
+      showToast({
+        message: ERR_MSG_FILE_LOAD_ERROR,
+        type: 'error',
+      });
       return;
     }
 
@@ -121,12 +127,18 @@ export default function VideoUploader({
       const videoFile = fileList[0];
 
       if (!isValidVideoType(videoFile.type)) {
-        setErrorMessage(ERR_MSG_INVALID_VIDEO_TYPE);
+        showToast({
+          message: ERR_MSG_INVALID_VIDEO_TYPE,
+          type: 'error',
+        });
         return;
       }
 
       if (!isValidVideoSize(videoFile.size)) {
-        setErrorMessage(ERR_MSG_INVALID_VIDEO_SIZE);
+        showToast({
+          message: ERR_MSG_INVALID_VIDEO_SIZE,
+          type: 'error',
+        });
         return;
       }
 
@@ -149,7 +161,10 @@ export default function VideoUploader({
       });
       extractMetadataFromVideo(videoFile, videoFile.name.split('.')[1], async (videoMetadata) => {
         if (!videoMetadata) {
-          setErrorMessage(ERR_MSG_FILE_LOAD_ERROR);
+          showToast({
+            message: ERR_MSG_FILE_LOAD_ERROR,
+            type: 'error',
+          });
 
           return;
         }
@@ -166,7 +181,12 @@ export default function VideoUploader({
           controller,
         }), {
           onSuccess: () => { setIsUploadPrepared(true); },
-          onError: () => { setErrorMessage(ERR_MSG_VIDEO_UPLOAD_FAILED); },
+          onError: () => {
+            showToast({
+              message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+              type: 'error',
+            });
+          },
         });
       });
     }
@@ -210,7 +230,6 @@ export default function VideoUploader({
             />
           </div>
         )}
-      {errorMessage && <div className={styles.error}>{errorMessage}</div>}
     </div>
   );
 }
