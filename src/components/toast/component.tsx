@@ -28,14 +28,20 @@ export default function Toast({
 
   if (type === 'error') {
     return (
-      <div className={`${styles.container} ${styles.error} ${count > 0 ? styles.show : ''}`}>
+      <div
+        className={`${styles.container} ${styles.error} ${count > 0 ? styles.show : ''}`}
+        aria-live="assertive"
+      >
         {message}
       </div>
     );
   }
 
   return (
-    <div className={`${styles.container} ${count > 0 ? styles.show : ''}`}>
+    <div
+      className={`${styles.container} ${count > 0 ? styles.show : ''}`}
+      aria-live="polite"
+    >
       {message}
     </div>
   );
