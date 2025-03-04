@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import ChannelImage from '../channelImage/component';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { useFetch } from '@/hooks/useFetch';
+import { signout } from '@/apis/user';
 
 export default function AuthTopBar() {
   const {
@@ -16,14 +18,18 @@ export default function AuthTopBar() {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
+  const { fetchHandler } = useFetch();
+
   useEffect(() => {
-    if (authDispatch) {
-      authDispatch({ type: 'signin' });
-    }
-  }, [authDispatch]);
+    authDispatch?.({ type: 'signin' });
+  }, []);
 
   const handleSignout = () => {
-    authDispatch?.({ type: 'signout' });
+    fetchHandler((controller) => signout({ controller }), {
+      onSuccess: () => { },
+      onError: () => { },
+      onFinal: () => { authDispatch?.({ type: 'signout' }); },
+    });
   };
 
   if (!auth) {

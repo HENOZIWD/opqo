@@ -9,9 +9,11 @@ export function useFetch() {
     {
       onSuccess,
       onError,
+      onFinal,
     }: {
       onSuccess: (response?: AxiosResponse<T>) => void;
       onError: (error?: AxiosError) => void;
+      onFinal?: () => void;
     },
   ) => {
     const controller = createAbortController();
@@ -27,6 +29,9 @@ export function useFetch() {
       else {
         console.error(error);
       }
+    }
+    finally {
+      onFinal?.();
     }
   };
 

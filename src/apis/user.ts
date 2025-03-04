@@ -2,7 +2,7 @@ import { fetchInstance } from './instance';
 import { FetchParams } from './type';
 
 interface requestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
-interface requestPhoneNumberVerificationCodeResponse { authToken: string }
+interface requestPhoneNumberVerificationCodeResponse { otp: string }
 
 export async function requestPhoneNumberVerificationCode({
   phoneNumber,
@@ -16,6 +16,7 @@ interface validatePhoneNumberVerificationCodeParams extends FetchParams {
   authCode: string;
   authToken: string;
 }
+interface validatePhoneNumberVerificationCodeResponse { result: string }
 
 export async function validatePhoneNumberVerificationCode({
   phoneNumber,
@@ -23,7 +24,7 @@ export async function validatePhoneNumberVerificationCode({
   authToken,
   controller,
 }: validatePhoneNumberVerificationCodeParams) {
-  return fetchInstance.post<void>('/user-auth/valid', {
+  return fetchInstance.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/valid', {
     phoneNumber,
     authCode,
     authToken,
@@ -59,8 +60,12 @@ export async function signin({
   password,
   controller,
 }: signinParams) {
-  return fetchInstance.post<void>('/users/me/token/user', {
+  return fetchInstance.post<void>('/token/user', {
     phoneNumber,
     password,
   }, { signal: controller.signal });
+}
+
+export async function signout({ controller }: FetchParams) {
+  return fetchInstance.delete<void>('/token', { signal: controller.signal });
 }

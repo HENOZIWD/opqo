@@ -35,7 +35,7 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
 
       originalRequest._retryCount = originalRequest._retryCount || 0;
 
-      if (error.response && error.response.status === 401 && originalRequest._retryCount < 3) {
+      if (error.response && error.response.status === 403 && originalRequest._retryCount < 3) {
         if (isRefreshing) {
           const controller = new AbortController();
 
@@ -61,7 +61,7 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
         return new Promise((resolve, reject) => {
           const controller = new AbortController();
 
-          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/me/token/channel`, {}, { signal: controller.signal })
+          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/token`, {}, { signal: controller.signal })
             .then(({ data }) => {
               const token = data.accessToken;
               sessionStorage.setItem(CHANNEL_TOKEN, token);

@@ -4,14 +4,24 @@ import CustomButton from '@/components/customButton/component';
 import { SignupContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
-import { ERR_MSG_CONFIRMPASSWORD_NOTEQUAL, ERR_MSG_DUPLICATED_PHONENUMBER, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_PASSWORD_RULE, ERR_MSG_TOO_MANY_REQUEST, ERR_MSG_VALIDATION_TIME_EXPIRED, ERR_MSG_VERIFICATION_NUMBER } from '@/utils/message';
-import { useEffect, useState } from 'react';
+import {
+  ERR_MSG_CONFIRMPASSWORD_NOTEQUAL,
+  ERR_MSG_EMPTY_PHONENUMBER,
+  ERR_MSG_INTERNAL_SERVER,
+  ERR_MSG_PASSWORD_RULE,
+  ERR_MSG_REGISTER_FAILED,
+  ERR_MSG_TOO_MANY_REQUEST,
+  ERR_MSG_VALIDATION_FAILED,
+} from '@/utils/message';
+import { useState } from 'react';
 import Link from 'next/link';
 import CustomInput from '@/components/customInput/component';
 import { REGEXP_PASSWORD } from '@/utils/regexp';
 import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import { useCountdown } from '@/hooks/useCountdown';
+import { PHONENUMBER_VALIDATION_DURATION_SECOND } from '@/utils/constant';
 
 export default function SignupPage() {
   const {
@@ -29,45 +39,44 @@ export default function SignupPage() {
   const [signupStep, setSignupStep] = useState<number>(0);
   const [signupValue, setSignupValue] = useState<SignupContent | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
-  const [remainTime, setRemainTime] = useState<number>(300);
 
+  const {
+    count,
+    setCountdown,
+  } = useCountdown();
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
 
-  useEffect(() => {
-    if (signupStep === 1 && remainTime > 0) {
-      const interval = setInterval(() => {
-        setRemainTime((prev) => prev - 1);
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [signupStep, remainTime]);
-
   const handleRequestVerificationCode = (data: SignupContent) => {
-    if (signupStep === 0) {
-      fetchHandler((controller) => requestPhoneNumberVerificationCode({
-        phoneNumber: data.phoneNumber,
-        controller,
-      }), {
-        onSuccess: (response) => {
-          setSignupValue({
-            phoneNumber: data.phoneNumber,
-            password: data.password,
-            confirmPassword: data.confirmPassword,
-          });
-          setAuthToken(response?.data.authToken || null);
-          setRemainTime(300);
-          setSignupStep(1);
-        },
-        onError: () => {
-          showToast({
-            message: ERR_MSG_INTERNAL_SERVER,
-            type: 'error',
-          });
-        },
-      });
+    fetchHandler((controller) => requestPhoneNumberVerificationCode({
+      phoneNumber: data.phoneNumber,
+      controller,
+    }), {
+      onSuccess: (response) => {
+        setSignupValue({
+          phoneNumber: data.phoneNumber,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        });
+        setAuthToken(response?.data.otp || null);
+        setCountdown(PHONENUMBER_VALIDATION_DURATION_SECOND);
+        setSignupStep(1);
+      },
+      onError: () => {
+        showToast({
+          message: ERR_MSG_INTERNAL_SERVER,
+          type: 'error',
+        });
+      },
+    });
+  };
+
+  const handleRefreshVerificationCode = () => {
+    if (!signupValue) {
+      return;
     }
+
+    handleRequestVerificationCode(signupValue);
   };
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
@@ -78,43 +87,45 @@ export default function SignupPage() {
         authToken,
         controller,
       }), {
-        onSuccess: () => {
-          fetchHandler((controller) => signup({
-            phoneNumber: signupValue.phoneNumber,
-            password: signupValue.password,
-            authToken,
-            controller,
-          }), {
-            onSuccess: () => {
-              setSignupStep(2);
-            },
-            onError: (error) => {
-              if (error?.status === 400) {
-                showToast({
-                  message: ERR_MSG_DUPLICATED_PHONENUMBER,
-                  type: 'error',
-                });
-                setSignupStep(0);
-              }
-              else {
-                showToast({
-                  message: ERR_MSG_INTERNAL_SERVER,
-                  type: 'error',
-                });
-              }
-            },
-          });
-        },
-        onError: (error) => {
-          if (error?.status === 400) {
+        onSuccess: (response) => {
+          if (response?.data.result === 'true') {
+            fetchHandler((controller) => signup({
+              phoneNumber: signupValue.phoneNumber,
+              password: signupValue.password,
+              authToken,
+              controller,
+            }), {
+              onSuccess: () => {
+                setSignupStep(2);
+              },
+              onError: (error) => {
+                if (error?.status === 403) {
+                  showToast({
+                    message: ERR_MSG_REGISTER_FAILED,
+                    type: 'error',
+                  });
+                  setSignupStep(0);
+                }
+                else {
+                  showToast({
+                    message: ERR_MSG_INTERNAL_SERVER,
+                    type: 'error',
+                  });
+                }
+              },
+            });
+          }
+          else {
             showToast({
-              message: ERR_MSG_VALIDATION_TIME_EXPIRED,
+              message: ERR_MSG_VALIDATION_FAILED,
               type: 'error',
             });
           }
-          else if (error?.status === 401) {
+        },
+        onError: (error) => {
+          if (error?.status === 403) {
             showToast({
-              message: ERR_MSG_VERIFICATION_NUMBER,
+              message: ERR_MSG_VALIDATION_FAILED,
               type: 'error',
             });
           }
@@ -245,14 +256,14 @@ export default function SignupPage() {
               {...verificationRegister('verificationCode')}
             />
             <div className={styles.timer}>
-              {(remainTime / 60) >> 0}
+              {(count / 60) >> 0}
               :
-              {(remainTime % 60).toString().padStart(2, '0')}
+              {(count % 60).toString().padStart(2, '0')}
             </div>
             <CustomButton
               type="button"
               content="인증번호 재전송"
-              clickAction={() => { setRemainTime(300); }}
+              clickAction={handleRefreshVerificationCode}
             />
           </div>
           <div className={styles.submit}>

@@ -11,8 +11,8 @@ export const ERR_MSG_DUPLICATED_PHONENUMBER = '이미 존재하는 휴대전화�
 export const ERR_MSG_EMPTY_PASSWORD = '비밀번호를 입력하세요.';
 export const ERR_MSG_PASSWORD_RULE = '비밀번호는 8-20자 영어 대문자, 소문자, 특수문자로 구성되어야 합니다.';
 export const ERR_MSG_CONFIRMPASSWORD_NOTEQUAL = '비밀번호가 일치하지 않습니다.';
-export const ERR_MSG_VERIFICATION_NUMBER = '인증번호가 일치하지 않습니다.';
-export const ERR_MSG_VALIDATION_TIME_EXPIRED = '인증 제한 시간이 만료되었습니다.';
+export const ERR_MSG_VALIDATION_FAILED = '인증에 실패했습니다.';
+export const ERR_MSG_REGISTER_FAILED = '회원가입에 실패했습니다.';
 
 // signin
 export const ERR_MSG_INVALID_USER = '일치하는 계정 정보가 없습니다.';
