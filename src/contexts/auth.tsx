@@ -1,9 +1,18 @@
 'use client';
 
-import { useReducer } from 'react';
-import { AuthContext, AuthDispatchContext } from './auth';
-import { Auth, AuthAction } from '@/utils/type';
+import { ActionDispatch, createContext, useReducer } from 'react';
 import { getAuthSession, removeAuthSession } from '@/utils/storage';
+
+interface Auth {
+  isSignin: boolean;
+  channelId: string | null;
+  channelName: string | null;
+}
+
+interface AuthAction { type: 'signin' | 'signout' }
+
+export const AuthContext = createContext<Auth | null>(null);
+export const AuthDispatchContext = createContext<ActionDispatch<[action: AuthAction]> | null>(null);
 
 function authReducer(auth: Auth, action: AuthAction): Auth {
   if (action.type === 'signin') {
@@ -51,6 +60,7 @@ const initialAuth: Auth = {
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const [auth, dispatch] = useReducer(authReducer, initialAuth);
+
   return (
     <AuthContext.Provider value={auth}>
       <AuthDispatchContext.Provider value={dispatch}>

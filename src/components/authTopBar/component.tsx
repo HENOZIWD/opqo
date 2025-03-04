@@ -21,14 +21,14 @@ export default function AuthTopBar() {
   const { fetchHandler } = useFetch();
 
   useEffect(() => {
-    authDispatch?.({ type: 'signin' });
+    authDispatch({ type: 'signin' });
   }, []);
 
   const handleSignout = () => {
     fetchHandler((controller) => signout({ controller }), {
       onSuccess: () => { },
       onError: () => { },
-      onFinal: () => { authDispatch?.({ type: 'signout' }); },
+      onFinal: () => { authDispatch({ type: 'signout' }); },
     });
   };
 

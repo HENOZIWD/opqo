@@ -1,5 +1,5 @@
 import Header from '@/components/header/component';
-import AuthProvider from '@/contexts/authProvider';
+import AuthProvider from '@/contexts/auth';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
