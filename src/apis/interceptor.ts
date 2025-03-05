@@ -1,5 +1,4 @@
 import { CHANNEL_TOKEN } from '@/utils/constant';
-import { getAuthSession } from '@/utils/storage';
 import axios, { AxiosInstance } from 'axios';
 
 export function setTokenRefreshInterceptor(instance: AxiosInstance) {
@@ -86,7 +85,7 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
 
 export function setTokenInjectInterceptor(instance: AxiosInstance) {
   instance.interceptors.request.use((config) => {
-    const { channelToken } = getAuthSession();
+    const channelToken = sessionStorage.getItem(CHANNEL_TOKEN);
 
     if (channelToken) {
       config.headers['Authorization'] = `Bearer ${channelToken}`;
