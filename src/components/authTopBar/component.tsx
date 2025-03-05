@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useFetch } from '@/hooks/useFetch';
 import { signout } from '@/apis/user';
+import { usePathname, useRouter } from 'next/navigation';
+import { AUTHENTICATION_REQUIRED_ROUTES } from '@/utils/constant';
 
 export default function AuthTopBar() {
   const {
@@ -18,11 +20,22 @@ export default function AuthTopBar() {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
+  const pathname = usePathname();
+  const router = useRouter();
+
   const { fetchHandler } = useFetch();
 
   useEffect(() => {
     authDispatch({ type: 'signin' });
   }, []);
+
+  useEffect(() => {
+    const currentPath = pathname.split('/')[1];
+
+    if (AUTHENTICATION_REQUIRED_ROUTES.includes(currentPath) && !auth.isSignin) {
+      router.replace('/selectChannel');
+    }
+  }, [pathname, auth.isSignin, router]);
 
   const handleSignout = () => {
     fetchHandler((controller) => signout({ controller }), {
