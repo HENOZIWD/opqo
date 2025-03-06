@@ -60,7 +60,10 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
         return new Promise((resolve, reject) => {
           const controller = new AbortController();
 
-          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/token`, {}, { signal: controller.signal })
+          axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/token`, {}, {
+            withCredentials: true,
+            signal: controller.signal,
+          })
             .then(({ data }) => {
               const token = data.accessToken;
               sessionStorage.setItem(CHANNEL_TOKEN, token);
