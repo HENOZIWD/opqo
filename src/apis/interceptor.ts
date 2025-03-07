@@ -32,9 +32,7 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
     async (error) => {
       const originalRequest = error.config;
 
-      originalRequest._retryCount = originalRequest._retryCount || 0;
-
-      if (error.response && error.response.status === 403 && originalRequest._retryCount < 3) {
+      if (error.response && error.response.status === 403 && !originalRequest._retry) {
         if (isRefreshing) {
           const controller = new AbortController();
 
@@ -54,7 +52,7 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
             });
         }
 
-        originalRequest._retryCount += 1;
+        originalRequest._retry = true;
         isRefreshing = true;
 
         return new Promise((resolve, reject) => {
