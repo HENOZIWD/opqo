@@ -1,9 +1,9 @@
 'use client';
 
 import { validateAuth } from '@/apis/user';
-import PageLoading from '@/components/pageLoading/component';
 import { useAuth } from '@/hooks/useAuth';
 import { useFetch } from '@/hooks/useFetch';
+import PageLoadingIcon from '@/icons/pageLoadingIcon';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
@@ -55,7 +55,18 @@ export default function PrivateRoute({
   }, []);
 
   if (isLoading) {
-    return <PageLoading />;
+    return (
+      <div style={{
+        display: 'flex',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+      >
+        <PageLoadingIcon />
+      </div>
+    );
   }
 
   return children;
