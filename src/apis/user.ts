@@ -1,4 +1,4 @@
-import { fetchInstance } from './instance';
+import { fetchInstance, fetchInstanceWithCredentials } from './instance';
 import { FetchParams } from './type';
 
 interface requestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
@@ -8,7 +8,7 @@ export async function requestPhoneNumberVerificationCode({
   phoneNumber,
   controller,
 }: requestPhoneNumberVerificationCodeParams) {
-  return fetchInstance.post<requestPhoneNumberVerificationCodeResponse>('/user-auth', { phoneNumber }, { signal: controller.signal });
+  return fetchInstance.post<requestPhoneNumberVerificationCodeResponse>('/phone-auth', { phoneNumber }, { signal: controller.signal });
 }
 
 interface validatePhoneNumberVerificationCodeParams extends FetchParams {
@@ -60,12 +60,16 @@ export async function signin({
   password,
   controller,
 }: signinParams) {
-  return fetchInstance.post<void>('/token/user', {
+  return fetchInstanceWithCredentials.post<void>('/token/user', {
     phoneNumber,
     password,
   }, { signal: controller.signal });
 }
 
 export async function signout({ controller }: FetchParams) {
-  return fetchInstance.delete<void>('/token', { signal: controller.signal });
+  return fetchInstanceWithCredentials.delete<void>('/token', { signal: controller.signal });
+}
+
+export async function validateAuth({ controller }: FetchParams) {
+  return fetchInstanceWithCredentials.head<void>('/channels/me', { signal: controller.signal });
 }

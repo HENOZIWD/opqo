@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import PrivateRoute from '@/boundary/privateRoute';
 
 export default function CreateChannelPage() {
   const {
@@ -56,47 +57,49 @@ export default function CreateChannelPage() {
   };
 
   return (
-    <main>
-      <h1 className={styles.title}>채널 생성</h1>
-      <ChannelImageSelector setImageData={setChannelImageData} />
-      <form
-        onSubmit={handleSubmit((data) => { handleCreateChannel(data); })}
-        className={styles.form}
-      >
-        <label htmlFor="channelName">채널명</label>
-        <CustomInput
-          id="channelName"
-          type="text"
-          {...register('channelName', {
-            required: {
-              value: true,
-              message: ERR_MSG_CHANNELNAME_RULE,
-            },
-            pattern: {
-              value: REGEXP_CHANNELNAME,
-              message: ERR_MSG_CHANNELNAME_RULE,
-            },
-          })}
-          error={formState?.errors?.channelName !== undefined}
-        />
-        {formState?.errors?.channelName && (
-          <div className={styles.error}>
-            {formState.errors.channelName?.message}
-          </div>
-        )}
-        <label htmlFor="description">채널 설명</label>
-        <CustomInput
-          id="description"
-          type="text"
-          {...register('description')}
-        />
-        <div className={styles.submit}>
-          <CustomButton
-            type="submit"
-            content="완료"
+    <PrivateRoute level="user">
+      <main>
+        <h1 className={styles.title}>채널 생성</h1>
+        <ChannelImageSelector setImageData={setChannelImageData} />
+        <form
+          onSubmit={handleSubmit((data) => { handleCreateChannel(data); })}
+          className={styles.form}
+        >
+          <label htmlFor="channelName">채널명</label>
+          <CustomInput
+            id="channelName"
+            type="text"
+            {...register('channelName', {
+              required: {
+                value: true,
+                message: ERR_MSG_CHANNELNAME_RULE,
+              },
+              pattern: {
+                value: REGEXP_CHANNELNAME,
+                message: ERR_MSG_CHANNELNAME_RULE,
+              },
+            })}
+            error={formState?.errors?.channelName !== undefined}
           />
-        </div>
-      </form>
-    </main>
+          {formState?.errors?.channelName && (
+            <div className={styles.error}>
+              {formState.errors.channelName?.message}
+            </div>
+          )}
+          <label htmlFor="description">채널 설명</label>
+          <CustomInput
+            id="description"
+            type="text"
+            {...register('description')}
+          />
+          <div className={styles.submit}>
+            <CustomButton
+              type="submit"
+              content="완료"
+            />
+          </div>
+        </form>
+      </main>
+    </PrivateRoute>
   );
 }

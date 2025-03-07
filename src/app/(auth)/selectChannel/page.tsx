@@ -7,12 +7,13 @@ import WarningIcon from '@/icons/warningIcon';
 import useSWRImmutable from 'swr/immutable';
 import { getFetcherWithCredentials } from '@/apis/getFetcher';
 import { MyChannelResponse } from '@/apis/getResponseType';
+import PrivateRoute from '@/boundary/privateRoute';
 
 export default function SelectChannelPage() {
   const {
     data,
     error,
-  } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', getFetcherWithCredentials);
+  } = useSWRImmutable<MyChannelResponse[]>('/channels/me', getFetcherWithCredentials, { shouldRetryOnError: false });
 
   if (error) {
     return (
@@ -29,28 +30,30 @@ export default function SelectChannelPage() {
   }
 
   return (
-    <main>
-      <h1 className={styles.title}>채널 선택</h1>
-      <ul className={styles.channelList}>
-        {data
-          ? (data.length > 0
-            ? data.map(({
-              id,
-              name,
-            }) => (
-              <li key={id}>
-                <ChannelSelectButton
-                  channelId={id}
-                  channelName={name}
-                />
-              </li>
-            ))
-            : <div className={styles.noChannel}>채널이 없습니다. 채널을 생성해주세요.</div>)
-          : null}
-      </ul>
-      <CustomLink href="/createChannel">
-        새로운 채널 생성
-      </CustomLink>
-    </main>
+    <PrivateRoute level="user">
+      <main>
+        <h1 className={styles.title}>채널 선택</h1>
+        <ul className={styles.channelList}>
+          {data
+            ? (data.length > 0
+              ? data.map(({
+                id,
+                name,
+              }) => (
+                <li key={id}>
+                  <ChannelSelectButton
+                    channelId={id}
+                    channelName={name}
+                  />
+                </li>
+              ))
+              : <div className={styles.noChannel}>채널이 없습니다. 채널을 생성해주세요.</div>)
+            : null}
+        </ul>
+        <CustomLink href="/createChannel">
+          새로운 채널 생성
+        </CustomLink>
+      </main>
+    </PrivateRoute>
   );
 }
