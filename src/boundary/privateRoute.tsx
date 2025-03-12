@@ -23,7 +23,7 @@ export default function PrivateRoute({
   const { fetchHandler } = useFetch();
 
   useEffect(() => {
-    fetchHandler((controller) => validateAuth({ controller }), {
+    fetchHandler(() => validateAuth(), {
       onSuccess: () => {
         setIsLoading(false);
       },

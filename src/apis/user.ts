@@ -70,6 +70,6 @@ export async function signout({ controller }: FetchParams) {
   return fetchInstanceWithCredentials.delete<void>('/token', { signal: controller.signal });
 }
 
-export async function validateAuth({ controller }: FetchParams) {
-  return fetchInstanceWithCredentials.head<void>('/channels/me', { signal: controller.signal });
+export async function validateAuth() {
+  return fetchInstanceWithCredentials.head<void>('/channels/me');
 }
