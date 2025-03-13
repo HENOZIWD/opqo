@@ -21,3 +21,21 @@
   font-size: 2.5rem;
   font-weight: 900;
 }
+
+.imageSkeleton {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9999px;
+  background-color: var(--lightgray);
+}
+
+.textSkeleton {
+  width: 16rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  background-color: var(--lightgray);
+}
+
+.error {
+  margin: 1.5rem 2rem;
+}

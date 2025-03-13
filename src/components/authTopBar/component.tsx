@@ -17,10 +17,12 @@ export default function AuthTopBar() {
   } = useAuth();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { fetchHandler } = useFetch();
 
   useEffect(() => {
     authDispatch({ type: 'signin' });
+    setIsLoading(false);
   }, []);
 
   const handleSignout = () => {
@@ -31,7 +33,7 @@ export default function AuthTopBar() {
     });
   };
 
-  if (!auth) {
+  if (isLoading) {
     return null;
   }
 

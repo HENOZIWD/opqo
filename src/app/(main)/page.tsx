@@ -1,45 +1,13 @@
 'use client';
 
-import VideoCard from '@/components/videoCard/component';
+import VideoListFetcher from '@/fetcher/videoListFetcher/component';
 import styles from './page.module.css';
-import useSWRImmutable from 'swr/immutable';
-import { getFetcher } from '@/apis/getFetcher';
-import { VideoCardResponse } from '@/apis/getResponseType';
 
 export default function MainPage() {
-  const { data: recentVideoData } = useSWRImmutable<VideoCardResponse[]>('/videos/recent', getFetcher);
-
   return (
     <main>
       <h2 className={styles.sectionTitle}>최근 업로드 된 동영상</h2>
-      <ul className={styles.videoList}>
-        {recentVideoData
-          ? recentVideoData.map(({
-            id,
-            title,
-            duration,
-            uploadDate,
-            channelId,
-            channelName,
-          }) => (
-            <li
-              key={id}
-              className={styles.videoCard}
-            >
-              <VideoCard
-                videoId={id}
-                videoTitle={title}
-                videoDuration={duration}
-                uploadDate={uploadDate}
-                channelInfo={{
-                  channelId,
-                  channelName,
-                }}
-              />
-            </li>
-          ))
-          : null}
-      </ul>
+      <VideoListFetcher category="recent" />
     </main>
   );
 }
