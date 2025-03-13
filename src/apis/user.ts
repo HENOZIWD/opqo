@@ -71,5 +71,5 @@ export async function signout({ controller }: FetchParams) {
 }
 
 export async function validateAuth() {
-  return fetchInstanceWithCredentials.head<void>('/channels/me');
+  return fetchInstanceWithCredentials.head<void>('/token');
 }
