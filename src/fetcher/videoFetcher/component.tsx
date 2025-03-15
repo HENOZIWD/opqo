@@ -12,7 +12,7 @@ export default function VideoFetcher({ videoId }: VideoFetcherProps) {
   const {
     data,
     error,
-  } = useSWRImmutable<VideoResponse>(`/contents/${videoId}`, getFetcher, { errorRetryCount: 3 });
+  } = useSWRImmutable<VideoResponse>(`/contents/${videoId}`, getFetcher, { shouldRetryOnError: false });
 
   if (error || !data) {
     return null;
@@ -49,7 +49,7 @@ export default function VideoFetcher({ videoId }: VideoFetcherProps) {
           )
           : null}
         <div className={styles.description}>
-          <div>{data.uploadDate.toLocaleDateString()}</div>
+          <div>{data.uploadDate}</div>
           <div>{data.description}</div>
         </div>
       </div>

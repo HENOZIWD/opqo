@@ -55,7 +55,7 @@ export default function VideoListFetcher({ category }: VideoListFetcherProps) {
         id,
         title,
         duration,
-        uploadDate,
+        createdDate,
         channelId,
         channelName,
       }) => (
@@ -67,7 +67,7 @@ export default function VideoListFetcher({ category }: VideoListFetcherProps) {
             videoId={id}
             videoTitle={title}
             videoDuration={duration}
-            uploadDate={uploadDate}
+            createdDate={createdDate}
             channelInfo={{
               channelId,
               channelName,

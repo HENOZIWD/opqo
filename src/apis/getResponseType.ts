@@ -7,21 +7,21 @@ export interface ChannelResponse {
   id: string;
   name: string;
   description: string;
-  createdDate: Date;
+  createdDate: string;
 }
 
 export interface ChannelVideoCardResponse {
   id: string;
   title: string;
   duration: string;
-  uploadDate: Date;
+  createdDate: string;
 }
 
 export interface VideoCardResponse {
   id: string;
   title: string;
   duration: string;
-  uploadDate: Date;
+  createdDate: string;
   channelId: string;
   channelName: string;
 }
@@ -30,7 +30,7 @@ export interface VideoResponse {
   id: string;
   title: string;
   description: string;
-  uploadDate: Date;
+  uploadDate: string;
   channelId: string;
   channelName: string;
 }

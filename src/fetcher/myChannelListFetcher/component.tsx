@@ -9,7 +9,7 @@ export default function MyChannelListFetcher() {
     data,
     isLoading,
     error,
-  } = useSWRImmutable<MyChannelResponse[]>('/channels/me', getFetcherWithCredentials, { errorRetryCount: 3 });
+  } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', getFetcherWithCredentials, { shouldRetryOnError: false });
 
   if (isLoading) {
     return null;

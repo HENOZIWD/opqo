@@ -55,7 +55,7 @@ export default function ChannelVideoListFetcher({ channelId }: ChannelVideoListF
         id,
         duration,
         title,
-        uploadDate,
+        createdDate,
       }) => (
         <li
           className={styles.videoCard}
@@ -65,7 +65,7 @@ export default function ChannelVideoListFetcher({ channelId }: ChannelVideoListF
             videoId={id}
             videoTitle={title}
             videoDuration={duration}
-            uploadDate={uploadDate}
+            createdDate={createdDate}
           />
         </li>
       ))}

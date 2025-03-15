@@ -7,7 +7,7 @@ interface VideoCardProps {
   videoId: string;
   videoDuration: string;
   videoTitle: string;
-  uploadDate: Date;
+  createdDate: string;
   channelInfo?: {
     channelId: string;
     channelName: string;
@@ -18,7 +18,7 @@ export default function VideoCard({
   videoId,
   videoDuration,
   videoTitle,
-  uploadDate,
+  createdDate,
   channelInfo,
 }: VideoCardProps) {
   return (
@@ -65,7 +65,7 @@ export default function VideoCard({
               </Link>
             )
             : null}
-          <div className={styles.uploadDate}>{uploadDate.toLocaleDateString()}</div>
+          <div className={styles.uploadDate}>{createdDate}</div>
         </div>
       </div>
     </article>

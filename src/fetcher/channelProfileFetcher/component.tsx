@@ -51,7 +51,7 @@ export default function ChannelProfileFetcher({ channelId }: ChannelProfileFetch
         <div className={styles.created}>
           가입일
           {' '}
-          {data.createdDate.toLocaleDateString()}
+          {data.createdDate}
         </div>
       </div>
     </div>
