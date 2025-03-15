@@ -13,7 +13,7 @@ import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import PrivateRoute from '@/boundary/privateRoute';
+import ChannelRequiredRoute from '@/boundary/channelRequiredRoute';
 
 export default function UploadVideoPage() {
   const {
@@ -61,7 +61,7 @@ export default function UploadVideoPage() {
   };
 
   return (
-    <PrivateRoute level="channel">
+    <ChannelRequiredRoute>
       <main className={styles.container}>
         <h1 className={styles.title}>동영상 업로드</h1>
         <div className={styles.formWrapper}>
@@ -123,6 +123,6 @@ export default function UploadVideoPage() {
           </div>
         </div>
       </main>
-    </PrivateRoute>
+    </ChannelRequiredRoute>
   );
 }

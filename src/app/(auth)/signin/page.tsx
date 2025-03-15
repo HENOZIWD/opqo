@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function SigninPage() {
   const {
@@ -18,10 +20,23 @@ export default function SigninPage() {
     formState,
   } = useForm<SigninContent>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const router = useRouter();
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+
+  useEffect(() => {
+    fetchHandler(() => axios.head<void>(`${process.env.NEXT_PUBLIC_SERVER_URL}/token`, { withCredentials: true }), {
+      onSuccess: () => {
+        router.replace('/');
+      },
+      onError: () => {
+        setIsLoading(false);
+      },
+    });
+  }, []);
 
   const handleSignin = (data: SigninContent) => {
     fetchHandler((controller) => signin({
@@ -46,6 +61,10 @@ export default function SigninPage() {
       },
     });
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <main>
