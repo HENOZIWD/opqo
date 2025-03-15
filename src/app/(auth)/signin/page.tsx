@@ -4,12 +4,15 @@ import CustomInput from '@/components/customInput/component';
 import styles from './page.module.css';
 import CustomButton from '@/components/customButton/component';
 import { SigninContent } from '@/utils/type';
-import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER } from '@/utils/message';
+import { ERR_MSG_CHANNELINFO_FAILED, ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER } from '@/utils/message';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import { getChannelInfo, selectChannel } from '@/apis/channel';
+import { CHANNEL_TOKEN } from '@/utils/constant';
+import { setAuthSession } from '@/utils/storage';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -44,7 +47,37 @@ export default function SigninPage() {
       password: data.password,
       controller,
     }), {
-      onSuccess: () => { router.push('/selectChannel'); },
+      onSuccess: () => {
+        fetchHandler((controller) => selectChannel({
+          channelId: null,
+          controller,
+        }), {
+          onSuccess: (response) => {
+            const channelToken = response!.data.accessToken;
+
+            sessionStorage.setItem(CHANNEL_TOKEN, channelToken);
+            fetchHandler((controller) => getChannelInfo({ controller }), {
+              onSuccess: (channelInfoResponse) => {
+                setAuthSession({
+                  channelToken,
+                  channelId: channelInfoResponse?.data.id || null,
+                  channelName: channelInfoResponse?.data.name || null,
+                });
+                router.push('/');
+              },
+              onError: () => {
+                showToast({
+                  message: ERR_MSG_CHANNELINFO_FAILED,
+                  type: 'error',
+                });
+              },
+            });
+          },
+          onError: () => {
+            router.push('/selectChannel');
+          },
+        });
+      },
       onError: (error) => {
         if (error?.status === 401) {
           showToast({

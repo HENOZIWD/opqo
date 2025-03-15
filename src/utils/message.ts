@@ -16,6 +16,7 @@ export const ERR_MSG_REGISTER_FAILED = '회원가입에 실패했습니다.';
 
 // signin
 export const ERR_MSG_INVALID_USER = '일치하는 계정 정보가 없습니다.';
+export const ERR_MSG_CHANNELINFO_FAILED = '채널 정보를 불러오는 데 실패했습니다.';
 
 // createChannel
 export const ERR_MSG_INVALID_IMAGE_TYPE = '이미지 파일은 .jpeg, .png, .webp 확장자만 업로드 가능합니다.';

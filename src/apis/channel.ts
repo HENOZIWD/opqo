@@ -20,7 +20,7 @@ export async function createChannel({
   }, { signal: controller.signal });
 }
 
-interface selectChannelParams extends FetchParams { channelId: string }
+interface selectChannelParams extends FetchParams { channelId: string | null }
 interface selectChannelResponse { accessToken: string }
 
 export async function selectChannel({
@@ -32,4 +32,15 @@ export async function selectChannel({
     { channelId },
     { signal: controller.signal },
   );
+}
+
+interface getChannelInfoResponse {
+  id: string;
+  name: string;
+  description: string;
+  createdDate: string;
+}
+
+export async function getChannelInfo({ controller }: FetchParams) {
+  return fetchInstanceWithCredentials.get<getChannelInfoResponse>('/channels/me', { signal: controller.signal });
 }
