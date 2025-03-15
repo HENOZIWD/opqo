@@ -18,6 +18,7 @@ export default function AuthTopBar() {
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const { fetchHandler } = useFetch();
 
   useEffect(() => {
@@ -29,7 +30,10 @@ export default function AuthTopBar() {
     fetchHandler((controller) => signout({ controller }), {
       onSuccess: () => { },
       onError: () => { },
-      onFinal: () => { authDispatch({ type: 'signout' }); },
+      onFinal: () => {
+        authDispatch({ type: 'signout' });
+        location.reload();
+      },
     });
   };
 
