@@ -10,7 +10,7 @@ export default function Header() {
         prefetch={false}
         className={styles.logo}
       >
-        로고 이미지
+        OpqO
       </Link>
       <AuthTopBar />
     </header>
