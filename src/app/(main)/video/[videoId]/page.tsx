@@ -1,10 +1,7 @@
-'use client';
-
 import VideoFetcher from '@/fetcher/videoFetcher/component';
-import { useParams } from 'next/navigation';
 
-export default function VideoPage() {
-  const { videoId } = useParams<{ videoId: string }>();
+export default async function VideoPage({ params }: { params: Promise<{ videoId: string }> }) {
+  const { videoId } = await params;
 
   return (
     <main>

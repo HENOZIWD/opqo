@@ -1,12 +1,9 @@
-'use client';
-
 import styles from './page.module.css';
-import { useParams } from 'next/navigation';
 import ChannelProfileFetcher from '@/fetcher/channelProfileFetcher/component';
 import ChannelVideoListFetcher from '@/fetcher/channelVideoListFetcher/component';
 
-export default function ChannelPage() {
-  const { channelId } = useParams<{ channelId: string }>();
+export default async function ChannelPage({ params }: { params: Promise<{ channelId: string }> }) {
+  const { channelId } = await params;
 
   return (
     <main>
