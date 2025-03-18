@@ -3,6 +3,7 @@
   bottom: 0;
   color: var(--white);
   width: 100%;
+  background: linear-gradient(to top, var(--black-shadow), transparent);
 }
 
 .panel {

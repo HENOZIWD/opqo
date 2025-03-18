@@ -21,6 +21,7 @@
   font-size: 1.25rem;
   padding: 1rem;
   color: var(--white);
+  background: linear-gradient(to bottom, var(--black-shadow), transparent);
 }
 
 .panel {
