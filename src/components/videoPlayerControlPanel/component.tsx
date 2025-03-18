@@ -16,6 +16,7 @@ interface VideoPlayerControlPanelProps {
   currentTime: number;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   setIsSeeking: Dispatch<SetStateAction<boolean>>;
+  bufferedProgress: number;
 }
 
 export default function VideoPlayerControlPanel({
@@ -25,6 +26,7 @@ export default function VideoPlayerControlPanel({
   currentTime,
   setCurrentTime,
   setIsSeeking,
+  bufferedProgress,
 }: VideoPlayerControlPanelProps) {
   const [volume, setVolume] = useState<number>(0.5);
   const [isMuted, setIsMuted] = useState<boolean>(false);
@@ -107,6 +109,7 @@ export default function VideoPlayerControlPanel({
         max={videoRef.current?.duration || 0}
         step="any"
         value={currentTime}
+        mid={bufferedProgress}
         onChange={handleSeek}
         mouseDownAction={() => setIsSeeking(true)}
         mouseUpAction={() => setIsSeeking(false)}

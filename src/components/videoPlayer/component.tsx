@@ -20,6 +20,7 @@ export default function VideoPlayer({
   const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [bufferedProgress, setBufferedProgress] = useState<number>(0);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [isPausedBeforeSeek, setIsPausedBeforeSeek] = useState<boolean>(true);
 
@@ -52,6 +53,23 @@ export default function VideoPlayer({
     debouncedHidePanelRef.current();
   };
 
+  const handleBufferProgress = () => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    if (videoRef.current.duration > 0) {
+      for (let i = 0; i < videoRef.current.buffered.length; i += 1) {
+        if (videoRef.current.buffered.start(videoRef.current.buffered.length - 1 - i)
+          < videoRef.current.currentTime) {
+          setBufferedProgress((videoRef.current.buffered.end(videoRef.current.buffered.length - 1 - i) * 100)
+            / videoRef.current.duration);
+          break;
+        }
+      }
+    }
+  };
+
   return (
     <figure
       className={`${styles.container}${isPanelShown ? '' : ` ${styles.mouseHidden}`}`}
@@ -67,6 +85,7 @@ export default function VideoPlayer({
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+        onProgress={handleBufferProgress}
         controls={false}
         playsInline
       >
@@ -83,6 +102,7 @@ export default function VideoPlayer({
           currentTime={currentTime}
           setCurrentTime={setCurrentTime}
           setIsSeeking={setIsSeeking}
+          bufferedProgress={bufferedProgress}
         />
       </div>
     </figure>
