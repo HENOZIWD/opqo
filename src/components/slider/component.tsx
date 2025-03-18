@@ -22,15 +22,26 @@ export default function Slider({
   mouseDownAction,
   mouseUpAction,
 }: SliderProps) {
+  if (max <= 0) {
+    return (
+      <div className={styles.container}>
+        <div
+          className={styles.progressbar}
+          style={{ backgroundColor: 'var(--gray)' }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div
         className={styles.progressbar}
         style={{
-          background: `linear-gradient(to right, var(--white),
-          var(--white) ${(value / max) * 100}%,
-          var(--red) ${(value / max) * 100}%,
-          var(--red) ${mid ? mid : 0}%,
+          background: `linear-gradient(to right, var(--blue),
+          var(--blue) ${(value / max) * 100}%,
+          var(--lightgray) ${(value / max) * 100}%,
+          var(--lightgray) ${mid ? mid : 0}%,
           var(--gray) ${mid ? mid : 0}%,
           var(--gray) 100%)`,
         }}
