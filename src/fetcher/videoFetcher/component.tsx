@@ -51,7 +51,7 @@ export default function VideoFetcher({ videoId }: VideoFetcherProps) {
           )
           : null}
         <div className={styles.description}>
-          <div>{data.uploadDate}</div>
+          <div>{data.createdDate}</div>
           <div>{data.description}</div>
         </div>
       </div>

@@ -30,7 +30,7 @@ export interface VideoResponse {
   id: string;
   title: string;
   description: string;
-  uploadDate: string;
+  createdDate: string;
   channelId: string;
   channelName: string;
 }
