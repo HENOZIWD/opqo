@@ -2,6 +2,7 @@ import Image from 'next/image';
 import styles from './style.module.css';
 import Link from 'next/link';
 import ChannelImage from '../channelImage/component';
+import Thumbnail from '../thumbnail/component';
 
 interface VideoCardProps {
   videoId: string;
@@ -28,14 +29,11 @@ export default function VideoCard({
         prefetch={false}
       >
         <div className={styles.thumbnailWrapper}>
-          <Image
-            className={styles.thumbnail}
-            src={`${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${videoId}`}
-            alt={`${videoTitle} 썸네일`}
-            fill
-            sizes="640px"
+          <Thumbnail
+            videoId={videoId}
+            videoTitle={videoTitle}
+            videoDuration="ana"
           />
-          <div className={styles.videoDuration}>{videoDuration}</div>
         </div>
       </Link>
       <div className={styles.videoCardInfo}>
