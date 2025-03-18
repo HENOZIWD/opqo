@@ -1,3 +1,5 @@
+'use client';
+
 import ChannelImage from '@/components/channelImage/component';
 import styles from './style.module.css';
 import useSWRImmutable from 'swr/immutable';

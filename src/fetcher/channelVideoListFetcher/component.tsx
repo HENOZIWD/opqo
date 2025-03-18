@@ -1,3 +1,5 @@
+'use client';
+
 import { ChannelVideoCardResponse } from '@/apis/getResponseType';
 import styles from './style.module.css';
 import useSWRImmutable from 'swr/immutable';
