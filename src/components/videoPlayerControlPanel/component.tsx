@@ -14,6 +14,7 @@ interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
   isPlaying: boolean;
   currentTime: number;
+  duration: number;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   setIsSeeking: Dispatch<SetStateAction<boolean>>;
   bufferedProgress: number;
@@ -24,6 +25,7 @@ export default function VideoPlayerControlPanel({
   videoRef,
   isPlaying,
   currentTime,
+  duration,
   setCurrentTime,
   setIsSeeking,
   bufferedProgress,
@@ -106,7 +108,7 @@ export default function VideoPlayerControlPanel({
     <div className={styles.container}>
       <Slider
         min={0}
-        max={videoRef.current?.duration || 0}
+        max={duration}
         step="any"
         value={currentTime}
         mid={bufferedProgress}
@@ -144,7 +146,7 @@ export default function VideoPlayerControlPanel({
           {' '}
           /
           {' '}
-          {numberToTime(videoRef.current?.duration || 0)}
+          {numberToTime(duration)}
         </div>
         <button
           className={`${styles.panelButton} ${styles.fullscreenButton}`}

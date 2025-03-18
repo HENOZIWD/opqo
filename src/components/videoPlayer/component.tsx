@@ -20,6 +20,7 @@ export default function VideoPlayer({
   const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(0);
   const [bufferedProgress, setBufferedProgress] = useState<number>(0);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [isPausedBeforeSeek, setIsPausedBeforeSeek] = useState<boolean>(true);
@@ -81,6 +82,7 @@ export default function VideoPlayer({
         key={source}
         className={styles.video}
         ref={videoRef}
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
@@ -100,6 +102,7 @@ export default function VideoPlayer({
           videoRef={videoRef}
           isPlaying={isPlaying}
           currentTime={currentTime}
+          duration={duration}
           setCurrentTime={setCurrentTime}
           setIsSeeking={setIsSeeking}
           bufferedProgress={bufferedProgress}
