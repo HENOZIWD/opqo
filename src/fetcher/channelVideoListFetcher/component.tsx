@@ -53,24 +53,30 @@ export default function ChannelVideoListFetcher({ channelId }: ChannelVideoListF
 
   return (
     <ul className={styles.videoList}>
-      {data.map(({
-        id,
-        duration,
-        title,
-        createdDate,
-      }) => (
-        <li
-          className={styles.videoCard}
-          key={id}
-        >
-          <VideoCard
-            videoId={id}
-            videoTitle={title}
-            videoDuration={duration}
-            createdDate={createdDate}
-          />
-        </li>
-      ))}
+      {data.length > 0
+        ? data.map(({
+          id,
+          duration,
+          title,
+          createdDate,
+        }) => (
+          <li
+            className={styles.videoCard}
+            key={id}
+          >
+            <VideoCard
+              videoId={id}
+              videoTitle={title}
+              videoDuration={duration}
+              createdDate={createdDate}
+            />
+          </li>
+        ))
+        : (
+          <div>
+            업로드한 동영상이 없습니다.
+          </div>
+        )}
     </ul>
   );
 }
