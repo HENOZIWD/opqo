@@ -33,3 +33,10 @@ export interface VideoMetadata {
 }
 
 export type ToastType = 'normal' | 'error';
+
+export interface AccessToken {
+  id: string;
+  name: string;
+  role: 'user' | 'channel';
+  exp: number;
+}

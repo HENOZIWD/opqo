@@ -1,4 +1,6 @@
-function parseJwt(token: string) {
+import { AccessToken } from './type';
+
+function parseJwt(token: string): AccessToken | null {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replaceAll('-', '+').replaceAll('_', '/');
@@ -26,4 +28,14 @@ export function isValidToken(token: string | null) {
   const currentTime = Date.now() / 1000;
 
   return decodedToken.exp > currentTime;
+}
+
+export function getChannelInfoFromJwt(token: string) {
+  const decodedToken = parseJwt(token);
+
+  if (!decodedToken) {
+    return null;
+  }
+
+  return decodedToken;
 }

@@ -3,13 +3,19 @@
 import { useAuth } from '@/hooks/useAuth';
 import PageLoadingIcon from '@/icons/pageLoadingIcon';
 import { getAuthSession } from '@/utils/storage';
-import { isValidToken } from '@/utils/token';
+import { getChannelInfoFromJwt, isValidToken } from '@/utils/token';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
-interface ChannelRequiredRouteProps { children: ReactNode }
+interface PrivateRouteProps {
+  level: 'user' | 'channel';
+  children: ReactNode;
+}
 
-export default function ChannelRequiredRoute({ children }: ChannelRequiredRouteProps) {
+export default function PrivateRoute({
+  level,
+  children,
+}: PrivateRouteProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -18,8 +24,23 @@ export default function ChannelRequiredRoute({ children }: ChannelRequiredRouteP
   useEffect(() => {
     const { channelToken } = getAuthSession();
 
-    if (!isValidToken(channelToken)) {
+    if (!channelToken || !isValidToken(channelToken)) {
       authDispatch({ type: 'signout' });
+      router.replace('/signin');
+
+      return;
+    }
+
+    const decodedToken = getChannelInfoFromJwt(channelToken);
+
+    if (!decodedToken) {
+      authDispatch({ type: 'signout' });
+      router.replace('/signin');
+
+      return;
+    }
+
+    if (level === 'channel' && decodedToken.role === 'user') {
       router.replace('/selectChannel');
 
       return;

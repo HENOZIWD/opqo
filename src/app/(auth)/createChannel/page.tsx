@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import UserRequiredRoute from '@/boundary/userRequiredRoute';
+import PrivateRoute from '@/boundary/PrivateRoute';
 
 export default function CreateChannelPage() {
   const {
@@ -57,7 +57,7 @@ export default function CreateChannelPage() {
   };
 
   return (
-    <UserRequiredRoute>
+    <PrivateRoute level="user">
       <main>
         <h1 className={styles.title}>채널 생성</h1>
         <ChannelImageSelector setImageData={setChannelImageData} />
@@ -100,6 +100,6 @@ export default function CreateChannelPage() {
           </div>
         </form>
       </main>
-    </UserRequiredRoute>
+    </PrivateRoute>
   );
 }

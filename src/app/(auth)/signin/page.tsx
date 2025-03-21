@@ -4,17 +4,17 @@ import CustomInput from '@/components/customInput/component';
 import styles from './page.module.css';
 import CustomButton from '@/components/customButton/component';
 import { SigninContent } from '@/utils/type';
-import { ERR_MSG_CHANNELINFO_FAILED, ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER } from '@/utils/message';
+import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER, ERR_MSG_SIGNIN_FAILED } from '@/utils/message';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { getChannelInfo, selectChannel } from '@/apis/channel';
-import { CHANNEL_TOKEN } from '@/utils/constant';
-import { setAuthSession } from '@/utils/storage';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { getChannelInfoFromJwt } from '@/utils/token';
+import { CHANNEL_TOKEN } from '@/utils/constant';
+import { getAuthSession, setAuthSession } from '@/utils/storage';
 
 export default function SigninPage() {
   const {
@@ -31,14 +31,35 @@ export default function SigninPage() {
   const { showToast } = useToast();
 
   useEffect(() => {
-    fetchHandler(() => axios.head<void>(`${process.env.NEXT_PUBLIC_SERVER_URL}/token`, { withCredentials: true }), {
-      onSuccess: () => {
-        router.replace('/');
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
+    const { channelToken } = getAuthSession();
+
+    if (!channelToken) {
+      setIsLoading(false);
+
+      return;
+    }
+
+    const decodedToken = getChannelInfoFromJwt(channelToken);
+
+    if (!decodedToken) {
+      setIsLoading(false);
+
+      return;
+    }
+
+    if (decodedToken.role === 'user') {
+      router.replace('/selectChannel');
+
+      return;
+    }
+
+    if (decodedToken.role === 'channel') {
+      router.replace('/');
+
+      return;
+    }
+
+    setIsLoading(false);
   }, []);
 
   const handleSignin = (data: SigninContent) => {
@@ -47,36 +68,43 @@ export default function SigninPage() {
       password: data.password,
       controller,
     }), {
-      onSuccess: () => {
-        fetchHandler((controller) => selectChannel({
-          channelId: null,
-          controller,
-        }), {
-          onSuccess: (response) => {
-            const channelToken = response!.data.accessToken;
+      onSuccess: (response) => {
+        const channelToken = response?.data.accessToken;
 
-            sessionStorage.setItem(CHANNEL_TOKEN, channelToken);
-            fetchHandler((controller) => getChannelInfo({ controller }), {
-              onSuccess: (channelInfoResponse) => {
-                setAuthSession({
-                  channelToken,
-                  channelId: channelInfoResponse?.data.id || null,
-                  channelName: channelInfoResponse?.data.name || null,
-                });
-                router.push('/');
-              },
-              onError: () => {
-                showToast({
-                  message: ERR_MSG_CHANNELINFO_FAILED,
-                  type: 'error',
-                });
-              },
-            });
-          },
-          onError: () => {
-            router.push('/selectChannel');
-          },
+        if (!channelToken) {
+          showToast({
+            message: ERR_MSG_SIGNIN_FAILED,
+            type: 'error',
+          });
+
+          return;
+        }
+
+        const decodedToken = getChannelInfoFromJwt(channelToken);
+
+        if (!decodedToken) {
+          showToast({
+            message: ERR_MSG_SIGNIN_FAILED,
+            type: 'error',
+          });
+
+          return;
+        }
+
+        if (decodedToken.role === 'user') {
+          sessionStorage.setItem(CHANNEL_TOKEN, channelToken);
+          router.replace('/selectChannel');
+
+          return;
+        }
+
+        setAuthSession({
+          channelToken,
+          channelId: decodedToken.id,
+          channelName: decodedToken.name,
         });
+
+        router.replace('/');
       },
       onError: (error) => {
         if (error?.status === 401) {

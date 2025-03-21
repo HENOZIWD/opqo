@@ -38,7 +38,6 @@ export default function SignupPage() {
 
   const [signupStep, setSignupStep] = useState<number>(0);
   const [signupValue, setSignupValue] = useState<SignupContent | null>(null);
-  const [authToken, setAuthToken] = useState<string | null>(null);
 
   const {
     count,
@@ -52,13 +51,12 @@ export default function SignupPage() {
       phoneNumber: data.phoneNumber,
       controller,
     }), {
-      onSuccess: (response) => {
+      onSuccess: () => {
         setSignupValue({
           phoneNumber: data.phoneNumber,
           password: data.password,
           confirmPassword: data.confirmPassword,
         });
-        setAuthToken(response?.data.otp || null);
         setCountdown(PHONENUMBER_VALIDATION_DURATION_SECOND);
         setSignupStep(1);
       },
@@ -80,11 +78,10 @@ export default function SignupPage() {
   };
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
-    if (signupStep === 1 && signupValue && authToken) {
+    if (signupStep === 1 && signupValue) {
       fetchHandler((controller) => validatePhoneNumberVerificationCode({
         phoneNumber: signupValue.phoneNumber,
         authCode: data.verificationCode,
-        authToken,
         controller,
       }), {
         onSuccess: (response) => {
@@ -92,7 +89,6 @@ export default function SignupPage() {
             fetchHandler((controller) => signup({
               phoneNumber: signupValue.phoneNumber,
               password: signupValue.password,
-              authToken,
               controller,
             }), {
               onSuccess: () => {

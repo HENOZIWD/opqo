@@ -17,6 +17,7 @@ export const ERR_MSG_REGISTER_FAILED = '회원가입에 실패했습니다.';
 // signin
 export const ERR_MSG_INVALID_USER = '일치하는 계정 정보가 없습니다.';
 export const ERR_MSG_CHANNELINFO_FAILED = '채널 정보를 불러오는 데 실패했습니다.';
+export const ERR_MSG_SIGNIN_FAILED = '로그인에 실패했습니다.';
 
 // createChannel
 export const ERR_MSG_INVALID_IMAGE_TYPE = '이미지 파일은 .jpeg, .png, .webp 확장자만 업로드 가능합니다.';
@@ -26,6 +27,7 @@ export const ERR_MSG_DUPLICATED_CHANNELNAME = '이미 존재하는 채널명입�
 
 // selectChannel
 export const ERR_MSG_WRONG_CHANNEL = '잘못된 채널 정보입니다.';
+export const ERR_MSG_CHANNELSELECT_FAILED = '채널 선택에 실패했습니다.';
 
 // uploadVideo
 export const ERR_MSG_INVALID_VIDEO_TYPE = '동영상 파일은 .mp4, .webm 확장자만 업로드 가능합니다.';

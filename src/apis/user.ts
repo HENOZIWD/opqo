@@ -14,39 +14,33 @@ export async function requestPhoneNumberVerificationCode({
 interface validatePhoneNumberVerificationCodeParams extends FetchParams {
   phoneNumber: string;
   authCode: string;
-  authToken: string;
 }
 interface validatePhoneNumberVerificationCodeResponse { result: string }
 
 export async function validatePhoneNumberVerificationCode({
   phoneNumber,
   authCode,
-  authToken,
   controller,
 }: validatePhoneNumberVerificationCodeParams) {
   return fetchInstance.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/valid', {
     phoneNumber,
     authCode,
-    authToken,
   }, { signal: controller.signal });
 }
 
 interface signupParams extends FetchParams {
   phoneNumber: string;
   password: string;
-  authToken: string;
 }
 
 export async function signup({
   phoneNumber,
   password,
-  authToken,
   controller,
 }: signupParams) {
   return fetchInstance.post<void>('/users', {
     phoneNumber,
     password,
-    authToken,
   }, { signal: controller.signal });
 }
 
@@ -54,13 +48,14 @@ interface signinParams extends FetchParams {
   phoneNumber: string;
   password: string;
 }
+interface signinResponse { accessToken: string }
 
 export async function signin({
   phoneNumber,
   password,
   controller,
 }: signinParams) {
-  return fetchInstanceWithCredentials.post<void>('/token/user', {
+  return fetchInstanceWithCredentials.post<signinResponse>('/token', {
     phoneNumber,
     password,
   }, { signal: controller.signal });

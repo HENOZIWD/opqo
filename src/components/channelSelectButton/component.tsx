@@ -2,7 +2,7 @@ import styles from './style.module.css';
 import ChannelImage from '../channelImage/component';
 import { selectChannel } from '@/apis/channel';
 import { useRouter } from 'next/navigation';
-import { ERR_MSG_INTERNAL_SERVER, ERR_MSG_WRONG_CHANNEL } from '@/utils/message';
+import { ERR_MSG_CHANNELSELECT_FAILED, ERR_MSG_INTERNAL_SERVER, ERR_MSG_WRONG_CHANNEL } from '@/utils/message';
 import { setAuthSession } from '@/utils/storage';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
@@ -29,8 +29,17 @@ export default function ChannelSelectButton({
       }),
       {
         onSuccess: (response) => {
+          if (!response) {
+            showToast({
+              message: ERR_MSG_CHANNELSELECT_FAILED,
+              type: 'error',
+            });
+
+            return;
+          }
+
           setAuthSession({
-            channelToken: response?.data.accessToken || null,
+            channelToken: response.data.accessToken,
             channelId,
             channelName,
           });
