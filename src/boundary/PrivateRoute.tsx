@@ -1,9 +1,8 @@
 'use client';
 
-import { useAuth } from '@/hooks/useAuth';
 import PageLoadingIcon from '@/icons/pageLoadingIcon';
-import { getAuthSession } from '@/utils/storage';
-import { getChannelInfoFromJwt, isValidToken } from '@/utils/token';
+import { getAccessToken } from '@/utils/storage';
+import { getInfoFromAccessToken } from '@/utils/token';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect, useState } from 'react';
 
@@ -19,22 +18,18 @@ export default function PrivateRoute({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 
-  const { authDispatch } = useAuth();
-
   useEffect(() => {
-    const { channelToken } = getAuthSession();
+    const accessToken = getAccessToken();
 
-    if (!channelToken || !isValidToken(channelToken)) {
-      authDispatch({ type: 'signout' });
+    if (!accessToken) {
       router.replace('/signin');
 
       return;
     }
 
-    const decodedToken = getChannelInfoFromJwt(channelToken);
+    const decodedToken = getInfoFromAccessToken(accessToken);
 
     if (!decodedToken) {
-      authDispatch({ type: 'signout' });
       router.replace('/signin');
 
       return;

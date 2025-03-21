@@ -1,6 +1,4 @@
-export const CHANNEL_TOKEN = 'channelToken';
-export const CHANNEL_ID = 'channelId';
-export const CHANNEL_NAME = 'channelName';
+export const ACCESS_TOKEN = 'accessToken';
 
 export const PHONENUMBER_VALIDATION_DURATION_SECOND = 300;
 

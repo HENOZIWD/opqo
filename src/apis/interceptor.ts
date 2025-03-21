@@ -1,4 +1,4 @@
-import { CHANNEL_TOKEN } from '@/utils/constant';
+import { getAccessToken, setAccessToken } from '@/utils/storage';
 import axios, { AxiosInstance } from 'axios';
 
 export function setTokenRefreshInterceptor(instance: AxiosInstance) {
@@ -63,12 +63,12 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
             signal: controller.signal,
           })
             .then(({ data }) => {
-              const token = data.accessToken;
-              sessionStorage.setItem(CHANNEL_TOKEN, token);
+              const { accessToken } = data;
+              setAccessToken(accessToken);
 
-              originalRequest.headers['Authorization'] = `Bearer ${token}`;
+              originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
 
-              processQueue(null, token);
+              processQueue(null, accessToken);
               resolve(instance(originalRequest));
             })
             .catch((err) => {
@@ -86,10 +86,10 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
 
 export function setTokenInjectInterceptor(instance: AxiosInstance) {
   instance.interceptors.request.use((config) => {
-    const channelToken = sessionStorage.getItem(CHANNEL_TOKEN);
+    const accessToken = getAccessToken();
 
-    if (channelToken) {
-      config.headers['Authorization'] = `Bearer ${channelToken}`;
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
     return config;

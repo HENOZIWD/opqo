@@ -11,10 +11,8 @@ import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { getChannelInfoFromJwt } from '@/utils/token';
-import { CHANNEL_TOKEN } from '@/utils/constant';
-import { getAuthSession, setAuthSession } from '@/utils/storage';
+import { getAccessToken, setAccessToken } from '@/utils/storage';
+import { getInfoFromAccessToken } from '@/utils/token';
 
 export default function SigninPage() {
   const {
@@ -31,15 +29,15 @@ export default function SigninPage() {
   const { showToast } = useToast();
 
   useEffect(() => {
-    const { channelToken } = getAuthSession();
+    const accessToken = getAccessToken();
 
-    if (!channelToken) {
+    if (!accessToken) {
       setIsLoading(false);
 
       return;
     }
 
-    const decodedToken = getChannelInfoFromJwt(channelToken);
+    const decodedToken = getInfoFromAccessToken(accessToken);
 
     if (!decodedToken) {
       setIsLoading(false);
@@ -69,9 +67,9 @@ export default function SigninPage() {
       controller,
     }), {
       onSuccess: (response) => {
-        const channelToken = response?.data.accessToken;
+        const accessToken = response?.data.accessToken;
 
-        if (!channelToken) {
+        if (!accessToken) {
           showToast({
             message: ERR_MSG_SIGNIN_FAILED,
             type: 'error',
@@ -80,7 +78,7 @@ export default function SigninPage() {
           return;
         }
 
-        const decodedToken = getChannelInfoFromJwt(channelToken);
+        const decodedToken = getInfoFromAccessToken(accessToken);
 
         if (!decodedToken) {
           showToast({
@@ -91,18 +89,13 @@ export default function SigninPage() {
           return;
         }
 
+        setAccessToken(accessToken);
+
         if (decodedToken.role === 'user') {
-          sessionStorage.setItem(CHANNEL_TOKEN, channelToken);
           router.replace('/selectChannel');
 
           return;
         }
-
-        setAuthSession({
-          channelToken,
-          channelId: decodedToken.id,
-          channelName: decodedToken.name,
-        });
 
         router.replace('/');
       },

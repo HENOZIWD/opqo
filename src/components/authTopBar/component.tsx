@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useFetch } from '@/hooks/useFetch';
 import { signout } from '@/apis/user';
+import { useRouter } from 'next/navigation';
 
 export default function AuthTopBar() {
   const {
@@ -19,12 +20,21 @@ export default function AuthTopBar() {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const router = useRouter();
+
   const { fetchHandler } = useFetch();
 
   useEffect(() => {
     authDispatch({ type: 'signin' });
+
     setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (auth.role === 'user') {
+      router.push('/selectChannel');
+    }
+  }, [auth]);
 
   const handleSignout = () => {
     fetchHandler((controller) => signout({ controller }), {
@@ -41,7 +51,7 @@ export default function AuthTopBar() {
     return null;
   }
 
-  if (!auth.isSignin || !auth.channelId || !auth.channelName) {
+  if (auth.role !== 'channel' || !auth.channelId || !auth.channelName) {
     return (
       <div className={styles.container}>
         <CustomLink

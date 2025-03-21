@@ -14,11 +14,7 @@ function parseJwt(token: string): AccessToken | null {
   }
 }
 
-export function isValidToken(token: string | null) {
-  if (!token) {
-    return false;
-  }
-
+export function isValidToken(token: string) {
   const decodedToken = parseJwt(token);
 
   if (!decodedToken) {
@@ -30,10 +26,12 @@ export function isValidToken(token: string | null) {
   return decodedToken.exp > currentTime;
 }
 
-export function getChannelInfoFromJwt(token: string) {
+export function getInfoFromAccessToken(token: string) {
   const decodedToken = parseJwt(token);
 
-  if (!decodedToken) {
+  const currentTime = Date.now() / 1000;
+
+  if (!decodedToken || decodedToken.exp <= currentTime) {
     return null;
   }
 

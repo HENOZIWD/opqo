@@ -15,7 +15,7 @@ export interface CreateChannelContent {
 }
 
 export interface AuthSession {
-  channelToken: string | null;
+  accessToken: string | null;
   channelId: string | null;
   channelName: string | null;
 }
@@ -35,8 +35,8 @@ export interface VideoMetadata {
 export type ToastType = 'normal' | 'error';
 
 export interface AccessToken {
-  id: string;
-  name: string;
+  id: string | null;
+  name: string | null;
   role: 'user' | 'channel';
   exp: number;
 }

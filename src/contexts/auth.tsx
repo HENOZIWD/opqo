@@ -1,10 +1,12 @@
 'use client';
 
+import { getAccessToken, removeAccessToken } from '@/utils/storage';
+import { getInfoFromAccessToken } from '@/utils/token';
 import { ActionDispatch, createContext, useReducer } from 'react';
-import { getAuthSession, removeAuthSession } from '@/utils/storage';
 
 interface Auth {
   isSignin: boolean;
+  role: 'user' | 'channel' | null;
   channelId: string | null;
   channelName: string | null;
 }
@@ -16,34 +18,62 @@ export const AuthDispatchContext = createContext<ActionDispatch<[action: AuthAct
 
 function authReducer(auth: Auth, action: AuthAction): Auth {
   if (action.type === 'signin') {
-    const {
-      channelToken,
-      channelId,
-      channelName,
-    } = getAuthSession();
+    const accessToken = getAccessToken();
 
-    if (!channelToken || !channelId || !channelName) {
-      removeAuthSession();
-
+    if (!accessToken) {
       return {
         isSignin: false,
+        role: null,
         channelId: null,
         channelName: null,
       };
     }
 
+    const accessTokenInfo = getInfoFromAccessToken(accessToken);
+
+    if (!accessTokenInfo) {
+      removeAccessToken();
+
+      return {
+        isSignin: false,
+        role: null,
+        channelId: null,
+        channelName: null,
+      };
+    }
+
+    if (accessTokenInfo.role === 'user') {
+      return {
+        isSignin: true,
+        role: 'user',
+        channelId: null,
+        channelName: null,
+      };
+    }
+
+    if (accessTokenInfo.role === 'channel' && accessTokenInfo.id !== null && accessTokenInfo.name !== null) {
+      return {
+        isSignin: true,
+        role: 'channel',
+        channelId: accessTokenInfo.id,
+        channelName: accessTokenInfo.name,
+      };
+    }
+
     return {
-      isSignin: true,
-      channelId,
-      channelName,
+      isSignin: false,
+      role: null,
+      channelId: null,
+      channelName: null,
     };
   }
 
   if (action.type === 'signout') {
-    removeAuthSession();
+    removeAccessToken();
 
     return {
       isSignin: false,
+      role: null,
       channelId: null,
       channelName: null,
     };
@@ -54,6 +84,7 @@ function authReducer(auth: Auth, action: AuthAction): Auth {
 
 const initialAuth: Auth = {
   isSignin: false,
+  role: null,
   channelId: null,
   channelName: null,
 };
