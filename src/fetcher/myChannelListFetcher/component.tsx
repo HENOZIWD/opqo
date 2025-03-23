@@ -19,7 +19,7 @@ export default function MyChannelListFetcher() {
 
   if (error || !data) {
     return (
-      <div className={styles.error}>채널 목록을 불러오는 데 실패했습니다.</div>
+      <div className={styles.error}>채널 목록을 불러오지 못했습니다.</div>
     );
   }
 

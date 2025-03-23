@@ -2,7 +2,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'reac
 import styles from './style.module.css';
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '@/utils/video';
 import VideoPlayer from '../videoPlayer/component';
-import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
+import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
 import { checkVideoChunkExist, prepareVideoUpload, uploadVideoChunk } from '@/apis/video';
 import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import ProgressBar from '../progressBar/component';
@@ -31,6 +31,8 @@ export default function VideoUploader({
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [maxUploadProgress, setMaxUploadProgress] = useState<number>(1);
+
+  const [isUploadProcessDone, setIsUploadProcessDone] = useState<boolean>(false);
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
@@ -95,6 +97,8 @@ export default function VideoUploader({
           },
         });
       }));
+
+      setIsUploadProcessDone(true);
     };
 
     if (!isUploading && isUploadPrepared && videoData && videoHash) {
@@ -103,10 +107,20 @@ export default function VideoUploader({
   }, [isUploadPrepared, videoData, videoHash, fetchHandler]);
 
   useEffect(() => {
+    if (!isUploadProcessDone) {
+      return;
+    }
+
     if (uploadProgress === maxUploadProgress) {
       setIsVideoUploadComplete(true);
     }
-  }, [uploadProgress, maxUploadProgress, setIsVideoUploadComplete]);
+    else {
+      showToast({
+        message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+        type: 'error',
+      });
+    }
+  }, [uploadProgress, maxUploadProgress, isUploadProcessDone]);
 
   const handleSelectVideo = (e: ChangeEvent<HTMLInputElement>) => {
     if (isUploading) {
@@ -183,7 +197,7 @@ export default function VideoUploader({
           onSuccess: () => { setIsUploadPrepared(true); },
           onError: () => {
             showToast({
-              message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+              message: ERR_MSG_INTERNAL_SERVER,
               type: 'error',
             });
           },
@@ -223,7 +237,9 @@ export default function VideoUploader({
         )
         : (
           <div className={styles.progress}>
-            {isVideoUploadComplete ? <div>동영상 업로드 완료</div> : <div>동영상 업로드 중</div>}
+            {isUploadProcessDone
+              ? (isVideoUploadComplete ? <div>동영상 업로드 완료</div> : <div>동영상 업로드 실패</div>)
+              : <div>동영상 업로드 중</div>}
             <ProgressBar
               current={uploadProgress}
               max={maxUploadProgress}

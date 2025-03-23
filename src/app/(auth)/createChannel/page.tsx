@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
 import { CreateChannelContent } from '@/utils/type';
 import CustomInput from '@/components/customInput/component';
-import { ERR_MSG_CHANNELNAME_RULE, ERR_MSG_DUPLICATED_CHANNELNAME, ERR_MSG_INTERNAL_SERVER } from '@/utils/message';
+import { ERR_MSG_AUTHORIZATION_FAILED, ERR_MSG_CHANNEL_LIMIT_EXCEEDED, ERR_MSG_CHANNELNAME_RULE, ERR_MSG_DUPLICATED_CHANNELNAME, ERR_MSG_INTERNAL_SERVER } from '@/utils/message';
 import CustomButton from '@/components/customButton/component';
 import { REGEXP_CHANNELNAME } from '@/utils/regexp';
 import ChannelImageSelector from '@/components/channelImageSelector/component';
@@ -40,9 +40,21 @@ export default function CreateChannelPage() {
     }), {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
-        if (error?.status === 400) {
+        if (error?.status === 401) {
+          showToast({
+            message: ERR_MSG_AUTHORIZATION_FAILED,
+            type: 'error',
+          });
+        }
+        else if (error?.status === 409) {
           showToast({
             message: ERR_MSG_DUPLICATED_CHANNELNAME,
+            type: 'error',
+          });
+        }
+        else if (error?.status == 422) {
+          showToast({
+            message: ERR_MSG_CHANNEL_LIMIT_EXCEEDED,
             type: 'error',
           });
         }

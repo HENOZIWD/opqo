@@ -5,13 +5,13 @@ import { SignupContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
 import styles from './page.module.css';
 import {
+  ERR_MSG_AUTHORIZATION_FAILED,
   ERR_MSG_CONFIRMPASSWORD_NOTEQUAL,
+  ERR_MSG_DUPLICATED_PHONENUMBER,
   ERR_MSG_EMPTY_PHONENUMBER,
   ERR_MSG_INTERNAL_SERVER,
   ERR_MSG_PASSWORD_RULE,
-  ERR_MSG_REGISTER_FAILED,
   ERR_MSG_TOO_MANY_REQUEST,
-  ERR_MSG_VALIDATION_FAILED,
 } from '@/utils/message';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -84,44 +84,42 @@ export default function SignupPage() {
         authCode: data.verificationCode,
         controller,
       }), {
-        onSuccess: (response) => {
-          if (response?.data.result === 'true') {
-            fetchHandler((controller) => signup({
-              phoneNumber: signupValue.phoneNumber,
-              password: signupValue.password,
-              controller,
-            }), {
-              onSuccess: () => {
-                setSignupStep(2);
-              },
-              onError: (error) => {
-                if (error?.status === 403) {
-                  showToast({
-                    message: ERR_MSG_REGISTER_FAILED,
-                    type: 'error',
-                  });
-                  setSignupStep(0);
-                }
-                else {
-                  showToast({
-                    message: ERR_MSG_INTERNAL_SERVER,
-                    type: 'error',
-                  });
-                }
-              },
-            });
-          }
-          else {
-            showToast({
-              message: ERR_MSG_VALIDATION_FAILED,
-              type: 'error',
-            });
-          }
+        onSuccess: () => {
+          fetchHandler((controller) => signup({
+            phoneNumber: signupValue.phoneNumber,
+            password: signupValue.password,
+            controller,
+          }), {
+            onSuccess: () => {
+              setSignupStep(2);
+            },
+            onError: (error) => {
+              if (error?.status === 401) {
+                showToast({
+                  message: ERR_MSG_AUTHORIZATION_FAILED,
+                  type: 'error',
+                });
+              }
+              else if (error?.status === 409) {
+                showToast({
+                  message: ERR_MSG_DUPLICATED_PHONENUMBER,
+                  type: 'error',
+                });
+                setSignupStep(0);
+              }
+              else {
+                showToast({
+                  message: ERR_MSG_INTERNAL_SERVER,
+                  type: 'error',
+                });
+              }
+            },
+          });
         },
         onError: (error) => {
-          if (error?.status === 403) {
+          if (error?.status === 401) {
             showToast({
-              message: ERR_MSG_VALIDATION_FAILED,
+              message: ERR_MSG_AUTHORIZATION_FAILED,
               type: 'error',
             });
           }
