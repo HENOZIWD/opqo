@@ -18,13 +18,16 @@ export function useFetch() {
   ) => {
     const controller = createAbortController();
 
+    const successAsyncFn = async (response?: AxiosResponse<T>) => onSuccess(response);
+    const errorAsyncFn = async (error?: AxiosError) => onError(error);
+
     try {
       const response = await fetchFn(controller);
-      onSuccess(response);
+      await successAsyncFn(response);
     }
     catch (error) {
       if (isAxiosError(error)) {
-        onError(error);
+        await errorAsyncFn(error);
       }
       else {
         console.error(error);
