@@ -22,7 +22,7 @@ export async function validatePhoneNumberVerificationCode({
   authCode,
   controller,
 }: validatePhoneNumberVerificationCodeParams) {
-  return fetchInstance.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/valid', {
+  return fetchInstanceWithCredentials.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/verification', {
     phoneNumber,
     authCode,
   }, { signal: controller.signal });
@@ -38,7 +38,7 @@ export async function signup({
   password,
   controller,
 }: signupParams) {
-  return fetchInstance.post<void>('/users', {
+  return fetchInstanceWithCredentials.post<void>('/users', {
     phoneNumber,
     password,
   }, { signal: controller.signal });

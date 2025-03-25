@@ -14,10 +14,17 @@ export async function createChannel({
   json,
   controller,
 }: createChannelParams) {
-  return fetchInstanceWithCredentials.postForm<void>('/users/me/channels', {
-    imageFile,
-    json,
-  }, { signal: controller.signal });
+  const form = new FormData();
+
+  form.append('channel', new Blob([JSON.stringify({
+    name: json.name,
+    description: json.description,
+  })], { type: 'application/json' }));
+
+  return fetchInstanceWithCredentials.post<void>('/channels', form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    signal: controller.signal,
+  });
 }
 
 interface selectChannelParams extends FetchParams { channelId: string | null }

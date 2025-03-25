@@ -32,7 +32,7 @@ export function setTokenRefreshInterceptor(instance: AxiosInstance) {
     async (error) => {
       const originalRequest = error.config;
 
-      if (error.response && error.response.status === 403 && !originalRequest._retry) {
+      if (error.response && error.response.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
           const controller = new AbortController();
 

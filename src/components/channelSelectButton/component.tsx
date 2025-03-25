@@ -46,7 +46,7 @@ export default function ChannelSelectButton({
           router.push('/');
         },
         onError: (error) => {
-          if (error?.status === 401) {
+          if (error?.status === 401 || error?.status === 403) {
             showToast({
               message: ERR_MSG_AUTHORIZATION_FAILED,
               type: 'error',
