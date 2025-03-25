@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styles from './style.module.css';
 import Link from 'next/link';
 import ChannelImage from '../channelImage/component';
@@ -6,7 +5,7 @@ import Thumbnail from '../thumbnail/component';
 
 interface VideoCardProps {
   videoId: string;
-  videoDuration: string;
+  videoDuration: number;
   videoTitle: string;
   createdDate: string;
   channelInfo?: {
@@ -32,7 +31,7 @@ export default function VideoCard({
           <Thumbnail
             videoId={videoId}
             videoTitle={videoTitle}
-            videoDuration="ana"
+            videoDuration={videoDuration}
           />
         </div>
       </Link>
