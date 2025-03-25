@@ -4,7 +4,7 @@ import { ChannelVideoCardResponse } from '@/apis/getResponseType';
 import styles from './style.module.css';
 import useSWRImmutable from 'swr/immutable';
 import { getFetcher } from '@/apis/getFetcher';
-import VideoCard from '@/components/videoCard/component';
+import VideoCardFetcher from '../videoCardFetcher/component';
 
 function Skeleton() {
   return (
@@ -56,7 +56,6 @@ export default function ChannelVideoListFetcher({ channelId }: ChannelVideoListF
       {data.length > 0
         ? data.map(({
           id,
-          duration,
           title,
           createdDate,
         }) => (
@@ -64,10 +63,9 @@ export default function ChannelVideoListFetcher({ channelId }: ChannelVideoListF
             className={styles.videoCard}
             key={id}
           >
-            <VideoCard
+            <VideoCardFetcher
               videoId={id}
               videoTitle={title}
-              videoDuration={duration}
               createdDate={createdDate}
             />
           </li>

@@ -13,14 +13,12 @@ export interface ChannelResponse {
 export interface ChannelVideoCardResponse {
   id: string;
   title: string;
-  duration: string;
   createdDate: string;
 }
 
 export interface VideoCardResponse {
   id: string;
   title: string;
-  duration: string;
   createdDate: string;
   channelId: string;
   channelName: string;
