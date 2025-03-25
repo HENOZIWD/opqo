@@ -29,6 +29,7 @@ export default function VideoUploader({
 
   const [isUploadPrepared, setIsUploadPrepared] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [uploadRequestProgress, setUploadRequestProgress] = useState<number>(0);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [maxUploadProgress, setMaxUploadProgress] = useState<number>(1);
 
@@ -95,16 +96,21 @@ export default function VideoUploader({
               });
             }
           },
+          onFinal: () => { setUploadRequestProgress((prev) => prev + 1); },
         });
       }));
-
-      setIsUploadProcessDone(true);
     };
 
     if (!isUploading && isUploadPrepared && videoData && videoHash) {
       uploadVideo();
     }
   }, [isUploadPrepared, videoData, videoHash, fetchHandler]);
+
+  useEffect(() => {
+    if (uploadRequestProgress === maxUploadProgress) {
+      setIsUploadProcessDone(true);
+    }
+  }, [uploadRequestProgress, maxUploadProgress]);
 
   useEffect(() => {
     if (!isUploadProcessDone) {
