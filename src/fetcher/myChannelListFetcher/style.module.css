@@ -1,0 +1,17 @@
+.error {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.channelList {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.noChannel {
+  font-size: 1.5rem;
+}

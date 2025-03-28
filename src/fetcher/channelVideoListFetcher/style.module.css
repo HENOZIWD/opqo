@@ -1,0 +1,70 @@
+@media screen and (width < 36rem) {
+  .videoCard {
+    --videocard-per-row: 1;
+  }
+}
+
+@media screen and (36rem <= width < 50rem) {
+  .videoCard {
+    --videocard-per-row: 2;
+  }
+}
+
+@media screen and (50rem <= width < 73.5rem) {
+  .videoCard {
+    --videocard-per-row: 3;
+  }
+}
+
+@media screen and (73.5rem <= width < 97rem) {
+  .videoCard {
+    --videocard-per-row: 4;
+  }
+}
+
+@media screen and (97rem <= width) {
+  .videoCard {
+    --videocard-per-row: 5;
+  }
+}
+
+.videoList {
+  --videolist-gap: 1rem;
+  --videolist-horizontal-padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1.5rem var(--videolist-horizontal-padding);
+  gap: var(--videolist-gap);
+}
+
+.videoCard {
+  width: calc((100% - ((var(--videocard-per-row) - 1) * var(--videolist-gap))) / var(--videocard-per-row));
+}
+
+.error {
+  margin: 1.5rem 2rem;
+}
+
+.skeletonContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skeletonThumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: var(--lightgray);
+  border-radius: 0.5rem;
+}
+
+.skeletonText {
+  width: 100%;
+  height: 1.5rem;
+  background-color: var(--lightgray);
+  border-radius: 0.5rem;
+}

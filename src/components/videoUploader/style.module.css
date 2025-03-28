@@ -1,0 +1,33 @@
+.container {
+  width: 32rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.previewTitle {
+  font-size: 1.125rem;
+}
+
+.preview {
+  width: 32rem;
+  height: 18rem;
+  background-color: var(--lightgray);
+  margin-top: 1rem;
+}
+
+.input[type=file] {
+  display: none;
+}
+
+.label {
+  text-align: center;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.progress {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}

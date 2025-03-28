@@ -14,6 +14,7 @@ const eslintConfig = [
     ],
     plugins: [
       '@stylistic',
+      'newline-destructuring',
     ],
     rules: {
       /* Stylistic */
@@ -29,7 +30,16 @@ const eslintConfig = [
         },
         multilineDetection: 'brackets',
       }],
-      'indent': ['error', 2],
+      '@stylistic/indent': ['error', 2],
+      '@stylistic/arrow-parens': ['error', 'always'],
+      '@stylistic/object-curly-newline': ['error', { multiline: true }],
+      '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
+      'newline-destructuring/newline': ['error', { items: 1 }],
+      'no-else-return': ['error', { allowElseIf: false }],
+      '@stylistic/function-paren-newline': ['error', 'multiline'],
+      'no-console': 'error',
+      '@stylistic/jsx-first-prop-new-line': ['error', 'multiprop'],
+      'object-shorthand': ['error', 'always'],
     },
   }),
 ];
