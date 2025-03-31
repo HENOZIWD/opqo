@@ -8,11 +8,13 @@ import { debounce } from '@/utils/debounce';
 interface VideoPlayerProps {
   source: string;
   title: string;
+  thumbnail?: string;
 }
 
 export default function VideoPlayer({
   source,
   title,
+  thumbnail,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -89,6 +91,7 @@ export default function VideoPlayer({
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
         onProgress={handleBufferProgress}
         controls={false}
+        poster={thumbnail}
         playsInline
       >
         <source src={source} />
