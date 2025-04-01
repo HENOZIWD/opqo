@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './style.module.css';
 import VideoPlayerControlPanel from '../videoPlayerControlPanel/component';
 import { debounce } from '@/utils/debounce';
+import Spinner from '../spinner/component';
 
 interface VideoPlayerProps {
   source: string;
@@ -26,6 +27,7 @@ export default function VideoPlayer({
   const [bufferedProgress, setBufferedProgress] = useState<number>(0);
   const [isSeeking, setIsSeeking] = useState<boolean>(false);
   const [isPausedBeforeSeek, setIsPausedBeforeSeek] = useState<boolean>(true);
+  const [isBuffering, setIsBuffering] = useState<boolean>(false);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
@@ -92,6 +94,8 @@ export default function VideoPlayer({
         onProgress={handleBufferProgress}
         controls={false}
         poster={thumbnail}
+        onWaiting={() => setIsBuffering(true)}
+        onCanPlay={() => setIsBuffering(false)}
         playsInline
       >
         <source src={source} />
@@ -111,6 +115,13 @@ export default function VideoPlayer({
           bufferedProgress={bufferedProgress}
         />
       </div>
+      {isBuffering
+        ? (
+          <div className={styles.spinner}>
+            <Spinner />
+          </div>
+        )
+        : null}
     </figure>
   );
 }
