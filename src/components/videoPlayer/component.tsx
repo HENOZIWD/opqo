@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './style.module.css';
 import VideoPlayerControlPanel from '../videoPlayerControlPanel/component';
 import { debounce } from '@/utils/debounce';
@@ -25,30 +25,9 @@ export default function VideoPlayer({
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
   const [bufferedProgress, setBufferedProgress] = useState<number>(0);
-  const [isSeeking, setIsSeeking] = useState<boolean>(false);
-  const [isPausedBeforeSeek, setIsPausedBeforeSeek] = useState<boolean>(true);
   const [isBuffering, setIsBuffering] = useState<boolean>(false);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
-
-  useEffect(() => {
-    if (!isSeeking) {
-      setIsPausedBeforeSeek(!isPlaying);
-    }
-  }, [isSeeking, isPlaying]);
-
-  useEffect(() => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    if (isSeeking) {
-      videoRef.current.pause();
-    }
-    else if (!isPausedBeforeSeek) {
-      videoRef.current.play();
-    }
-  }, [isSeeking, isPausedBeforeSeek]);
 
   const handleShowPanel = () => {
     if (!isPanelShown) {
@@ -97,6 +76,7 @@ export default function VideoPlayer({
         onWaiting={() => setIsBuffering(true)}
         onCanPlay={() => setIsBuffering(false)}
         playsInline
+        preload="metadata"
       >
         <source src={source} />
       </video>
@@ -111,7 +91,6 @@ export default function VideoPlayer({
           currentTime={currentTime}
           duration={duration}
           setCurrentTime={setCurrentTime}
-          setIsSeeking={setIsSeeking}
           bufferedProgress={bufferedProgress}
         />
       </div>
