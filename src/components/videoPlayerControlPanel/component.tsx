@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, RefObject, SetStateAction, useState } from 'react';
+import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef, useState } from 'react';
 import styles from './style.module.css';
 import PauseIcon from '@/icons/pauseIcon';
 import PlayIcon from '@/icons/playIcon';
@@ -8,6 +8,7 @@ import VolumeMuteIcon from '@/icons/volumeMuteIcon';
 import ExitFullscreenIcon from '@/icons/exitFullscreenIcon';
 import { numberToTime } from '@/utils/time';
 import Slider from '../slider/component';
+import { throttle } from '@/utils/throttle';
 
 interface VideoPlayerControlPanelProps {
   containerRef: RefObject<HTMLElement | null>;
@@ -15,8 +16,8 @@ interface VideoPlayerControlPanelProps {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
+  setIsPlaying: Dispatch<SetStateAction<boolean>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
-  setIsSeeking: Dispatch<SetStateAction<boolean>>;
   bufferedProgress: number;
 }
 
@@ -26,15 +27,17 @@ export default function VideoPlayerControlPanel({
   isPlaying,
   currentTime,
   duration,
+  setIsPlaying,
   setCurrentTime,
-  setIsSeeking,
   bufferedProgress,
 }: VideoPlayerControlPanelProps) {
   const [volume, setVolume] = useState<number>(0.5);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  const handleSeek = (e: ChangeEvent<HTMLInputElement>) => {
+  const playPromiseRef = useRef<Promise<void>>(null);
+  const isPlayingBeforeSeek = useRef<boolean>(null);
+  const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
     if (!videoRef.current) {
       return;
     }
@@ -43,18 +46,63 @@ export default function VideoPlayerControlPanel({
 
     videoRef.current.currentTime = value;
     setCurrentTime(value);
-  };
+  }, 50));
 
-  const handlePlayPause = () => {
+  const playVideo = () => {
     if (!videoRef.current) {
       return;
     }
 
-    if (videoRef.current.paused || videoRef.current.ended) {
-      videoRef.current.play();
+    if (playPromiseRef.current) {
+      return;
+    }
+
+    const playPromise = videoRef.current.play();
+
+    if (playPromise !== undefined) {
+      playPromiseRef.current = playPromise;
+
+      playPromise.then(() => {
+        playPromiseRef.current = null;
+      }).catch(() => {
+        setIsPlaying(false);
+        playPromiseRef.current = null;
+      });
+    }
+  };
+
+  const pauseVideo = () => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    videoRef.current.pause();
+  };
+
+  const handleStartSeek = () => {
+    isPlayingBeforeSeek.current = isPlaying;
+
+    if (isPlaying) {
+      pauseVideo();
+    }
+  };
+
+  const handleSeek = (e: ChangeEvent<HTMLInputElement>) => {
+    throttledHandleSeekRef.current?.(e);
+  };
+
+  const handleEndSeek = () => {
+    if (isPlayingBeforeSeek.current) {
+      playVideo();
+    }
+  };
+
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      pauseVideo();
     }
     else {
-      videoRef.current.pause();
+      playVideo();
     }
   };
 
@@ -113,8 +161,8 @@ export default function VideoPlayerControlPanel({
         value={currentTime}
         mid={bufferedProgress}
         onChange={handleSeek}
-        mouseDownAction={() => setIsSeeking(true)}
-        mouseUpAction={() => setIsSeeking(false)}
+        mouseDownAction={handleStartSeek}
+        mouseUpAction={handleEndSeek}
       />
       <div className={styles.panel}>
         <button
