@@ -16,6 +16,7 @@ interface VideoPlayerControlPanelProps {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
+  setIsPlaying: Dispatch<SetStateAction<boolean>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   bufferedProgress: number;
 }
@@ -26,6 +27,7 @@ export default function VideoPlayerControlPanel({
   isPlaying,
   currentTime,
   duration,
+  setIsPlaying,
   setCurrentTime,
   bufferedProgress,
 }: VideoPlayerControlPanelProps) {
@@ -62,10 +64,8 @@ export default function VideoPlayerControlPanel({
 
       playPromise.then(() => {
         playPromiseRef.current = null;
-      }).catch((error) => {
-        if (error?.name !== 'AbortError') {
-          console.error('동영상 재생에 실패했습니다: ', error);
-        }
+      }).catch(() => {
+        setIsPlaying(false);
         playPromiseRef.current = null;
       });
     }

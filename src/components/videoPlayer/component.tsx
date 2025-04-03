@@ -90,6 +90,7 @@ export default function VideoPlayer({
           isPlaying={isPlaying}
           currentTime={currentTime}
           duration={duration}
+          setIsPlaying={setIsPlaying}
           setCurrentTime={setCurrentTime}
           bufferedProgress={bufferedProgress}
         />
