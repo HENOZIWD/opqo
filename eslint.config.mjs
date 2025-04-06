@@ -40,6 +40,7 @@ const eslintConfig = [
       'no-console': 'error',
       '@stylistic/jsx-first-prop-new-line': ['error', 'multiprop'],
       'object-shorthand': ['error', 'always'],
+      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
     },
   }),
 ];

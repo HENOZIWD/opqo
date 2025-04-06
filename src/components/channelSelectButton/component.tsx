@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { ERR_MSG_CHANNELSELECT_FAILED, ERR_MSG_INTERNAL_SERVER, ERR_MSG_AUTHORIZATION_FAILED } from '@/utils/message';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { setAccessToken } from '@/utils/storage';
-import { isValidToken } from '@/utils/token';
+import { parseJwt } from '@/utils/token';
+import { setAccessTokenCookie } from '@/serverActions/token';
+import { AuthenticationParams } from '@/apis/type';
 
-interface ChannelSelectButtonProps {
+interface ChannelSelectButtonProps extends AuthenticationParams {
   channelId: string;
   channelName: string;
 }
@@ -16,6 +17,7 @@ interface ChannelSelectButtonProps {
 export default function ChannelSelectButton({
   channelId,
   channelName,
+  accessToken,
 }: ChannelSelectButtonProps) {
   const router = useRouter();
 
@@ -27,12 +29,13 @@ export default function ChannelSelectButton({
       (controller) => selectChannel({
         channelId,
         controller,
+        accessToken,
       }),
       {
-        onSuccess: (response) => {
-          const token = response?.data.accessToken;
+        onSuccess: async (response) => {
+          const accessToken = response?.data.accessToken;
 
-          if (!token || !isValidToken(token)) {
+          if (!accessToken) {
             showToast({
               message: ERR_MSG_CHANNELSELECT_FAILED,
               type: 'error',
@@ -41,7 +44,21 @@ export default function ChannelSelectButton({
             return;
           }
 
-          setAccessToken(response.data.accessToken);
+          const userData = parseJwt(accessToken);
+
+          if (!userData) {
+            showToast({
+              message: ERR_MSG_CHANNELSELECT_FAILED,
+              type: 'error',
+            });
+
+            return;
+          }
+
+          await setAccessTokenCookie({
+            accessToken,
+            expUnixTimeStamp: userData.exp,
+          });
 
           router.push('/');
         },

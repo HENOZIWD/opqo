@@ -8,8 +8,9 @@ import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import ProgressBar from '../progressBar/component';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import { AuthenticationParams } from '@/apis/type';
 
-interface VideoUploaderProps {
+interface VideoUploaderProps extends AuthenticationParams {
   isVideoUploadComplete: boolean;
   setIsVideoUploadComplete: Dispatch<SetStateAction<boolean>>;
   videoHash: string | null;
@@ -23,6 +24,7 @@ export default function VideoUploader({
   videoHash,
   setVideoHash,
   setThumbnailData,
+  accessToken,
 }: VideoUploaderProps) {
   const [videoData, setVideoData] = useState<Blob | null>(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string>('');
@@ -62,6 +64,7 @@ export default function VideoUploader({
           videoHash,
           chunkIndex,
           controller,
+          accessToken,
         }), {
           onSuccess: () => {
             setUploadProgress((prev) => prev + 1);
@@ -77,6 +80,7 @@ export default function VideoUploader({
                   chunkIndex,
                   chunkFile: currentVideoChunk,
                   controller,
+                  accessToken,
                 }), {
                   onSuccess: () => {
                     successFlag = true;
@@ -199,6 +203,7 @@ export default function VideoUploader({
           duration: videoMetadata.videoDuration,
           extension: videoMetadata.videoExtension,
           controller,
+          accessToken,
         }), {
           onSuccess: () => { setIsUploadPrepared(true); },
           onError: () => {

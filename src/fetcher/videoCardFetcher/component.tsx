@@ -12,7 +12,7 @@ interface VideoCardFetcherProps {
   };
 }
 
-export const fetcher = (url: string) => axios.head(url).then((res) => res.headers['opc-meta-duration']);
+const fetcher = (url: string) => axios.head(url).then((res) => res.headers['opc-meta-duration']);
 
 export default function VideoCardFetcher({
   videoId,

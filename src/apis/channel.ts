@@ -1,7 +1,8 @@
-import { fetchInstanceWithCredentials } from './instance';
-import { FetchParams } from './type';
+import { accessTokenToBearer } from '@/utils/token';
+import { AuthenticationParams, FetchParams } from './type';
+import { fetchInstance } from './instance';
 
-interface createChannelParams extends FetchParams {
+interface createChannelParams extends FetchParams, AuthenticationParams {
   imageFile: Blob | null;
   json: {
     name: string;
@@ -13,6 +14,7 @@ export async function createChannel({
   imageFile,
   json,
   controller,
+  accessToken,
 }: createChannelParams) {
   const form = new FormData();
 
@@ -21,33 +23,48 @@ export async function createChannel({
     description: json.description,
   })], { type: 'application/json' }));
 
-  return fetchInstanceWithCredentials.post<void>('/channels', form, {
-    headers: { 'Content-Type': 'multipart/form-data' },
+  return fetchInstance.post<void>('/channels', form, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': accessTokenToBearer(accessToken),
+    },
     signal: controller.signal,
   });
 }
 
-interface selectChannelParams extends FetchParams { channelId: string | null }
+interface selectChannelParams extends FetchParams, AuthenticationParams { channelId: string | null }
 interface selectChannelResponse { accessToken: string }
 
 export async function selectChannel({
   channelId,
   controller,
+  accessToken,
 }: selectChannelParams) {
-  return fetchInstanceWithCredentials.put<selectChannelResponse>(
+  return fetchInstance.put<selectChannelResponse>(
     `/token`,
     { channelId },
-    { signal: controller.signal },
+    {
+      headers: { Authorization: accessTokenToBearer(accessToken) },
+      signal: controller.signal,
+      withCredentials: true,
+    },
   );
 }
 
-interface getChannelInfoResponse {
-  id: string;
-  name: string;
-  description: string;
-  createdDate: string;
-}
+// interface getChannelInfoParams extends FetchParams, AuthenticationParams { }
+// interface getChannelInfoResponse {
+//   id: string;
+//   name: string;
+//   description: string;
+//   createdDate: string;
+// }
 
-export async function getChannelInfo({ controller }: FetchParams) {
-  return fetchInstanceWithCredentials.get<getChannelInfoResponse>('/channels/me', { signal: controller.signal });
-}
+// export async function getChannelInfo({
+//   controller,
+//   accessToken,
+// }: getChannelInfoParams) {
+//   return fetchInstance.get<getChannelInfoResponse>('/channels/me', {
+//     headers: { Authorization: accessTokenToBearer(accessToken) },
+//     signal: controller.signal,
+//   });
+// }

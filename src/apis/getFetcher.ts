@@ -1,4 +1,17 @@
-import { fetchInstance, fetchInstanceWithCredentials } from './instance';
+import { accessTokenToBearer } from '@/utils/token';
+import { fetchInstance } from './instance';
 
 export const getFetcher = (url: string) => fetchInstance.get(url).then((res) => res.data);
-export const getFetcherWithCredentials = (url: string) => fetchInstanceWithCredentials.get(url).then((res) => res.data);
+
+interface getFetcherWithCredentialsParams {
+  url: string;
+  accessToken: string | null;
+}
+
+export const getFetcherWithCredentials = ({
+  url,
+  accessToken,
+}: getFetcherWithCredentialsParams) => fetchInstance.get(url, {
+  headers:
+    { Authorization: accessTokenToBearer(accessToken) },
+}).then((res) => res.data);

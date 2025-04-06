@@ -1,4 +1,4 @@
-import { fetchInstance, fetchInstanceWithCredentials } from './instance';
+import { fetchInstance } from './instance';
 import { FetchParams } from './type';
 
 interface requestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
@@ -22,10 +22,13 @@ export async function validatePhoneNumberVerificationCode({
   authCode,
   controller,
 }: validatePhoneNumberVerificationCodeParams) {
-  return fetchInstanceWithCredentials.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/verification', {
+  return fetchInstance.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/verification', {
     phoneNumber,
     authCode,
-  }, { signal: controller.signal });
+  }, {
+    signal: controller.signal,
+    withCredentials: true,
+  });
 }
 
 interface signupParams extends FetchParams {
@@ -38,7 +41,7 @@ export async function signup({
   password,
   controller,
 }: signupParams) {
-  return fetchInstanceWithCredentials.post<void>('/users', {
+  return fetchInstance.post<void>('/users', {
     phoneNumber,
     password,
   }, { signal: controller.signal });
@@ -55,12 +58,18 @@ export async function signin({
   password,
   controller,
 }: signinParams) {
-  return fetchInstanceWithCredentials.post<signinResponse>('/token', {
+  return fetchInstance.post<signinResponse>('/token', {
     phoneNumber,
     password,
-  }, { signal: controller.signal });
+  }, {
+    signal: controller.signal,
+    withCredentials: true,
+  });
 }
 
 export async function signout({ controller }: FetchParams) {
-  return fetchInstanceWithCredentials.delete<void>('/token', { signal: controller.signal });
+  return fetchInstance.delete<void>('/token', {
+    signal: controller.signal,
+    withCredentials: true,
+  });
 }

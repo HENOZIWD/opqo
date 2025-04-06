@@ -10,9 +10,8 @@ import { useRouter } from 'next/navigation';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { useEffect, useState } from 'react';
-import { getAccessToken, setAccessToken } from '@/utils/storage';
-import { getInfoFromAccessToken } from '@/utils/token';
+import { setAccessTokenCookie } from '@/serverActions/token';
+import { parseJwt } from '@/utils/token';
 
 export default function SigninPage() {
   const {
@@ -21,44 +20,10 @@ export default function SigninPage() {
     formState,
   } = useForm<SigninContent>();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
   const router = useRouter();
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-
-  useEffect(() => {
-    const accessToken = getAccessToken();
-
-    if (!accessToken) {
-      setIsLoading(false);
-
-      return;
-    }
-
-    const decodedToken = getInfoFromAccessToken(accessToken);
-
-    if (!decodedToken) {
-      setIsLoading(false);
-
-      return;
-    }
-
-    if (decodedToken.role === 'user') {
-      router.replace('/selectChannel');
-
-      return;
-    }
-
-    if (decodedToken.role === 'channel') {
-      router.replace('/');
-
-      return;
-    }
-
-    setIsLoading(false);
-  }, []);
 
   const handleSignin = (data: SigninContent) => {
     fetchHandler((controller) => signin({
@@ -66,7 +31,7 @@ export default function SigninPage() {
       password: data.password,
       controller,
     }), {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         const accessToken = response?.data.accessToken;
 
         if (!accessToken) {
@@ -78,9 +43,9 @@ export default function SigninPage() {
           return;
         }
 
-        const decodedToken = getInfoFromAccessToken(accessToken);
+        const userData = parseJwt(accessToken);
 
-        if (!decodedToken) {
+        if (!userData) {
           showToast({
             message: ERR_MSG_SIGNIN_FAILED,
             type: 'error',
@@ -89,9 +54,12 @@ export default function SigninPage() {
           return;
         }
 
-        setAccessToken(accessToken);
+        await setAccessTokenCookie({
+          accessToken,
+          expUnixTimeStamp: userData.exp,
+        });
 
-        if (decodedToken.role === 'user') {
+        if (userData.role === 'user') {
           router.replace('/selectChannel');
 
           return;
@@ -115,10 +83,6 @@ export default function SigninPage() {
       },
     });
   };
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <main>
