@@ -50,21 +50,3 @@ export async function selectChannel({
     },
   );
 }
-
-// interface getChannelInfoParams extends FetchParams, AuthenticationParams { }
-// interface getChannelInfoResponse {
-//   id: string;
-//   name: string;
-//   description: string;
-//   createdDate: string;
-// }
-
-// export async function getChannelInfo({
-//   controller,
-//   accessToken,
-// }: getChannelInfoParams) {
-//   return fetchInstance.get<getChannelInfoResponse>('/channels/me', {
-//     headers: { Authorization: accessTokenToBearer(accessToken) },
-//     signal: controller.signal,
-//   });
-// }
