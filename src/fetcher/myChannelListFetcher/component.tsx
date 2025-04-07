@@ -5,13 +5,23 @@ import styles from './style.module.css';
 import { MyChannelResponse } from '@/apis/getResponseType';
 import { getFetcherWithCredentials } from '@/apis/getFetcher';
 import ChannelSelectButton from '@/components/channelSelectButton/component';
+import { AuthenticationParams } from '@/apis/type';
 
-export default function MyChannelListFetcher() {
+interface MyChannelListFetcherProps extends AuthenticationParams { }
+
+export default function MyChannelListFetcher({ accessToken }: MyChannelListFetcherProps) {
   const {
     data,
     isLoading,
     error,
-  } = useSWRImmutable<MyChannelResponse[]>('/users/me/channels', getFetcherWithCredentials, { shouldRetryOnError: false });
+  } = useSWRImmutable<MyChannelResponse[]>(
+    {
+      url: '/users/me/channels',
+      accessToken,
+    },
+    getFetcherWithCredentials,
+    { shouldRetryOnError: false },
+  );
 
   if (isLoading) {
     return null;
@@ -34,6 +44,7 @@ export default function MyChannelListFetcher() {
             <ChannelSelectButton
               channelId={id}
               channelName={name}
+              accessToken={accessToken}
             />
           </li>
         ))

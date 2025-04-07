@@ -3,55 +3,33 @@
 import CustomButton from '../customButton/component';
 import CustomLink from '../customLink/component';
 import styles from './style.module.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ChannelImage from '../channelImage/component';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth';
-import { useFetch } from '@/hooks/useFetch';
 import { signout } from '@/apis/user';
-import { useRouter } from 'next/navigation';
+import { useFetch } from '@/hooks/useFetch';
+import { AccessToken } from '@/utils/type';
+import { deleteAccessTokenCookie } from '@/serverActions/token';
 
-export default function AuthTopBar() {
-  const {
-    auth,
-    authDispatch,
-  } = useAuth();
+interface AuthTopBarProps { auth: AccessToken | null }
 
+export default function AuthTopBar({ auth }: AuthTopBarProps) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const router = useRouter();
 
   const { fetchHandler } = useFetch();
-
-  useEffect(() => {
-    authDispatch({ type: 'signin' });
-
-    setIsLoading(false);
-  }, []);
-
-  useEffect(() => {
-    if (auth.role === 'user') {
-      router.push('/selectChannel');
-    }
-  }, [auth]);
 
   const handleSignout = () => {
     fetchHandler((controller) => signout({ controller }), {
       onSuccess: () => { },
       onError: () => { },
-      onFinal: () => {
-        authDispatch({ type: 'signout' });
+      onFinal: async () => {
+        await deleteAccessTokenCookie();
         location.reload();
       },
     });
   };
 
-  if (isLoading) {
-    return null;
-  }
-
-  if (auth.role !== 'channel' || !auth.channelId || !auth.channelName) {
+  if (!auth || !auth.id || !auth.name) {
     return (
       <div className={styles.container}>
         <CustomLink
@@ -88,8 +66,8 @@ export default function AuthTopBar() {
           onClick={() => { setIsExpanded((prev) => !prev); }}
         >
           <ChannelImage
-            channelId={auth.channelId}
-            channelName={auth.channelName}
+            channelId={auth.id}
+            channelName={auth.name}
           />
         </button>
       </div>
@@ -97,7 +75,7 @@ export default function AuthTopBar() {
         ? (
           <div className={styles.menuContainer}>
             <div className={styles.channelInfo}>
-              <div className={styles.channelName}>{auth.channelName}</div>
+              <div className={styles.channelName}>{auth.name}</div>
               <div className={styles.changeChannel}>
                 <Link href="/selectChannel">채널 변경</Link>
               </div>
@@ -105,7 +83,7 @@ export default function AuthTopBar() {
             <ul className={styles.menuList}>
               <li>
                 <Link
-                  href={`/channel/${auth.channelId}`}
+                  href={`/channel/${auth.id}`}
                   className={styles.menu}
                 >
                   내 채널

@@ -1,34 +1,37 @@
-import { fetchInstance, fetchInstanceWithCredentials } from './instance';
+import { fetchInstance } from './instance';
 import { FetchParams } from './type';
 
-interface requestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
-interface requestPhoneNumberVerificationCodeResponse { otp: string }
+interface RequestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
+interface RequestPhoneNumberVerificationCodeResponse { otp: string }
 
 export async function requestPhoneNumberVerificationCode({
   phoneNumber,
   controller,
-}: requestPhoneNumberVerificationCodeParams) {
-  return fetchInstance.post<requestPhoneNumberVerificationCodeResponse>('/phone-auth', { phoneNumber }, { signal: controller.signal });
+}: RequestPhoneNumberVerificationCodeParams) {
+  return fetchInstance.post<RequestPhoneNumberVerificationCodeResponse>('/phone-auth', { phoneNumber }, { signal: controller.signal });
 }
 
-interface validatePhoneNumberVerificationCodeParams extends FetchParams {
+interface ValidatePhoneNumberVerificationCodeParams extends FetchParams {
   phoneNumber: string;
   authCode: string;
 }
-interface validatePhoneNumberVerificationCodeResponse { result: string }
+interface ValidatePhoneNumberVerificationCodeResponse { result: string }
 
 export async function validatePhoneNumberVerificationCode({
   phoneNumber,
   authCode,
   controller,
-}: validatePhoneNumberVerificationCodeParams) {
-  return fetchInstanceWithCredentials.post<validatePhoneNumberVerificationCodeResponse>('/phone-auth/verification', {
+}: ValidatePhoneNumberVerificationCodeParams) {
+  return fetchInstance.post<ValidatePhoneNumberVerificationCodeResponse>('/phone-auth/verification', {
     phoneNumber,
     authCode,
-  }, { signal: controller.signal });
+  }, {
+    signal: controller.signal,
+    withCredentials: true,
+  });
 }
 
-interface signupParams extends FetchParams {
+interface SignupParams extends FetchParams {
   phoneNumber: string;
   password: string;
 }
@@ -37,30 +40,36 @@ export async function signup({
   phoneNumber,
   password,
   controller,
-}: signupParams) {
-  return fetchInstanceWithCredentials.post<void>('/users', {
+}: SignupParams) {
+  return fetchInstance.post<void>('/users', {
     phoneNumber,
     password,
   }, { signal: controller.signal });
 }
 
-interface signinParams extends FetchParams {
+interface SigninParams extends FetchParams {
   phoneNumber: string;
   password: string;
 }
-interface signinResponse { accessToken: string }
+interface SigninResponse { accessToken: string }
 
 export async function signin({
   phoneNumber,
   password,
   controller,
-}: signinParams) {
-  return fetchInstanceWithCredentials.post<signinResponse>('/token', {
+}: SigninParams) {
+  return fetchInstance.post<SigninResponse>('/token', {
     phoneNumber,
     password,
-  }, { signal: controller.signal });
+  }, {
+    signal: controller.signal,
+    withCredentials: true,
+  });
 }
 
 export async function signout({ controller }: FetchParams) {
-  return fetchInstanceWithCredentials.delete<void>('/token', { signal: controller.signal });
+  return fetchInstance.delete<void>('/token', {
+    signal: controller.signal,
+    withCredentials: true,
+  });
 }

@@ -1,5 +1,3 @@
-'use client';
-
 import VideoListFetcher from '@/fetcher/videoListFetcher/component';
 import styles from './page.module.css';
 

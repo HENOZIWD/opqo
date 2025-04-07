@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import styles from './style.module.css';
 import AuthTopBar from '../authTopBar/component';
+import { getUserDataFromAccessToken } from '@/serverActions/token';
 
-export default function Header() {
+export default async function Header() {
+  const userdata = await getUserDataFromAccessToken();
+
   return (
     <header className={styles.container}>
       <Link
@@ -12,7 +15,7 @@ export default function Header() {
       >
         OpqO
       </Link>
-      <AuthTopBar />
+      <AuthTopBar auth={userdata} />
     </header>
   );
 }

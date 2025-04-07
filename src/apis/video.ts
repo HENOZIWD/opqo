@@ -1,7 +1,8 @@
-import { fetchInstanceWithCredentials } from './instance';
-import { FetchParams } from './type';
+import { accessTokenToBearer } from '@/utils/token';
+import { fetchInstance } from './instance';
+import { AuthenticationParams, FetchParams } from './type';
 
-interface prepareVideoUploadParams extends FetchParams {
+interface PrepareVideoUploadParams extends FetchParams, AuthenticationParams {
   hashValue: string;
   width: number;
   height: number;
@@ -16,17 +17,21 @@ export async function prepareVideoUpload({
   duration,
   extension,
   controller,
-}: prepareVideoUploadParams) {
-  return fetchInstanceWithCredentials.post<void>('/videos', {
+  accessToken,
+}: PrepareVideoUploadParams) {
+  return fetchInstance.post<void>('/videos', {
     hashValue,
     width,
     height,
     duration,
     extension,
-  }, { signal: controller.signal });
+  }, {
+    headers: { Authorization: accessTokenToBearer(accessToken) },
+    signal: controller.signal,
+  });
 }
 
-interface checkVideoChunkExistParams extends FetchParams {
+interface CheckVideoChunkExistParams extends FetchParams, AuthenticationParams {
   videoHash: string;
   chunkIndex: number;
 }
@@ -35,11 +40,15 @@ export async function checkVideoChunkExist({
   videoHash,
   chunkIndex,
   controller,
-}: checkVideoChunkExistParams) {
-  return fetchInstanceWithCredentials.head<void>(`/videos/${videoHash}/${chunkIndex + 1}`, { signal: controller.signal });
+  accessToken,
+}: CheckVideoChunkExistParams) {
+  return fetchInstance.head<void>(`/videos/${videoHash}/${chunkIndex + 1}`, {
+    headers: { Authorization: accessTokenToBearer(accessToken) },
+    signal: controller.signal,
+  });
 }
 
-interface uploadVideoChunkParams extends FetchParams {
+interface UploadVideoChunkParams extends FetchParams, AuthenticationParams {
   videoHash: string;
   chunkIndex: number;
   chunkFile: Blob;
@@ -50,18 +59,22 @@ export async function uploadVideoChunk({
   chunkIndex,
   chunkFile,
   controller,
-}: uploadVideoChunkParams) {
-  return fetchInstanceWithCredentials.post<void>(
+  accessToken,
+}: UploadVideoChunkParams) {
+  return fetchInstance.post<void>(
     `/videos/${videoHash}/${chunkIndex + 1}`,
     { chunkFile },
     {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': accessTokenToBearer(accessToken),
+      },
       signal: controller.signal,
-      headers: { 'Content-Type': 'multipart/form-data' },
     },
   );
 }
 
-interface uploadVideoContentParams extends FetchParams {
+interface UploadVideoContentParams extends FetchParams, AuthenticationParams {
   thumbnailImage: Blob;
   hashValue: string;
   title: string;
@@ -74,11 +87,15 @@ export async function uploadVideoContent({
   title,
   description,
   controller,
-}: uploadVideoContentParams) {
-  return fetchInstanceWithCredentials.postForm<void>('/contents', {
+  accessToken,
+}: UploadVideoContentParams) {
+  return fetchInstance.postForm<void>('/contents', {
     thumbnailImage,
     hashValue,
     title,
     description,
-  }, { signal: controller.signal });
+  }, {
+    headers: { Authorization: accessTokenToBearer(accessToken) },
+    signal: controller.signal,
+  });
 }

@@ -1,6 +1,6 @@
 import { AccessToken } from './type';
 
-function parseJwt(token: string): AccessToken | null {
+export function parseJwt(token: string): AccessToken | null {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replaceAll('-', '+').replaceAll('_', '/');
@@ -10,30 +10,16 @@ function parseJwt(token: string): AccessToken | null {
     return JSON.parse(jsonPayload);
   }
   catch (error: unknown) {
+    console.error(error);
+
     return null;
   }
 }
 
-export function isValidToken(token: string) {
-  const decodedToken = parseJwt(token);
-
-  if (!decodedToken) {
-    return false;
+export function accessTokenToBearer(token: string | null | undefined) {
+  if (!token) {
+    return undefined;
   }
 
-  const currentTime = Date.now() / 1000;
-
-  return decodedToken.exp > currentTime;
-}
-
-export function getInfoFromAccessToken(token: string) {
-  const decodedToken = parseJwt(token);
-
-  const currentTime = Date.now() / 1000;
-
-  if (!decodedToken || decodedToken.exp <= currentTime) {
-    return null;
-  }
-
-  return decodedToken;
+  return `Bearer ${token}`;
 }
