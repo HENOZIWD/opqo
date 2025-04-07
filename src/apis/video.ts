@@ -2,7 +2,7 @@ import { accessTokenToBearer } from '@/utils/token';
 import { fetchInstance } from './instance';
 import { AuthenticationParams, FetchParams } from './type';
 
-interface prepareVideoUploadParams extends FetchParams, AuthenticationParams {
+interface PrepareVideoUploadParams extends FetchParams, AuthenticationParams {
   hashValue: string;
   width: number;
   height: number;
@@ -18,7 +18,7 @@ export async function prepareVideoUpload({
   extension,
   controller,
   accessToken,
-}: prepareVideoUploadParams) {
+}: PrepareVideoUploadParams) {
   return fetchInstance.post<void>('/videos', {
     hashValue,
     width,
@@ -31,7 +31,7 @@ export async function prepareVideoUpload({
   });
 }
 
-interface checkVideoChunkExistParams extends FetchParams, AuthenticationParams {
+interface CheckVideoChunkExistParams extends FetchParams, AuthenticationParams {
   videoHash: string;
   chunkIndex: number;
 }
@@ -41,14 +41,14 @@ export async function checkVideoChunkExist({
   chunkIndex,
   controller,
   accessToken,
-}: checkVideoChunkExistParams) {
+}: CheckVideoChunkExistParams) {
   return fetchInstance.head<void>(`/videos/${videoHash}/${chunkIndex + 1}`, {
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });
 }
 
-interface uploadVideoChunkParams extends FetchParams, AuthenticationParams {
+interface UploadVideoChunkParams extends FetchParams, AuthenticationParams {
   videoHash: string;
   chunkIndex: number;
   chunkFile: Blob;
@@ -60,7 +60,7 @@ export async function uploadVideoChunk({
   chunkFile,
   controller,
   accessToken,
-}: uploadVideoChunkParams) {
+}: UploadVideoChunkParams) {
   return fetchInstance.post<void>(
     `/videos/${videoHash}/${chunkIndex + 1}`,
     { chunkFile },
@@ -74,7 +74,7 @@ export async function uploadVideoChunk({
   );
 }
 
-interface uploadVideoContentParams extends FetchParams, AuthenticationParams {
+interface UploadVideoContentParams extends FetchParams, AuthenticationParams {
   thumbnailImage: Blob;
   hashValue: string;
   title: string;
@@ -88,7 +88,7 @@ export async function uploadVideoContent({
   description,
   controller,
   accessToken,
-}: uploadVideoContentParams) {
+}: UploadVideoContentParams) {
   return fetchInstance.postForm<void>('/contents', {
     thumbnailImage,
     hashValue,

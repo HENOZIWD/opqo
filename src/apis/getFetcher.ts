@@ -3,7 +3,7 @@ import { fetchInstance } from './instance';
 
 export const getFetcher = (url: string) => fetchInstance.get(url).then((res) => res.data);
 
-interface getFetcherWithCredentialsParams {
+interface GetFetcherWithCredentialsParams {
   url: string;
   accessToken: string | null;
 }
@@ -11,7 +11,7 @@ interface getFetcherWithCredentialsParams {
 export const getFetcherWithCredentials = ({
   url,
   accessToken,
-}: getFetcherWithCredentialsParams) => fetchInstance.get(url, {
+}: GetFetcherWithCredentialsParams) => fetchInstance.get(url, {
   headers:
     { Authorization: accessTokenToBearer(accessToken) },
 }).then((res) => res.data);
