@@ -1,6 +1,6 @@
 import AccessTokenWrapper from '@/wrappers/accessTokenWrapper';
 import styles from './page.module.css';
-import CreateChannelForm from './createChannelForm/component';
+import CreateChannelForm from '@/components/createChannelForm/component';
 
 export default function CreateChannelPage() {
   return (

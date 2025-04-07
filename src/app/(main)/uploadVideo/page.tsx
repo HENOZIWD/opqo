@@ -1,6 +1,6 @@
 import AccessTokenWrapper from '@/wrappers/accessTokenWrapper';
 import styles from './page.module.css';
-import UploadVideoForm from './uploadVideoForm/component';
+import UploadVideoForm from '@/components/uploadVideoForm/component';
 
 export default function UploadVideoPage() {
   return (
