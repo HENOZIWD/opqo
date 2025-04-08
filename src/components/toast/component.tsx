@@ -1,3 +1,5 @@
+'use client';
+
 import { ToastType } from '@/utils/type';
 import styles from './style.module.css';
 import { useCountdown } from '@/hooks/useCountdown';
