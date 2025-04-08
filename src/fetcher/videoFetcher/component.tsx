@@ -1,23 +1,17 @@
-'use client';
-
-import useSWRImmutable from 'swr/immutable';
 import styles from './style.module.css';
-import { VideoResponse } from '@/apis/getResponseType';
-import { getFetcher } from '@/apis/getFetcher';
 import VideoPlayer from '@/components/videoPlayer/component';
 import ChannelImage from '@/components/channelImage/component';
 import Link from 'next/link';
+import { getVideoInfo } from '@/apis/video';
+import { fetchHandlerWithServerComponent } from '@/utils/handler';
 
 interface VideoFetcherProps { videoId: string }
 
-export default function VideoFetcher({ videoId }: VideoFetcherProps) {
-  const {
-    data,
-    error,
-  } = useSWRImmutable<VideoResponse>(`/contents/${videoId}`, getFetcher, { shouldRetryOnError: false });
+export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
+  const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({ videoId }));
 
-  if (error || !data) {
-    return null;
+  if (!data) {
+    return <div>동영상을 불러오지 못했습니다.</div>;
   }
 
   return (

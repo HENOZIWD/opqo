@@ -1,33 +1,15 @@
-'use client';
-
-import useSWRImmutable from 'swr/immutable';
 import styles from './style.module.css';
-import { MyChannelResponse } from '@/apis/getResponseType';
-import { getFetcherWithCredentials } from '@/apis/getFetcher';
 import ChannelSelectButton from '@/components/channelSelectButton/component';
 import { AuthenticationParams } from '@/apis/type';
+import { getMyChannelList } from '@/apis/channel';
+import { fetchHandlerWithServerComponent } from '@/utils/handler';
 
 interface MyChannelListFetcherProps extends AuthenticationParams { }
 
-export default function MyChannelListFetcher({ accessToken }: MyChannelListFetcherProps) {
-  const {
-    data,
-    isLoading,
-    error,
-  } = useSWRImmutable<MyChannelResponse[]>(
-    {
-      url: '/users/me/channels',
-      accessToken,
-    },
-    getFetcherWithCredentials,
-    { shouldRetryOnError: false },
-  );
+export default async function MyChannelListFetcher({ accessToken }: MyChannelListFetcherProps) {
+  const { data } = await fetchHandlerWithServerComponent(() => getMyChannelList({ accessToken }));
 
-  if (isLoading) {
-    return null;
-  }
-
-  if (error || !data) {
+  if (!data) {
     return (
       <div className={styles.error}>채널 목록을 불러오지 못했습니다.</div>
     );

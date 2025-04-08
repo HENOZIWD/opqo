@@ -99,3 +99,41 @@ export async function uploadVideoContent({
     signal: controller.signal,
   });
 }
+
+interface GetChannelVideoListParams { channelId: string }
+interface GetChannelVideoListResponse {
+  id: string;
+  title: string;
+  createdDate: string;
+}
+
+export async function getChannelVideoList({ channelId }: GetChannelVideoListParams) {
+  return fetchInstance.get<GetChannelVideoListResponse[]>(`/channels/${channelId}/contents`);
+}
+
+interface GetVideoInfoParams { videoId: string }
+interface GetVideoInfoResponse {
+  id: string;
+  title: string;
+  description: string;
+  createdDate: string;
+  channelId: string;
+  channelName: string;
+}
+
+export async function getVideoInfo({ videoId }: GetVideoInfoParams) {
+  return fetchInstance.get<GetVideoInfoResponse>(`/contents/${videoId}`);
+}
+
+interface GetVideoListParams { category: string }
+interface GetVideoListResponse {
+  id: string;
+  title: string;
+  createdDate: string;
+  channelId: string;
+  channelName: string;
+}
+
+export async function getVideoList({ category }: GetVideoListParams) {
+  return fetchInstance.get<GetVideoListResponse[]>(`/contents?view=${category}`);
+}
