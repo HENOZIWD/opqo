@@ -12,6 +12,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
+import { ROLE_USER } from '@/utils/constant';
 
 export default function SigninPage() {
   const {
@@ -59,7 +60,7 @@ export default function SigninPage() {
           expUnixTimeStamp: userData.exp,
         });
 
-        if (userData.role === 'user') {
+        if (userData.role === ROLE_USER) {
           router.replace('/selectChannel');
 
           return;

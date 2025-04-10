@@ -1,3 +1,5 @@
+import { ROLE_CHANNEL, ROLE_USER } from './constant';
+
 export interface SignupContent {
   phoneNumber: string;
   password: string;
@@ -37,6 +39,6 @@ export type ToastType = 'normal' | 'error';
 export interface AccessToken {
   id: string | null;
   name: string | null;
-  role: 'user' | 'channel';
+  role: typeof ROLE_USER | typeof ROLE_CHANNEL;
   exp: number;
 }
