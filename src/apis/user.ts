@@ -1,49 +1,31 @@
 import { fetchInstance } from './instance';
 import { FetchParams } from './type';
 
-interface RequestPhoneNumberVerificationCodeParams extends FetchParams { phoneNumber: string }
-interface RequestPhoneNumberVerificationCodeResponse { otp: string }
+interface RequestVerificationCodeParams extends FetchParams { phoneNumber: string }
 
-export async function requestPhoneNumberVerificationCode({
+export async function requestVerificationCode({
   phoneNumber,
   controller,
-}: RequestPhoneNumberVerificationCodeParams) {
-  return fetchInstance.post<RequestPhoneNumberVerificationCodeResponse>('/phone-auth', { phoneNumber }, { signal: controller.signal });
-}
-
-interface ValidatePhoneNumberVerificationCodeParams extends FetchParams {
-  phoneNumber: string;
-  authCode: string;
-}
-interface ValidatePhoneNumberVerificationCodeResponse { result: string }
-
-export async function validatePhoneNumberVerificationCode({
-  phoneNumber,
-  authCode,
-  controller,
-}: ValidatePhoneNumberVerificationCodeParams) {
-  return fetchInstance.post<ValidatePhoneNumberVerificationCodeResponse>('/phone-auth/verification', {
-    phoneNumber,
-    authCode,
-  }, {
-    signal: controller.signal,
-    withCredentials: true,
-  });
+}: RequestVerificationCodeParams) {
+  return fetchInstance.post<void>('/phone-auth', { phoneNumber }, { signal: controller.signal });
 }
 
 interface SignupParams extends FetchParams {
   phoneNumber: string;
   password: string;
+  authCode: string;
 }
 
 export async function signup({
   phoneNumber,
   password,
+  authCode,
   controller,
 }: SignupParams) {
   return fetchInstance.post<void>('/users', {
     phoneNumber,
     password,
+    authCode,
   }, { signal: controller.signal });
 }
 
