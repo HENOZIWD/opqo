@@ -1,5 +1,5 @@
 export function numberToTime(second: number) {
-  if (Number.isNaN(Number(second))) {
+  if (Number.isNaN(Number(second)) || second < 0) {
     return null;
   }
 
