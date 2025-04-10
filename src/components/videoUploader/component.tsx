@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '@/utils/video';

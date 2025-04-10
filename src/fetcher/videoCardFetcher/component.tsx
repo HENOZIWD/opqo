@@ -1,6 +1,5 @@
 import VideoCard from '@/components/videoCard/component';
 import axios from 'axios';
-import useSWRImmutable from 'swr/immutable';
 
 interface VideoCardFetcherProps {
   videoId: string;
@@ -12,20 +11,15 @@ interface VideoCardFetcherProps {
   };
 }
 
-const fetcher = (url: string) => axios.head(url).then((res) => res.headers['opc-meta-duration']);
-
-export default function VideoCardFetcher({
+export default async function VideoCardFetcher({
   videoId,
   videoTitle,
   createdDate,
   channelInfo,
 }: VideoCardFetcherProps) {
-  const {
-    data,
-    error,
-  } = useSWRImmutable(`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${videoId}`, fetcher, { shouldRetryOnError: false });
+  const data = (await axios.head(`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${videoId}`)).headers['opc-meta-duration'];
 
-  if (!data || error) {
+  if (!data) {
     return null;
   }
 

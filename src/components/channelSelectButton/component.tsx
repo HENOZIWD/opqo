@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './style.module.css';
 import ChannelImage from '../channelImage/component';
 import { selectChannel } from '@/apis/channel';

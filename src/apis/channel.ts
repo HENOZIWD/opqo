@@ -50,3 +50,28 @@ export async function selectChannel({
     },
   );
 }
+
+interface GetChannelInfoParams { channelId: string }
+interface GetChannelInfoResponse {
+  id: string;
+  name: string;
+  description: string;
+  createdDate: string;
+}
+
+export async function getChannelInfo({ channelId }: GetChannelInfoParams) {
+  return fetchInstance.get<GetChannelInfoResponse>(`/channels/${channelId}`);
+}
+
+interface GetMyChannelListParams extends AuthenticationParams { }
+interface GetMyChannelListResponse {
+  id: string;
+  name: string;
+}
+
+export async function getMyChannelList({ accessToken }: GetMyChannelListParams) {
+  return fetchInstance.get<GetMyChannelListResponse[]>(
+    '/users/me/channels',
+    { headers: { Authorization: accessTokenToBearer(accessToken) } },
+  );
+}

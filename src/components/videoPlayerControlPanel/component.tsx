@@ -1,3 +1,5 @@
+'use client';
+
 import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef, useState } from 'react';
 import styles from './style.module.css';
 import PauseIcon from '@/icons/pauseIcon';
