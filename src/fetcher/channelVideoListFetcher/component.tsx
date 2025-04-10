@@ -33,7 +33,7 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
         ))
         : (
           <div>
-            업로드한 동영상이 없습니다.
+            업로드 된 동영상이 없습니다.
           </div>
         )}
     </ul>

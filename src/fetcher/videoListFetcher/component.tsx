@@ -14,28 +14,30 @@ export default async function VideoListFetcher({ category }: VideoListFetcherPro
 
   return (
     <ul className={styles.videoList}>
-      {data.map(({
-        id,
-        title,
-        createdDate,
-        channelId,
-        channelName,
-      }) => (
-        <li
-          key={id}
-          className={styles.videoCard}
-        >
-          <VideoCardFetcher
-            videoId={id}
-            videoTitle={title}
-            createdDate={createdDate}
-            channelInfo={{
-              channelId,
-              channelName,
-            }}
-          />
-        </li>
-      ))}
+      {data.length > 0
+        ? data.map(({
+          id,
+          title,
+          createdDate,
+          channelId,
+          channelName,
+        }) => (
+          <li
+            key={id}
+            className={styles.videoCard}
+          >
+            <VideoCardFetcher
+              videoId={id}
+              videoTitle={title}
+              createdDate={createdDate}
+              channelInfo={{
+                channelId,
+                channelName,
+              }}
+            />
+          </li>
+        ))
+        : <div>업로드 된 동영상이 없습니다.</div>}
     </ul>
   );
 }
