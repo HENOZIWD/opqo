@@ -4,6 +4,7 @@ import ChannelImage from '@/components/channelImage/component';
 import Link from 'next/link';
 import { getVideoInfo } from '@/apis/video';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
+import { formatDateTimeString } from '@/utils/date';
 
 interface VideoFetcherProps { videoId: string }
 
@@ -46,7 +47,7 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
           )
           : null}
         <div className={styles.description}>
-          <div>{data.createdDate}</div>
+          <div>{formatDateTimeString(data.createdDate)}</div>
           <div>{data.description}</div>
         </div>
       </div>
