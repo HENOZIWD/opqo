@@ -28,10 +28,10 @@ export interface UploadVideoContent {
 }
 
 export interface VideoMetadata {
-  videoWidth: number;
-  videoHeight: number;
-  videoDuration: number;
-  videoExtension: string;
+  width: number;
+  height: number;
+  duration: number;
+  extension: string;
 }
 
 export type ToastType = 'normal' | 'error';
