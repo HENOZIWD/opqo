@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseJwt } from './utils/token';
+import { ROLE_CHANNEL, ROLE_USER } from './utils/constant';
 
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/signin')) {
@@ -26,7 +27,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/signin', request.url));
     }
 
-    if (auth === 'user') {
+    if (auth === ROLE_USER) {
       return NextResponse.redirect(new URL('/selectChannel', request.url));
     }
   }
@@ -52,12 +53,12 @@ function getAuthority(request: NextRequest) {
 
   const decodedToken = parseJwt(accessToken);
 
-  if (decodedToken?.role === 'user') {
-    return 'user';
+  if (decodedToken?.role === ROLE_USER) {
+    return ROLE_USER;
   }
 
-  if (decodedToken?.role === 'channel') {
-    return 'channel';
+  if (decodedToken?.role === ROLE_CHANNEL) {
+    return ROLE_CHANNEL;
   }
 
   return null;

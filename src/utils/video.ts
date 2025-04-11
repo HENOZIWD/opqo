@@ -14,7 +14,7 @@ export async function generateVideoHash(blobData: Blob) {
   const buffer = await blobData.arrayBuffer();
   const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
   const hashArray = new Uint8Array(hashBuffer);
-  const base64Hash = btoa(String.fromCharCode(...hashArray)).replaceAll('+', '-').replaceAll('/', '_');
+  const base64Hash = btoa(String.fromCharCode(...hashArray));
 
   return base64Hash;
 }
@@ -67,7 +67,7 @@ export function captureRandomThumbnailFromVideo(videoData: Blob, callback: (thum
   }
 }
 
-export function extractMetadataFromVideo(videoData: Blob, videoExtension: string, callback: (extractedMetadata: VideoMetadata | null) => void) {
+export function extractMetadataFromVideo(videoData: Blob, extension: string, callback: (extractedMetadata: VideoMetadata | null) => void) {
   const videoUrl = URL.createObjectURL(videoData);
 
   const video = document.createElement('video');
@@ -77,10 +77,10 @@ export function extractMetadataFromVideo(videoData: Blob, videoExtension: string
 
   video.onloadedmetadata = () => {
     callback({
-      videoWidth: video.videoWidth,
-      videoHeight: video.videoHeight,
-      videoDuration: video.duration,
-      videoExtension,
+      width: video.videoWidth,
+      height: video.videoHeight,
+      duration: video.duration,
+      extension,
     });
 
     cleanup();

@@ -17,7 +17,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import CustomInput from '@/components/customInput/component';
 import { REGEXP_PASSWORD } from '@/utils/regexp';
-import { requestPhoneNumberVerificationCode, signup, validatePhoneNumberVerificationCode } from '@/apis/user';
+import { requestVerificationCode, signup } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { useCountdown } from '@/hooks/useCountdown';
@@ -34,6 +34,7 @@ export default function SignupPage() {
   const {
     register: verificationRegister,
     handleSubmit: handleVerificationSubmit,
+    resetField,
   } = useForm<{ verificationCode: string }>();
 
   const [signupStep, setSignupStep] = useState<number>(0);
@@ -47,7 +48,7 @@ export default function SignupPage() {
   const { showToast } = useToast();
 
   const handleRequestVerificationCode = (data: SignupContent) => {
-    fetchHandler((controller) => requestPhoneNumberVerificationCode({
+    fetchHandler((controller) => requestVerificationCode({
       phoneNumber: data.phoneNumber,
       controller,
     }), {
@@ -79,42 +80,14 @@ export default function SignupPage() {
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
     if (signupStep === 1 && signupValue) {
-      fetchHandler((controller) => validatePhoneNumberVerificationCode({
+      fetchHandler((controller) => signup({
         phoneNumber: signupValue.phoneNumber,
+        password: signupValue.password,
         authCode: data.verificationCode,
         controller,
       }), {
         onSuccess: () => {
-          fetchHandler((controller) => signup({
-            phoneNumber: signupValue.phoneNumber,
-            password: signupValue.password,
-            controller,
-          }), {
-            onSuccess: () => {
-              setSignupStep(2);
-            },
-            onError: (error) => {
-              if (error?.status === 401) {
-                showToast({
-                  message: ERR_MSG_AUTHORIZATION_FAILED,
-                  type: 'error',
-                });
-              }
-              else if (error?.status === 409) {
-                showToast({
-                  message: ERR_MSG_DUPLICATED_PHONENUMBER,
-                  type: 'error',
-                });
-                setSignupStep(0);
-              }
-              else {
-                showToast({
-                  message: ERR_MSG_INTERNAL_SERVER,
-                  type: 'error',
-                });
-              }
-            },
-          });
+          setSignupStep(2);
         },
         onError: (error) => {
           if (error?.status === 401) {
@@ -122,6 +95,14 @@ export default function SignupPage() {
               message: ERR_MSG_AUTHORIZATION_FAILED,
               type: 'error',
             });
+          }
+          else if (error?.status === 409) {
+            showToast({
+              message: ERR_MSG_DUPLICATED_PHONENUMBER,
+              type: 'error',
+            });
+            resetField('verificationCode');
+            setSignupStep(0);
           }
           else if (error?.status === 429) {
             showToast({

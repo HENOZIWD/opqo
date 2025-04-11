@@ -5,7 +5,7 @@ import styles from './style.module.css';
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '@/utils/video';
 import VideoPlayer from '../videoPlayer/component';
 import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
-import { checkVideoChunkExist, prepareVideoUpload, uploadVideoChunk } from '@/apis/video';
+import { checkVideoChunkExist, createVideoMetadata, readyVideoUpload, uploadVideoChunk } from '@/apis/video';
 import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import ProgressBar from '../progressBar/component';
 import { useFetch } from '@/hooks/useFetch';
@@ -15,16 +15,16 @@ import { AuthenticationParams } from '@/apis/type';
 interface VideoUploaderProps extends AuthenticationParams {
   isVideoUploadComplete: boolean;
   setIsVideoUploadComplete: Dispatch<SetStateAction<boolean>>;
-  videoHash: string | null;
-  setVideoHash: Dispatch<SetStateAction<string | null>>;
+  videoId: string | null;
+  setVideoId: Dispatch<SetStateAction<string | null>>;
   setThumbnailData: Dispatch<SetStateAction<Blob | null>>;
 }
 
 export default function VideoUploader({
   isVideoUploadComplete,
   setIsVideoUploadComplete,
-  videoHash,
-  setVideoHash,
+  videoId,
+  setVideoId,
   setThumbnailData,
   accessToken,
 }: VideoUploaderProps) {
@@ -44,7 +44,7 @@ export default function VideoUploader({
 
   useEffect(() => {
     const uploadVideo = async () => {
-      if (!videoData || !videoHash) {
+      if (!videoData || !videoId) {
         showToast({
           message: ERR_MSG_FILE_LOAD_ERROR,
           type: 'error',
@@ -57,13 +57,13 @@ export default function VideoUploader({
 
       setIsUploading(true);
       setUploadProgress(0);
-      setMaxUploadProgress(totalVideoChunkCount);
+      setMaxUploadProgress(totalVideoChunkCount + 1);
 
       const videoChunkList = await generateVideoChunkList(videoData, totalVideoChunkCount);
 
       await Promise.allSettled(videoChunkList.map(async (currentVideoChunk, chunkIndex) => {
         fetchHandler((controller) => checkVideoChunkExist({
-          videoHash,
+          videoId,
           chunkIndex,
           controller,
           accessToken,
@@ -78,7 +78,7 @@ export default function VideoUploader({
             while (!successFlag && retryCount < 3) {
               await new Promise<void>((resolve, reject) => {
                 fetchHandler((controller) => uploadVideoChunk({
-                  videoHash,
+                  videoId,
                   chunkIndex,
                   chunkFile: currentVideoChunk,
                   controller,
@@ -107,32 +107,41 @@ export default function VideoUploader({
       }));
     };
 
-    if (!isUploading && isUploadPrepared && videoData && videoHash) {
+    if (!isUploading && isUploadPrepared && videoData && videoId) {
       uploadVideo();
     }
-  }, [isUploadPrepared, videoData, videoHash, fetchHandler]);
+  }, [isUploadPrepared, videoData, videoId, fetchHandler]);
 
   useEffect(() => {
-    if (uploadRequestProgress === maxUploadProgress) {
+    if (isUploading && uploadRequestProgress + 1 === maxUploadProgress) {
       setIsUploadProcessDone(true);
     }
-  }, [uploadRequestProgress, maxUploadProgress]);
+  }, [isUploading, uploadRequestProgress, maxUploadProgress]);
 
   useEffect(() => {
-    if (!isUploadProcessDone) {
-      return;
-    }
+    (async () => {
+      if (!isUploadProcessDone || !videoId) {
+        return;
+      }
 
-    if (uploadProgress === maxUploadProgress) {
-      setIsVideoUploadComplete(true);
-    }
-    else {
-      showToast({
-        message: ERR_MSG_VIDEO_UPLOAD_FAILED,
-        type: 'error',
+      await fetchHandler((controller) => readyVideoUpload({
+        videoId,
+        controller,
+        accessToken,
+      }), {
+        onSuccess: () => {
+          setUploadProgress(maxUploadProgress);
+          setIsVideoUploadComplete(true);
+        },
+        onError: () => {
+          showToast({
+            message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+            type: 'error',
+          });
+        },
       });
-    }
-  }, [uploadProgress, maxUploadProgress, isUploadProcessDone]);
+    })();
+  }, [isUploadProcessDone]);
 
   const handleSelectVideo = (e: ChangeEvent<HTMLInputElement>) => {
     if (isUploading) {
@@ -196,18 +205,23 @@ export default function VideoUploader({
         }
 
         const videoHash = await generateVideoHash(videoFile);
-        setVideoHash(videoHash);
 
-        await fetchHandler((controller) => prepareVideoUpload({
-          hashValue: videoHash,
-          width: videoMetadata.videoWidth,
-          height: videoMetadata.videoHeight,
-          duration: videoMetadata.videoDuration,
-          extension: videoMetadata.videoExtension,
+        await fetchHandler((controller) => createVideoMetadata({
+          hash: videoHash,
+          width: videoMetadata.width,
+          height: videoMetadata.height,
+          duration: videoMetadata.duration,
+          extension: videoMetadata.extension,
+          size: videoFile.size,
           controller,
           accessToken,
         }), {
-          onSuccess: () => { setIsUploadPrepared(true); },
+          onSuccess: (response) => {
+            if (response?.data.videoId) {
+              setVideoId(response.data.videoId);
+            }
+            setIsUploadPrepared(true);
+          },
           onError: () => {
             showToast({
               message: ERR_MSG_INTERNAL_SERVER,

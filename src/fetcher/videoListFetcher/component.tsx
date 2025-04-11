@@ -1,7 +1,7 @@
 import styles from './style.module.css';
-import VideoCardFetcher from '../videoCardFetcher/component';
 import { getVideoList } from '@/apis/video';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
+import VideoCard from '@/components/videoCard/component';
 
 interface VideoListFetcherProps { category: string }
 
@@ -14,28 +14,28 @@ export default async function VideoListFetcher({ category }: VideoListFetcherPro
 
   return (
     <ul className={styles.videoList}>
-      {data.map(({
-        id,
-        title,
-        createdDate,
-        channelId,
-        channelName,
-      }) => (
-        <li
-          key={id}
-          className={styles.videoCard}
-        >
-          <VideoCardFetcher
-            videoId={id}
-            videoTitle={title}
-            createdDate={createdDate}
-            channelInfo={{
-              channelId,
-              channelName,
-            }}
-          />
-        </li>
-      ))}
+      {data.length > 0
+        ? data.map(({
+          id,
+          title,
+          createdDate,
+          duration,
+          channel,
+        }) => (
+          <li
+            key={id}
+            className={styles.videoCard}
+          >
+            <VideoCard
+              videoId={id}
+              videoTitle={title}
+              videoDuration={duration}
+              createdDate={createdDate}
+              channelInfo={channel}
+            />
+          </li>
+        ))
+        : <div>업로드 된 동영상이 없습니다.</div>}
     </ul>
   );
 }

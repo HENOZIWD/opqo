@@ -4,30 +4,23 @@ import { fetchInstance } from './instance';
 
 interface CreateChannelParams extends FetchParams, AuthenticationParams {
   imageFile: Blob | null;
-  json: {
-    name: string;
-    description: string;
-  };
+  name: string;
+  description: string;
 }
 
 export async function createChannel({
   imageFile,
-  json,
+  name,
+  description,
   controller,
   accessToken,
 }: CreateChannelParams) {
-  const form = new FormData();
-
-  form.append('channel', new Blob([JSON.stringify({
-    name: json.name,
-    description: json.description,
-  })], { type: 'application/json' }));
-
-  return fetchInstance.post<void>('/channels', form, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'Authorization': accessTokenToBearer(accessToken),
-    },
+  return fetchInstance.postForm<void>('/channels', {
+    profileImage: imageFile,
+    name,
+    description,
+  }, {
+    headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });
 }

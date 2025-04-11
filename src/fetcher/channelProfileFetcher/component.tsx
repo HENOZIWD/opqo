@@ -2,6 +2,7 @@ import ChannelImage from '@/components/channelImage/component';
 import styles from './style.module.css';
 import { getChannelInfo } from '@/apis/channel';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
+import { formatDateString } from '@/utils/date';
 
 interface ChannelProfileFetcherProps { channelId: string }
 
@@ -30,7 +31,7 @@ export default async function ChannelProfileFetcher({ channelId }: ChannelProfil
         <div className={styles.created}>
           가입일
           {' '}
-          {data.createdDate}
+          {formatDateString(data.createdDate)}
         </div>
       </div>
     </div>

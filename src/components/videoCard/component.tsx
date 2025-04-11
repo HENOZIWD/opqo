@@ -2,6 +2,7 @@ import styles from './style.module.css';
 import Link from 'next/link';
 import ChannelImage from '../channelImage/component';
 import Thumbnail from '../thumbnail/component';
+import { formatDateString } from '@/utils/date';
 
 interface VideoCardProps {
   videoId: string;
@@ -9,8 +10,8 @@ interface VideoCardProps {
   videoTitle: string;
   createdDate: string;
   channelInfo?: {
-    channelId: string;
-    channelName: string;
+    id: string;
+    name: string;
   };
 }
 
@@ -40,8 +41,8 @@ export default function VideoCard({
           ? (
             <div className={styles.channelImage}>
               <ChannelImage
-                channelId={channelInfo.channelId}
-                channelName={channelInfo.channelName}
+                channelId={channelInfo.id}
+                channelName={channelInfo.name}
               />
             </div>
           )
@@ -55,14 +56,14 @@ export default function VideoCard({
           </Link>
           {channelInfo
             ? (
-              <Link href={`/channel/${channelInfo.channelId}`}>
+              <Link href={`/channel/${channelInfo.id}`}>
                 <div className={styles.channelName}>
-                  {channelInfo.channelName}
+                  {channelInfo.name}
                 </div>
               </Link>
             )
             : null}
-          <div className={styles.uploadDate}>{createdDate}</div>
+          <div className={styles.uploadDate}>{formatDateString(createdDate)}</div>
         </div>
       </div>
     </article>
