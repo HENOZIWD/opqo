@@ -1,6 +1,6 @@
 import styles from './style.module.css';
-import VideoCardFetcher from '../videoCardFetcher/component';
 import { getChannelVideoList } from '@/apis/video';
+import VideoCard from '@/components/videoCard/component';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 
 interface ChannelVideoListFetcherProps { channelId: string }
@@ -19,15 +19,17 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
           id,
           title,
           createdDate,
+          duration,
         }) => (
           <li
             className={styles.videoCard}
             key={id}
           >
-            <VideoCardFetcher
+            <VideoCard
               videoId={id}
               videoTitle={title}
               createdDate={createdDate}
+              videoDuration={duration}
             />
           </li>
         ))

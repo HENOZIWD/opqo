@@ -119,6 +119,7 @@ interface GetChannelVideoListResponse {
   id: string;
   title: string;
   createdDate: string;
+  duration: number;
 }
 
 export async function getChannelVideoList({ channelId }: GetChannelVideoListParams) {
@@ -131,8 +132,10 @@ interface GetVideoInfoResponse {
   title: string;
   description: string;
   createdDate: string;
-  channelId: string;
-  channelName: string;
+  channel: {
+    id: string;
+    name: string;
+  };
 }
 
 export async function getVideoInfo({ videoId }: GetVideoInfoParams) {
@@ -144,8 +147,11 @@ interface GetVideoListResponse {
   id: string;
   title: string;
   createdDate: string;
-  channelId: string;
-  channelName: string;
+  duration: number;
+  channel: {
+    id: string;
+    name: string;
+  };
 }
 
 export async function getVideoList({ category }: GetVideoListParams) {

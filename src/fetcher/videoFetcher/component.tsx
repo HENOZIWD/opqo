@@ -33,15 +33,15 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
             <div className={styles.channelSection}>
               <div className={styles.channelImage}>
                 <ChannelImage
-                  channelId={data.channelId}
-                  channelName={data.channelName}
+                  channelId={data.channel.id}
+                  channelName={data.channel.name}
                 />
               </div>
               <Link
                 className={styles.channelName}
-                href={`/channel/${data.channelId}`}
+                href={`/channel/${data.channel.id}`}
               >
-                {data.channelName}
+                {data.channel.name}
               </Link>
             </div>
           )

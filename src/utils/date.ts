@@ -7,5 +7,5 @@ export function formatDateString(isoDateStr: string) {
 export function formatDateTimeString(isoDateStr: string) {
   const date = new Date(isoDateStr);
 
-  return date.toLocaleTimeString();
+  return date.toLocaleString();
 }

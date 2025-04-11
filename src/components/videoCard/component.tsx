@@ -10,8 +10,8 @@ interface VideoCardProps {
   videoTitle: string;
   createdDate: string;
   channelInfo?: {
-    channelId: string;
-    channelName: string;
+    id: string;
+    name: string;
   };
 }
 
@@ -41,8 +41,8 @@ export default function VideoCard({
           ? (
             <div className={styles.channelImage}>
               <ChannelImage
-                channelId={channelInfo.channelId}
-                channelName={channelInfo.channelName}
+                channelId={channelInfo.id}
+                channelName={channelInfo.name}
               />
             </div>
           )
@@ -56,9 +56,9 @@ export default function VideoCard({
           </Link>
           {channelInfo
             ? (
-              <Link href={`/channel/${channelInfo.channelId}`}>
+              <Link href={`/channel/${channelInfo.id}`}>
                 <div className={styles.channelName}>
-                  {channelInfo.channelName}
+                  {channelInfo.name}
                 </div>
               </Link>
             )
