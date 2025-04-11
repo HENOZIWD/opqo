@@ -50,7 +50,7 @@ export async function signin({
 }
 
 export async function signout({ controller }: FetchParams) {
-  return fetchInstance.delete<void>('/token', {
+  return fetchInstance.post<void>('/token/expire', {
     signal: controller.signal,
     withCredentials: true,
   });
