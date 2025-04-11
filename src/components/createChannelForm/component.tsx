@@ -34,10 +34,8 @@ export default function CreateChannelForm({ accessToken }: CreateChannelFormProp
   const handleCreateChannel = (data: CreateChannelContent) => {
     fetchHandler((controller) => createChannel({
       imageFile: channelImageData,
-      json: {
-        name: data.channelName,
-        description: data.description,
-      },
+      name: data.channelName,
+      description: data.description,
       controller,
       accessToken,
     }), {
