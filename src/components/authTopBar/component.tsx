@@ -24,7 +24,7 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
       onError: () => { },
       onFinal: async () => {
         await deleteAccessTokenCookie();
-        location.reload();
+        window.location.reload();
       },
     });
   };
