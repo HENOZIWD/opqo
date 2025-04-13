@@ -55,3 +55,17 @@ export async function signout({ controller }: FetchParams) {
     withCredentials: true,
   });
 }
+
+interface RefreshTokenParams extends FetchParams { }
+interface RefreshTokenResponse { accessToken: string }
+
+export async function refreshToken({ controller }: RefreshTokenParams) {
+  return fetchInstance.post<RefreshTokenResponse>(
+    '/token/refresh',
+    undefined,
+    {
+      signal: controller.signal,
+      withCredentials: true,
+    },
+  );
+}

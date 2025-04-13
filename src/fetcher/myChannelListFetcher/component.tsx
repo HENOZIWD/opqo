@@ -1,12 +1,11 @@
 import styles from './style.module.css';
 import ChannelSelectButton from '@/components/channelSelectButton/component';
-import { AuthenticationParams } from '@/apis/type';
 import { getMyChannelList } from '@/apis/channel';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
+import { getAccessTokenCookie } from '@/serverActions/token';
 
-interface MyChannelListFetcherProps extends AuthenticationParams { }
-
-export default async function MyChannelListFetcher({ accessToken }: MyChannelListFetcherProps) {
+export default async function MyChannelListFetcher() {
+  const accessToken = (await getAccessTokenCookie()) ?? null;
   const { data } = await fetchHandlerWithServerComponent(() => getMyChannelList({ accessToken }));
 
   if (!data) {

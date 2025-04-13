@@ -13,11 +13,9 @@ import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { AuthenticationParams } from '@/apis/type';
+import { useToken } from '@/hooks/useToken';
 
-interface CreateChannelFormProps extends AuthenticationParams { }
-
-export default function CreateChannelForm({ accessToken }: CreateChannelFormProps) {
+export default function CreateChannelForm() {
   const {
     register,
     handleSubmit,
@@ -30,6 +28,7 @@ export default function CreateChannelForm({ accessToken }: CreateChannelFormProp
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const { accessToken } = useToken();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
     fetchHandler((controller) => createChannel({
