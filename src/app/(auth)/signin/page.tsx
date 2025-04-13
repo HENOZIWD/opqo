@@ -27,7 +27,7 @@ export default function SigninPage() {
   const { showToast } = useToast();
 
   const handleSignin = (data: SigninContent) => {
-    fetchHandler((controller) => signin({
+    fetchHandler(({ controller }) => signin({
       phoneNumber: data.phoneNumber,
       password: data.password,
       controller,

@@ -13,7 +13,6 @@ import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { useToken } from '@/hooks/useToken';
 
 export default function UploadVideoForm() {
   const {
@@ -30,7 +29,6 @@ export default function UploadVideoForm() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { accessToken } = useToken();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
     if (!videoId || !thumbnailData) {
@@ -42,7 +40,10 @@ export default function UploadVideoForm() {
       return;
     }
 
-    fetchHandler((controller) => uploadVideoContent({
+    fetchHandler(({
+      controller,
+      accessToken,
+    }) => uploadVideoContent({
       thumbnailImage: thumbnailData,
       videoId,
       title: data.videoTitle,
@@ -71,7 +72,6 @@ export default function UploadVideoForm() {
           videoId={videoId}
           setVideoId={setVideoId}
           setThumbnailData={setThumbnailData}
-          accessToken={accessToken}
         />
       </div>
       <div className={styles.latter}>

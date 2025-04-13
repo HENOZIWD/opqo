@@ -13,7 +13,6 @@ import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { useToken } from '@/hooks/useToken';
 
 export default function CreateChannelForm() {
   const {
@@ -28,10 +27,12 @@ export default function CreateChannelForm() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { accessToken } = useToken();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
-    fetchHandler((controller) => createChannel({
+    fetchHandler(({
+      controller,
+      accessToken,
+    }) => createChannel({
       imageFile: channelImageData,
       name: data.channelName,
       description: data.description,

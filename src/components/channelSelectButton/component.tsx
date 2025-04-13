@@ -27,59 +27,56 @@ export default function ChannelSelectButton({
   const { showToast } = useToast();
 
   const handleSelectChannel = () => {
-    fetchHandler(
-      (controller) => selectChannel({
-        channelId,
-        controller,
-        accessToken,
-      }),
-      {
-        onSuccess: async (response) => {
-          const accessToken = response?.data.accessToken;
+    fetchHandler(({ controller }) => selectChannel({
+      channelId,
+      controller,
+      accessToken,
+    }), {
+      onSuccess: async (response) => {
+        const accessToken = response?.data.accessToken;
 
-          if (!accessToken) {
-            showToast({
-              message: ERR_MSG_CHANNELSELECT_FAILED,
-              type: 'error',
-            });
-
-            return;
-          }
-
-          const userData = parseJwt(accessToken);
-
-          if (!userData) {
-            showToast({
-              message: ERR_MSG_CHANNELSELECT_FAILED,
-              type: 'error',
-            });
-
-            return;
-          }
-
-          await setAccessTokenCookie({
-            accessToken,
-            expUnixTimeStamp: userData.exp,
+        if (!accessToken) {
+          showToast({
+            message: ERR_MSG_CHANNELSELECT_FAILED,
+            type: 'error',
           });
 
-          router.push('/');
-        },
-        onError: (error) => {
-          if (error?.status === 401 || error?.status === 403) {
-            showToast({
-              message: ERR_MSG_AUTHORIZATION_FAILED,
-              type: 'error',
-            });
-          }
-          else {
-            showToast({
-              message: ERR_MSG_INTERNAL_SERVER,
-              type: 'error',
-            });
-          }
-        },
+          return;
+        }
+
+        const userData = parseJwt(accessToken);
+
+        if (!userData) {
+          showToast({
+            message: ERR_MSG_CHANNELSELECT_FAILED,
+            type: 'error',
+          });
+
+          return;
+        }
+
+        await setAccessTokenCookie({
+          accessToken,
+          expUnixTimeStamp: userData.exp,
+        });
+
+        router.push('/');
       },
-    );
+      onError: (error) => {
+        if (error?.status === 401 || error?.status === 403) {
+          showToast({
+            message: ERR_MSG_AUTHORIZATION_FAILED,
+            type: 'error',
+          });
+        }
+        else {
+          showToast({
+            message: ERR_MSG_INTERNAL_SERVER,
+            type: 'error',
+          });
+        }
+      },
+    });
   };
 
   return (

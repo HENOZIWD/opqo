@@ -10,9 +10,8 @@ import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import ProgressBar from '../progressBar/component';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { AuthenticationParams } from '@/apis/type';
 
-interface VideoUploaderProps extends AuthenticationParams {
+interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
   setIsVideoUploadComplete: Dispatch<SetStateAction<boolean>>;
   videoId: string | null;
@@ -26,7 +25,6 @@ export default function VideoUploader({
   videoId,
   setVideoId,
   setThumbnailData,
-  accessToken,
 }: VideoUploaderProps) {
   const [videoData, setVideoData] = useState<Blob | null>(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string>('');
@@ -62,7 +60,10 @@ export default function VideoUploader({
       const videoChunkList = await generateVideoChunkList(videoData, totalVideoChunkCount);
 
       await Promise.allSettled(videoChunkList.map(async (currentVideoChunk, chunkIndex) => {
-        fetchHandler((controller) => checkVideoChunkExist({
+        fetchHandler(({
+          controller,
+          accessToken,
+        }) => checkVideoChunkExist({
           videoId,
           chunkIndex,
           controller,
@@ -77,7 +78,10 @@ export default function VideoUploader({
 
             while (!successFlag && retryCount < 3) {
               await new Promise<void>((resolve, reject) => {
-                fetchHandler((controller) => uploadVideoChunk({
+                fetchHandler(({
+                  controller,
+                  accessToken,
+                }) => uploadVideoChunk({
                   videoId,
                   chunkIndex,
                   chunkFile: currentVideoChunk,
@@ -124,7 +128,10 @@ export default function VideoUploader({
         return;
       }
 
-      await fetchHandler((controller) => readyVideoUpload({
+      await fetchHandler(({
+        controller,
+        accessToken,
+      }) => readyVideoUpload({
         videoId,
         controller,
         accessToken,
@@ -206,7 +213,10 @@ export default function VideoUploader({
 
         const videoHash = await generateVideoHash(videoFile);
 
-        await fetchHandler((controller) => createVideoMetadata({
+        await fetchHandler(({
+          controller,
+          accessToken,
+        }) => createVideoMetadata({
           hash: videoHash,
           width: videoMetadata.width,
           height: videoMetadata.height,

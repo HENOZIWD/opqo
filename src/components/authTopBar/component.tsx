@@ -19,7 +19,7 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
   const { fetchHandler } = useFetch();
 
   const handleSignout = () => {
-    fetchHandler((controller) => signout({ controller }), {
+    fetchHandler(({ controller }) => signout({ controller }), {
       onSuccess: () => { },
       onError: () => { },
       onFinal: async () => {

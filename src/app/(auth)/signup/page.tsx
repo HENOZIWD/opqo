@@ -48,7 +48,7 @@ export default function SignupPage() {
   const { showToast } = useToast();
 
   const handleRequestVerificationCode = (data: SignupContent) => {
-    fetchHandler((controller) => requestVerificationCode({
+    fetchHandler(({ controller }) => requestVerificationCode({
       phoneNumber: data.phoneNumber,
       controller,
     }), {
@@ -80,7 +80,7 @@ export default function SignupPage() {
 
   const handleValidateVerificationCode = (data: { verificationCode: string }) => {
     if (signupStep === 1 && signupValue) {
-      fetchHandler((controller) => signup({
+      fetchHandler(({ controller }) => signup({
         phoneNumber: signupValue.phoneNumber,
         password: signupValue.password,
         authCode: data.verificationCode,
