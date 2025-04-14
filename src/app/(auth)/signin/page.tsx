@@ -12,7 +12,6 @@ import { useToast } from '@/hooks/useToast';
 import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
 import { ROLE_USER } from '@/utils/constant';
-import { useRouter } from 'next/navigation';
 
 export default function SigninPage() {
   const {
@@ -23,8 +22,6 @@ export default function SigninPage() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-
-  const router = useRouter();
 
   const handleSignin = (data: SigninContent) => {
     fetchHandler(({ controller }) => signin({
@@ -61,12 +58,12 @@ export default function SigninPage() {
         });
 
         if (userData.role === ROLE_USER) {
-          router.replace('/selectChannel');
+          window.location.replace('/selectChannel');
 
           return;
         }
 
-        router.replace('/');
+        window.location.replace('/');
       },
       onError: (error) => {
         if (error?.status === 401) {
