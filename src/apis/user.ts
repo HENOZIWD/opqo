@@ -50,10 +50,14 @@ export async function signin({
 }
 
 export async function signout({ controller }: FetchParams) {
-  return fetchInstance.post<void>('/token/expire', {
-    signal: controller.signal,
-    withCredentials: true,
-  });
+  return fetchInstance.post<void>(
+    '/token/expire',
+    undefined,
+    {
+      signal: controller.signal,
+      withCredentials: true,
+    },
+  );
 }
 
 interface RefreshTokenParams extends FetchParams { }
