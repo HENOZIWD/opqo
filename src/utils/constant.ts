@@ -10,3 +10,5 @@ export const TOAST_VISIBILITY_DURATION_SECOND = 5;
 
 export const ROLE_USER = 'USER';
 export const ROLE_CHANNEL = 'CHANNEL';
+
+export const ACCESS_TOKEN_REFRESH_OFFSET = 60 * 1000; // 1분

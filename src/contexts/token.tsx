@@ -3,12 +3,11 @@
 import { refreshToken } from '@/apis/user';
 import { useAbortController } from '@/hooks/useAbortController';
 import { setAccessTokenCookie } from '@/serverActions/token';
+import { ACCESS_TOKEN_REFRESH_OFFSET } from '@/utils/constant';
 import { parseJwt } from '@/utils/token';
-import { usePathname } from 'next/navigation';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
 export const TokenContext = createContext<string | null>(null);
-export const RefreshTokenContext = createContext<(() => Promise<boolean>) | null>(null);
 
 interface TokenProviderProps {
   children: ReactNode;
@@ -21,7 +20,6 @@ export default function TokenProvider({
 }: TokenProviderProps) {
   const [accessToken, setAccessToken] = useState<string | null>(token);
 
-  const pathname = usePathname();
   const { createAbortController } = useAbortController();
 
   const refreshAccessToken = async () => {
@@ -58,28 +56,39 @@ export default function TokenProvider({
   };
 
   useEffect(() => {
-    if (!accessToken) {
-      return;
-    }
+    let timer: ReturnType<typeof setTimeout>;
 
-    const decodedToken = parseJwt(accessToken);
+    (async () => {
+      if (!accessToken) {
+        await refreshAccessToken();
 
-    if (!decodedToken) {
-      return;
-    }
+        return;
+      }
 
-    const remainExpTime = decodedToken.exp - (Date.now() / 1000);
+      const decodedToken = parseJwt(accessToken);
 
-    if (remainExpTime < 60 * 5) {
-      refreshAccessToken();
-    }
-  }, [pathname]);
+      if (!decodedToken) {
+        return;
+      }
+
+      const remainTimeMilliseconds = (decodedToken.exp * 1000) - Date.now();
+
+      if (remainTimeMilliseconds > ACCESS_TOKEN_REFRESH_OFFSET) {
+        timer = setTimeout(async () => {
+          await refreshAccessToken();
+        }, remainTimeMilliseconds - ACCESS_TOKEN_REFRESH_OFFSET);
+      }
+      else {
+        await refreshAccessToken();
+      }
+    })();
+
+    return () => clearTimeout(timer);
+  }, [accessToken]);
 
   return (
     <TokenContext.Provider value={accessToken}>
-      <RefreshTokenContext.Provider value={refreshAccessToken}>
-        {children}
-      </RefreshTokenContext.Provider>
+      {children}
     </TokenContext.Provider>
   );
 }
