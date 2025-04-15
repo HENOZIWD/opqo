@@ -2,6 +2,9 @@ import VideoListFetcher from '@/fetcher/videoListFetcher/component';
 import styles from './page.module.css';
 import { Suspense } from 'react';
 import VideoListSkeleton from '@/fetcher/videoListFetcher/skeleton';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = { description: 'OpqO에 오신것을 환영합니다!' };
 
 export default function MainPage() {
   return (

@@ -3,7 +3,10 @@ import CustomLink from '@/components/customLink/component';
 import MyChannelListFetcher from '@/fetcher/myChannelListFetcher/component';
 import { Metadata } from 'next';
 
-export const metadata: Metadata = { title: '채널 선택' };
+export const metadata: Metadata = {
+  title: '채널 선택',
+  description: '원하는 채널을 선택하고 다양한 콘텐츠를 즐겨보세요!',
+};
 
 export default function SelectChannelPage() {
   return (
