@@ -13,11 +13,8 @@ import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { AuthenticationParams } from '@/apis/type';
 
-interface UploadVideoFormProps extends AuthenticationParams { }
-
-export default function UploadVideoForm({ accessToken }: UploadVideoFormProps) {
+export default function UploadVideoForm() {
   const {
     register,
     handleSubmit,
@@ -43,7 +40,10 @@ export default function UploadVideoForm({ accessToken }: UploadVideoFormProps) {
       return;
     }
 
-    fetchHandler((controller) => uploadVideoContent({
+    fetchHandler(({
+      controller,
+      accessToken,
+    }) => uploadVideoContent({
       thumbnailImage: thumbnailData,
       videoId,
       title: data.videoTitle,
@@ -72,7 +72,6 @@ export default function UploadVideoForm({ accessToken }: UploadVideoFormProps) {
           videoId={videoId}
           setVideoId={setVideoId}
           setThumbnailData={setThumbnailData}
-          accessToken={accessToken}
         />
       </div>
       <div className={styles.latter}>

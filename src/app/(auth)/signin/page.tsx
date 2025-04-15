@@ -6,7 +6,6 @@ import CustomButton from '@/components/customButton/component';
 import { SigninContent } from '@/utils/type';
 import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER, ERR_MSG_SIGNIN_FAILED } from '@/utils/message';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
@@ -21,13 +20,11 @@ export default function SigninPage() {
     formState,
   } = useForm<SigninContent>();
 
-  const router = useRouter();
-
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
 
   const handleSignin = (data: SigninContent) => {
-    fetchHandler((controller) => signin({
+    fetchHandler(({ controller }) => signin({
       phoneNumber: data.phoneNumber,
       password: data.password,
       controller,
@@ -61,12 +58,12 @@ export default function SigninPage() {
         });
 
         if (userData.role === ROLE_USER) {
-          router.replace('/selectChannel');
+          window.location.replace('/selectChannel');
 
           return;
         }
 
-        router.replace('/');
+        window.location.replace('/');
       },
       onError: (error) => {
         if (error?.status === 401) {

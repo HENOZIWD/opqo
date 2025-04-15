@@ -1,11 +1,21 @@
 import { AxiosError, AxiosResponse, isAxiosError } from 'axios';
 import { useAbortController } from './useAbortController';
+import { useToken } from './useToken';
+
+interface FetchFnParams {
+  controller: AbortController;
+  accessToken: string | null;
+}
 
 export function useFetch() {
   const { createAbortController } = useAbortController();
+  const { accessToken } = useToken();
 
   const fetchHandler = async <T>(
-    fetchFn: (controller: AbortController) => Promise<AxiosResponse<T>>,
+    fetchFn: ({
+      controller,
+      accessToken,
+    }: FetchFnParams) => Promise<AxiosResponse<T>>,
     {
       onSuccess,
       onError,
@@ -22,7 +32,10 @@ export function useFetch() {
     const errorAsyncFn = async (error?: AxiosError) => onError(error);
 
     try {
-      const response = await fetchFn(controller);
+      const response = await fetchFn({
+        controller,
+        accessToken,
+      });
       await successAsyncFn(response);
     }
     catch (error) {

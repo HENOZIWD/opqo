@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import ToastProvider from '@/contexts/toast';
+import TokenProvider from '@/contexts/token';
+import { getAccessTokenCookie } from '@/serverActions/token';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -26,12 +28,16 @@ const myFont = localFont({
   display: 'swap',
 });
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const accessToken = await getAccessTokenCookie();
+
   return (
     <html lang="ko">
       <body className={`${myFont.className}`}>
         <ToastProvider>
-          {children}
+          <TokenProvider token={accessToken ?? null}>
+            {children}
+          </TokenProvider>
         </ToastProvider>
       </body>
     </html>
