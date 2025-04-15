@@ -1,11 +1,28 @@
+import { getChannelInfo } from '@/apis/channel';
 import styles from './page.module.css';
 import ChannelProfileFetcher from '@/fetcher/channelProfileFetcher/component';
 import ChannelProfileSkeleton from '@/fetcher/channelProfileFetcher/skeleton';
 import ChannelVideoListFetcher from '@/fetcher/channelVideoListFetcher/component';
 import ChannelVideoListSkeleton from '@/fetcher/channelVideoListFetcher/skeleton';
+import { fetchHandlerWithServerComponent } from '@/utils/handler';
+import { Metadata } from 'next';
 import { Suspense } from 'react';
 
-export default async function ChannelPage({ params }: { params: Promise<{ channelId: string }> }) {
+interface ChannelPageProps { params: Promise<{ channelId: string }> }
+
+export async function generateMetadata({ params }: ChannelPageProps): Promise<Metadata> {
+  const { channelId } = await params;
+
+  const { data } = await fetchHandlerWithServerComponent(() => getChannelInfo({ channelId }));
+
+  return {
+    title: `${data?.name} 채널`,
+    description: `${data?.description}`,
+    openGraph: { images: [`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${data?.id}`] },
+  };
+}
+
+export default async function ChannelPage({ params }: ChannelPageProps) {
   const { channelId } = await params;
 
   return (
