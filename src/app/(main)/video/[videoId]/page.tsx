@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 interface VideoPageProps { params: Promise<{ videoId: string }> }
 
-export async function generateMetadata({ params }: VideoPageProps): Promise<Metadata | void> {
+export async function generateMetadata({ params }: VideoPageProps): Promise<Metadata> {
   const { videoId } = await params;
 
   const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({ videoId }));
