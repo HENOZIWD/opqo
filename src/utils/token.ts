@@ -9,9 +9,7 @@ export function parseJwt(token: string): AccessToken | null {
 
     return JSON.parse(jsonPayload);
   }
-  catch (error: unknown) {
-    console.error(error);
-
+  catch {
     return null;
   }
 }
