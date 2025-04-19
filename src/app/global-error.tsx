@@ -3,10 +3,7 @@
 import styles from './error.module.css';
 import CustomButton from '@/components/customButton/component';
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
+export default function GlobalError({ reset }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {

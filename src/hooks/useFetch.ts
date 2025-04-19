@@ -42,9 +42,6 @@ export function useFetch() {
       if (isAxiosError(error)) {
         await errorAsyncFn(error);
       }
-      else {
-        console.error(error);
-      }
     }
     finally {
       onFinal?.();
