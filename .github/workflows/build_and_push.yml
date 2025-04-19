@@ -34,25 +34,3 @@ jobs:
             NEXT_PUBLIC_CDN_CHANNELIMAGE_URL=${{ secrets.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL }}
             NEXT_PUBLIC_CDN_VIDEO_URL=${{ secrets.NEXT_PUBLIC_CDN_VIDEO_URL }}
             NEXT_PUBLIC_CDN_THUMBNAIL_URL=${{ secrets.NEXT_PUBLIC_CDN_THUMBNAIL_URL }}
-      -
-        name: Add SSH key to known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
-      -
-        name: Deploy to EC2
-        env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-        run: |
-          echo "$EC2_SSH_KEY" > opqo_aws_action.pem
-          chmod 400 opqo_aws_action.pem
-
-          ssh -i opqo_aws_action.pem ubuntu@${{ secrets.EC2_HOST }} << EOF
-          
-            cd /home/ubuntu
-            docker compose down
-            docker compose pull
-            docker compose up -d
-          EOF
-
-          rm -f ec2_key.pem
