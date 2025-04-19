@@ -21,6 +21,13 @@ RUN \
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+
+ARG NEXT_PUBLIC_CDN_HOSTNAME
+ARG NEXT_PUBLIC_SERVER_URL
+ARG NEXT_PUBLIC_CDN_CHANNELIMAGE_URL
+ARG NEXT_PUBLIC_CDN_VIDEO_URL
+ARG NEXT_PUBLIC_CDN_THUMBNAIL_URL
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
