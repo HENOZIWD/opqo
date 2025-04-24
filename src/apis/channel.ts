@@ -68,3 +68,18 @@ export async function getMyChannelList({ accessToken }: GetMyChannelListParams) 
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }
+
+interface GetMyChannelInfoParams extends AuthenticationParams { }
+interface GetMyChannelInfoResponse {
+  id: string;
+  name: string;
+  description: string;
+  createdDate: string;
+}
+
+export async function getMyChannelInfo({ accessToken }: GetMyChannelInfoParams) {
+  return fetchInstance.get<GetMyChannelInfoResponse>(
+    '/channels/me',
+    { headers: { Authorization: accessTokenToBearer(accessToken) } },
+  );
+}
