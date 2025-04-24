@@ -1,0 +1,33 @@
+.navigationBar {
+  position: fixed;
+  width: 17.5rem;
+  border-right: 1px solid var(--lightgray-shadow);
+  height: 100%;
+}
+
+.title {
+  padding: 1rem;
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu {
+  display: block;
+  padding: 0.75rem 0 0.75rem 1rem;
+  font-size: 1.5rem;
+}
+
+.current {
+  font-weight: 700;
+  border-right: 0.5rem solid var(--blue);
+}
+
+.content {
+  margin-left: 17.5rem;
+}
