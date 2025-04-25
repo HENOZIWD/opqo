@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ChannelImage from '../channelImage/component';
 import Thumbnail from '../thumbnail/component';
 import { formatDateString } from '@/utils/date';
+import { numberToTime } from '@/utils/time';
 
 interface VideoCardProps {
   videoId: string;
@@ -32,8 +33,8 @@ export default function VideoCard({
           <Thumbnail
             videoId={videoId}
             videoTitle={videoTitle}
-            videoDuration={videoDuration}
           />
+          <div className={styles.videoDuration}>{numberToTime(videoDuration)}</div>
         </div>
       </Link>
       <div className={styles.videoCardInfo}>

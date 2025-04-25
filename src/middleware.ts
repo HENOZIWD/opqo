@@ -20,7 +20,8 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  if (request.nextUrl.pathname.startsWith('/uploadVideo')) { // 채널 권한 필요
+  if (request.nextUrl.pathname.startsWith('/uploadVideo')
+    || request.nextUrl.pathname.startsWith('/studio')) { // 채널 권한 필요
     const auth = getAuthority(request);
 
     if (!auth) {
@@ -41,6 +42,7 @@ export const config = {
     '/selectChannel',
     '/createChannel',
     '/uploadVideo',
+    '/studio/:path*',
   ],
 };
 

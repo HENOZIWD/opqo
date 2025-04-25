@@ -157,3 +157,17 @@ interface GetVideoListResponse {
 export async function getVideoList({ category }: GetVideoListParams) {
   return fetchInstance.get<GetVideoListResponse[]>(`/contents?view=${category}`);
 }
+
+interface GetMyVideoListParams extends AuthenticationParams { }
+interface GetMyVideoListResponse {
+  id: string;
+  status: string;
+  createdDate: string;
+}
+
+export async function getMyVideoList({ accessToken }: GetMyVideoListParams) {
+  return fetchInstance.get<GetMyVideoListResponse[]>(
+    '/channels/me/videos',
+    { headers: { Authorization: accessTokenToBearer(accessToken) } },
+  );
+}

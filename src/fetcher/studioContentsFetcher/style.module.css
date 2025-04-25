@@ -1,0 +1,47 @@
+@media screen and (width < 36rem) {
+  .videoCard {
+    --videocard-per-row: 1;
+  }
+}
+
+@media screen and (36rem <= width < 50rem) {
+  .videoCard {
+    --videocard-per-row: 2;
+  }
+}
+
+@media screen and (50rem <= width < 73.5rem) {
+  .videoCard {
+    --videocard-per-row: 3;
+  }
+}
+
+@media screen and (73.5rem <= width < 97rem) {
+  .videoCard {
+    --videocard-per-row: 4;
+  }
+}
+
+@media screen and (97rem <= width) {
+  .videoCard {
+    --videocard-per-row: 5;
+  }
+}
+
+.videoList {
+  --videolist-gap: 1rem;
+  --videolist-horizontal-padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1rem var(--videolist-horizontal-padding);
+  gap: var(--videolist-gap);
+}
+
+.videoCard {
+  width: calc((100% - ((var(--videocard-per-row) - 1) * var(--videolist-gap))) / var(--videocard-per-row));
+}
+
+.error {
+  margin: 1.5rem 2rem;
+}
