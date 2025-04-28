@@ -171,3 +171,25 @@ export async function getMyVideoList({ accessToken }: GetMyVideoListParams) {
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }
+
+interface GetMyVideoMetadataParams extends AuthenticationParams { id: string }
+interface GetMyVideoMetadataResponse {
+  id: string;
+  width: number;
+  height: number;
+  duration: number;
+  size: number;
+  extension: string;
+  status: string;
+  createdDate: string;
+}
+
+export async function getMyVideoMetadata({
+  accessToken,
+  id,
+}: GetMyVideoMetadataParams) {
+  return fetchInstance.get<GetMyVideoMetadataResponse>(
+    `/videos/${id}`,
+    { headers: { Authorization: accessTokenToBearer(accessToken) } },
+  );
+}

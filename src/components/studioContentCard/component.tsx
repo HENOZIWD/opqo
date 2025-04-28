@@ -1,6 +1,7 @@
 import { formatDateString } from '@/utils/date';
 import Thumbnail from '../thumbnail/component';
 import styles from './style.module.css';
+import Link from 'next/link';
 
 interface StudioContentCardProps {
   id: string;
@@ -23,7 +24,9 @@ export default function StudioContentCard({
           videoTitle={title}
         />
       </div>
-      <h2 className={styles.title}>{title}</h2>
+      <Link href={`/studio/contents/${id}`}>
+        <h2 className={styles.title}>{title}</h2>
+      </Link>
       <div className={styles.info}>
         <div className={styles.createdDate}>{formatDateString(createdDate)}</div>
         <div className={styles.status}>{status}</div>
