@@ -6,7 +6,8 @@
   width: 24rem;
   aspect-ratio: 16/9;
   background: var(--black);
-  border-radius: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .info {
