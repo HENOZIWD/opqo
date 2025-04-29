@@ -7,15 +7,3 @@
 .thumbnail {
   object-fit: contain;
 }
-
-.videoDuration {
-  position: absolute;
-  right: 0.75rem;
-  bottom: 0.75rem;
-  padding: 0.25rem;
-  background-color: var(--black);
-  color: var(--white);
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-}

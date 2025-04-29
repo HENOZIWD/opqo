@@ -14,9 +14,11 @@ export async function generateVideoHash(blobData: Blob) {
   const buffer = await blobData.arrayBuffer();
   const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
   const hashArray = new Uint8Array(hashBuffer);
-  const base64Hash = btoa(String.fromCharCode(...hashArray));
+  const base16Hash = Array.from(hashArray)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 
-  return base64Hash;
+  return base16Hash;
 }
 
 export async function generateVideoChunkList(videoData: Blob, totalChunkCount: number) {

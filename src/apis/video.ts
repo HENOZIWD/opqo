@@ -157,3 +157,39 @@ interface GetVideoListResponse {
 export async function getVideoList({ category }: GetVideoListParams) {
   return fetchInstance.get<GetVideoListResponse[]>(`/contents?view=${category}`);
 }
+
+interface GetMyVideoListParams extends AuthenticationParams { }
+interface GetMyVideoListResponse {
+  id: string;
+  status: string;
+  createdDate: string;
+}
+
+export async function getMyVideoList({ accessToken }: GetMyVideoListParams) {
+  return fetchInstance.get<GetMyVideoListResponse[]>(
+    '/channels/me/videos',
+    { headers: { Authorization: accessTokenToBearer(accessToken) } },
+  );
+}
+
+interface GetMyVideoMetadataParams extends AuthenticationParams { id: string }
+interface GetMyVideoMetadataResponse {
+  id: string;
+  width: number;
+  height: number;
+  duration: number;
+  size: number;
+  extension: string;
+  status: string;
+  createdDate: string;
+}
+
+export async function getMyVideoMetadata({
+  accessToken,
+  id,
+}: GetMyVideoMetadataParams) {
+  return fetchInstance.get<GetMyVideoMetadataResponse>(
+    `/videos/${id}`,
+    { headers: { Authorization: accessTokenToBearer(accessToken) } },
+  );
+}

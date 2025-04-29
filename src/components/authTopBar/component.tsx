@@ -89,6 +89,14 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
                   내 채널
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/studio/info"
+                  className={styles.menu}
+                >
+                  내 스튜디오
+                </Link>
+              </li>
             </ul>
             <div className={styles.signout}>
               <CustomButton
