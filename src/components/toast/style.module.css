@@ -12,6 +12,7 @@
   transform: translateX(-50%) translateY(-5rem);
   white-space: pre;
   text-align: center;
+  background: var(--white);
 }
 
 .error {
@@ -22,4 +23,12 @@
 
 .show {
   transform: translateX(-50%) translateY(3rem);
+}
+
+@media (width < 40rem) {
+  .container {
+    min-width: calc(100% - 2rem);
+    white-space: normal;
+    padding: 0.75rem 1.25rem;
+  }
 }

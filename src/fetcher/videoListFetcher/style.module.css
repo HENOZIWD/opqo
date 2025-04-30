@@ -68,3 +68,9 @@
   background-color: var(--lightgray);
   border-radius: 0.5rem;
 }
+
+@media (width < 40rem) {
+  .videoList {
+    --videolist-horizontal-padding: 0rem;
+  }
+}

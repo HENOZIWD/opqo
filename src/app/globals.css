@@ -53,3 +53,9 @@ a {
     color-scheme: dark;
   }
 }
+
+@media (width < 40rem) {
+  main {
+    padding: 0 1rem;
+  }
+}
