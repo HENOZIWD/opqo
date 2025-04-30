@@ -56,6 +56,6 @@ a {
 
 @media (width < 40rem) {
   main {
-    padding: 0 1rem;
+    padding: 0 1rem 1rem;
   }
 }
