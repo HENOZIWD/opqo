@@ -1,5 +1,6 @@
 import styles from './style.module.css';
 import { getChannelVideoList } from '@/apis/video';
+import { videoCardStyle, videoListStyle } from '@/app/common.css';
 import VideoCard from '@/components/videoCard/component';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 
@@ -13,7 +14,7 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
   }
 
   return (
-    <ul className={styles.videoList}>
+    <ul className={videoListStyle}>
       {data.length > 0
         ? data.map(({
           id,
@@ -22,7 +23,7 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
           duration,
         }) => (
           <li
-            className={styles.videoCard}
+            className={videoCardStyle}
             key={id}
           >
             <VideoCard

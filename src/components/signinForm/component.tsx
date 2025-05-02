@@ -1,6 +1,5 @@
 'use client';
 
-import styles from './style.module.css';
 import CustomInput from '@/components/customInput/component';
 import CustomButton from '@/components/customButton/component';
 import { SigninContent } from '@/utils/type';
@@ -12,6 +11,7 @@ import { useToast } from '@/hooks/useToast';
 import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
 import { ROLE_USER } from '@/utils/constant';
+import { formErrorStyle, formStyle, formSubmitStyle } from '@/app/common.css';
 
 export default function SigninForm() {
   const {
@@ -85,7 +85,7 @@ export default function SigninForm() {
   return (
     <form
       onSubmit={handleSubmit((data) => { handleSignin(data); })}
-      className={styles.form}
+      className={formStyle}
     >
       <label htmlFor="phoneNumber">휴대전화</label>
       <CustomInput
@@ -100,7 +100,7 @@ export default function SigninForm() {
         })}
         error={formState?.errors?.phoneNumber !== undefined}
       />
-      {formState?.errors?.phoneNumber && <div className={styles.error}>{formState.errors.phoneNumber?.message}</div>}
+      {formState?.errors?.phoneNumber && <div className={formErrorStyle}>{formState.errors.phoneNumber?.message}</div>}
       <label htmlFor="password">비밀번호</label>
       <CustomInput
         id="password"
@@ -113,8 +113,8 @@ export default function SigninForm() {
         })}
         error={formState?.errors?.password != undefined}
       />
-      {formState?.errors?.password && <div className={styles.error}>{formState.errors.password?.message}</div>}
-      <div className={styles.submit}>
+      {formState?.errors?.password && <div className={formErrorStyle}>{formState.errors.password?.message}</div>}
+      <div className={formSubmitStyle}>
         <CustomButton
           type="submit"
           content="로그인"

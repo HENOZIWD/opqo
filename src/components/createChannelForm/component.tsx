@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import styles from './style.module.css';
 import { CreateChannelContent } from '@/utils/type';
 import CustomInput from '@/components/customInput/component';
 import { ERR_MSG_AUTHORIZATION_FAILED, ERR_MSG_CHANNEL_LIMIT_EXCEEDED, ERR_MSG_CHANNELNAME_RULE, ERR_MSG_DUPLICATED_CHANNELNAME, ERR_MSG_INTERNAL_SERVER } from '@/utils/message';
@@ -13,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import { formErrorStyle, formStyle, formSubmitStyle } from '@/app/common.css';
 
 export default function CreateChannelForm() {
   const {
@@ -74,7 +74,7 @@ export default function CreateChannelForm() {
       <ChannelImageSelector setImageData={setChannelImageData} />
       <form
         onSubmit={handleSubmit((data) => { handleCreateChannel(data); })}
-        className={styles.form}
+        className={formStyle}
       >
         <label htmlFor="channelName">채널명</label>
         <CustomInput
@@ -93,7 +93,7 @@ export default function CreateChannelForm() {
           error={formState?.errors?.channelName !== undefined}
         />
         {formState?.errors?.channelName && (
-          <div className={styles.error}>
+          <div className={formErrorStyle}>
             {formState.errors.channelName?.message}
           </div>
         )}
@@ -103,7 +103,7 @@ export default function CreateChannelForm() {
           type="text"
           {...register('description')}
         />
-        <div className={styles.submit}>
+        <div className={formSubmitStyle}>
           <CustomButton
             type="submit"
             content="완료"

@@ -1,6 +1,5 @@
 'use client';
 
-import styles from './style.module.css';
 import CustomButton from '@/components/customButton/component';
 import { SignupContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
@@ -9,6 +8,7 @@ import {
   ERR_MSG_CONFIRMPASSWORD_NOTEQUAL,
   ERR_MSG_DUPLICATED_PHONENUMBER,
   ERR_MSG_EMPTY_PHONENUMBER,
+  ERR_MSG_EMPTY_VERIFICATIONCODE,
   ERR_MSG_INTERNAL_SERVER,
   ERR_MSG_PASSWORD_RULE,
   ERR_MSG_TOO_MANY_REQUEST,
@@ -22,6 +22,8 @@ import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { useCountdown } from '@/hooks/useCountdown';
 import { PHONENUMBER_VALIDATION_DURATION_SECOND } from '@/utils/constant';
+import { finishTitleStyle, linkListStyle, timerStyle, verificationSectionStyle, welcomeMessageStyle } from './style.css';
+import { formErrorStyle, formStyle, formSubmitStyle } from '@/app/common.css';
 
 export default function SignupForm() {
   const {
@@ -34,6 +36,7 @@ export default function SignupForm() {
   const {
     register: verificationRegister,
     handleSubmit: handleVerificationSubmit,
+    formState: verificationFormState,
     resetField,
   } = useForm<{ verificationCode: string }>();
 
@@ -124,9 +127,9 @@ export default function SignupForm() {
   if (signupStep === 2) {
     return (
       <div>
-        <div className={styles.finishTitle}>회원가입 완료</div>
-        <div className={styles.welcome}>환영합니다!</div>
-        <div className={styles.link}>
+        <div className={finishTitleStyle}>회원가입 완료</div>
+        <div className={welcomeMessageStyle}>환영합니다!</div>
+        <div className={linkListStyle}>
           <Link href="/">메인 화면으로</Link>
           <Link href="/signin">로그인</Link>
         </div>
@@ -138,12 +141,9 @@ export default function SignupForm() {
     <div>
       <form
         onSubmit={handleSubmit((data) => { handleRequestVerificationCode(data); })}
-        className={styles.form}
+        className={formStyle}
       >
-        <label
-          htmlFor="phoneNumber"
-          className={styles.label}
-        >
+        <label htmlFor="phoneNumber">
           휴대전화
         </label>
         <CustomInput
@@ -159,11 +159,8 @@ export default function SignupForm() {
           error={formState?.errors?.phoneNumber !== undefined}
           disabled={signupStep === 1}
         />
-        {formState?.errors?.phoneNumber && <div className={styles.error}>{formState.errors.phoneNumber?.message}</div>}
-        <label
-          htmlFor="password"
-          className={styles.label}
-        >
+        {formState?.errors?.phoneNumber && <div className={formErrorStyle}>{formState.errors.phoneNumber?.message}</div>}
+        <label htmlFor="password">
           비밀번호
         </label>
         <CustomInput
@@ -182,11 +179,8 @@ export default function SignupForm() {
           error={formState?.errors?.password !== undefined}
           disabled={signupStep === 1}
         />
-        {formState?.errors?.password && <div className={styles.error}>{formState.errors.password?.message}</div>}
-        <label
-          htmlFor="confirmPassword"
-          className={styles.label}
-        >
+        {formState?.errors?.password && <div className={formErrorStyle}>{formState.errors.password?.message}</div>}
+        <label htmlFor="confirmPassword">
           비밀번호 확인
         </label>
         <CustomInput
@@ -201,9 +195,9 @@ export default function SignupForm() {
           error={formState?.errors?.confirmPassword !== undefined}
           disabled={signupStep === 1}
         />
-        {formState?.errors?.confirmPassword && <div className={styles.error}>{formState.errors.confirmPassword?.message}</div>}
+        {formState?.errors?.confirmPassword && <div className={formErrorStyle}>{formState.errors.confirmPassword?.message}</div>}
         {signupStep === 0 && (
-          <div className={styles.submit}>
+          <div className={formSubmitStyle}>
             <CustomButton
               type="submit"
               content="다음"
@@ -214,22 +208,25 @@ export default function SignupForm() {
       {signupStep === 1 && (
         <form
           onSubmit={handleVerificationSubmit((data) => { handleValidateVerificationCode(data); })}
-          className={styles.form}
+          className={formStyle}
         >
-          <label
-            htmlFor="verificationCode"
-            className={styles.label}
-          >
+          <label htmlFor="verificationCode">
             인증번호
           </label>
-          <div className={styles.verificationCode}>
+          <div className={verificationSectionStyle}>
             <CustomInput
               id="verificationCode"
               type="text"
               inputMode="numeric"
-              {...verificationRegister('verificationCode')}
+              error={verificationFormState.errors.verificationCode !== undefined}
+              {...verificationRegister('verificationCode', {
+                required: {
+                  value: true,
+                  message: ERR_MSG_EMPTY_VERIFICATIONCODE,
+                },
+              })}
             />
-            <div className={styles.timer}>
+            <div className={timerStyle}>
               {(count / 60) >> 0}
               :
               {(count % 60).toString().padStart(2, '0')}
@@ -240,7 +237,12 @@ export default function SignupForm() {
               clickAction={handleRefreshVerificationCode}
             />
           </div>
-          <div className={styles.submit}>
+          {verificationFormState.errors.verificationCode && (
+            <div className={formErrorStyle}>
+              {verificationFormState.errors.verificationCode.message}
+            </div>
+          )}
+          <div className={formSubmitStyle}>
             <CustomButton
               type="submit"
               content="완료"

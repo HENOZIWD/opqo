@@ -2,6 +2,7 @@ import styles from './style.module.css';
 import { getVideoList } from '@/apis/video';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import VideoCard from '@/components/videoCard/component';
+import { videoCardStyle, videoListStyle } from '@/app/common.css';
 
 interface VideoListFetcherProps { category: string }
 
@@ -13,7 +14,7 @@ export default async function VideoListFetcher({ category }: VideoListFetcherPro
   }
 
   return (
-    <ul className={styles.videoList}>
+    <ul className={videoListStyle}>
       {data.length > 0
         ? data.map(({
           id,
@@ -24,7 +25,7 @@ export default async function VideoListFetcher({ category }: VideoListFetcherPro
         }) => (
           <li
             key={id}
-            className={styles.videoCard}
+            className={videoCardStyle}
           >
             <VideoCard
               videoId={id}

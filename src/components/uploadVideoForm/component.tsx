@@ -1,7 +1,6 @@
 'use client';
 
 import CustomButton from '@/components/customButton/component';
-import styles from './style.module.css';
 import { UploadVideoContent } from '@/utils/type';
 import { useForm } from 'react-hook-form';
 import CustomInput from '@/components/customInput/component';
@@ -13,6 +12,8 @@ import VideoUploader from '@/components/videoUploader/component';
 import { uploadVideoContent } from '@/apis/video';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
+import { formErrorStyle, formStyle, formSubmitStyle } from '@/app/common.css';
+import { containerStyle } from './style.css';
 
 export default function UploadVideoForm() {
   const {
@@ -64,7 +65,7 @@ export default function UploadVideoForm() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={containerStyle}>
       <VideoUploader
         isVideoUploadComplete={isVideoUploadComplete}
         setIsVideoUploadComplete={setIsVideoUploadComplete}
@@ -75,12 +76,9 @@ export default function UploadVideoForm() {
       <ThumbnailSelector setImageData={setThumbnailData} />
       <form
         onSubmit={handleSubmit((data) => { handleUploadVideoContent(data); })}
-        className={styles.form}
+        className={formStyle}
       >
-        <label
-          htmlFor="videoTitle"
-          className={styles.label}
-        >
+        <label htmlFor="videoTitle">
           동영상 제목
         </label>
         <CustomInput
@@ -94,11 +92,8 @@ export default function UploadVideoForm() {
           })}
           error={formState?.errors?.videoTitle !== undefined}
         />
-        {formState?.errors?.videoTitle && <div className={styles.error}>{formState.errors.videoTitle?.message}</div>}
-        <label
-          htmlFor="description"
-          className={styles.label}
-        >
+        {formState?.errors?.videoTitle && <div className={formErrorStyle}>{formState.errors.videoTitle?.message}</div>}
+        <label htmlFor="description">
           동영상 설명
         </label>
         <CustomInput
@@ -108,7 +103,7 @@ export default function UploadVideoForm() {
         />
         {isVideoUploadComplete
           ? (
-            <div className={styles.submitButton}>
+            <div className={formSubmitStyle}>
               <CustomButton
                 type="submit"
                 content="업로드"
