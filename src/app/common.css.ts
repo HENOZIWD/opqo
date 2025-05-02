@@ -1,20 +1,35 @@
 import { createGlobalVar, createVar, style } from '@vanilla-extract/css';
 
-// const white = createGlobalVar('white');
+export const whiteStyleVar = createGlobalVar('white');
 // const black = createGlobalVar('black');
 // const gray = createGlobalVar('gray');
 // const lightgray = createGlobalVar('lightgray');
-const red = createGlobalVar('red');
-// const blue = createGlobalVar('blue');
+export const redStyleVar = createGlobalVar('red');
+export const blueStyleVar = createGlobalVar('blue');
 // const blackShadow = createGlobalVar('black-shadow');
 // const redShadow = createGlobalVar('red-shadow');
-// const lightgrayShadow = createGlobalVar('lightgray-shadow');
+export const lightgrayShadowStyleVar = createGlobalVar('lightgray-shadow');
+
+export const mainLayoutContentStyle = style({
+  position: 'relative',
+  marginTop: '3.75rem',
+  height: 'calc(100% - 3.75rem)',
+  overflowY: 'auto',
+});
 
 export const pageTitleStyle = style({
   fontSize: '2rem',
   textAlign: 'center',
   margin: '4rem 0 3rem',
   fontWeight: 900,
+});
+
+export const errorPageStyle = style({
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: '3rem',
+  alignItems: 'center',
+  gap: '1.5rem',
 });
 
 export const videoSectionStyle = style({
@@ -63,7 +78,7 @@ export const formStyle = style({
 });
 
 export const formErrorStyle = style({
-  'color': red,
+  'color': redStyleVar,
   '::before': {
     content: '•',
     paddingRight: '0.5rem',
