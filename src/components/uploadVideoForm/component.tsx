@@ -65,62 +65,58 @@ export default function UploadVideoForm() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.former}>
-        <VideoUploader
-          isVideoUploadComplete={isVideoUploadComplete}
-          setIsVideoUploadComplete={setIsVideoUploadComplete}
-          videoId={videoId}
-          setVideoId={setVideoId}
-          setThumbnailData={setThumbnailData}
-        />
-      </div>
-      <div className={styles.latter}>
-        <ThumbnailSelector setImageData={setThumbnailData} />
-        <form
-          onSubmit={handleSubmit((data) => { handleUploadVideoContent(data); })}
-          className={styles.form}
+      <VideoUploader
+        isVideoUploadComplete={isVideoUploadComplete}
+        setIsVideoUploadComplete={setIsVideoUploadComplete}
+        videoId={videoId}
+        setVideoId={setVideoId}
+        setThumbnailData={setThumbnailData}
+      />
+      <ThumbnailSelector setImageData={setThumbnailData} />
+      <form
+        onSubmit={handleSubmit((data) => { handleUploadVideoContent(data); })}
+        className={styles.form}
+      >
+        <label
+          htmlFor="videoTitle"
+          className={styles.label}
         >
-          <label
-            htmlFor="videoTitle"
-            className={styles.label}
-          >
-            동영상 제목
-          </label>
-          <CustomInput
-            id="videoTitle"
-            type="text"
-            {...register('videoTitle', {
-              required: {
-                value: true,
-                message: ERR_MSG_EMPTY_VIDEO_TITLE,
-              },
-            })}
-            error={formState?.errors?.videoTitle !== undefined}
-          />
-          {formState?.errors?.videoTitle && <div className={styles.error}>{formState.errors.videoTitle?.message}</div>}
-          <label
-            htmlFor="description"
-            className={styles.label}
-          >
-            동영상 설명
-          </label>
-          <CustomInput
-            id="description"
-            type="text"
-            {...register('description')}
-          />
-          {isVideoUploadComplete
-            ? (
-              <div className={styles.submitButton}>
-                <CustomButton
-                  type="submit"
-                  content="업로드"
-                />
-              </div>
-            )
-            : null}
-        </form>
-      </div>
+          동영상 제목
+        </label>
+        <CustomInput
+          id="videoTitle"
+          type="text"
+          {...register('videoTitle', {
+            required: {
+              value: true,
+              message: ERR_MSG_EMPTY_VIDEO_TITLE,
+            },
+          })}
+          error={formState?.errors?.videoTitle !== undefined}
+        />
+        {formState?.errors?.videoTitle && <div className={styles.error}>{formState.errors.videoTitle?.message}</div>}
+        <label
+          htmlFor="description"
+          className={styles.label}
+        >
+          동영상 설명
+        </label>
+        <CustomInput
+          id="description"
+          type="text"
+          {...register('description')}
+        />
+        {isVideoUploadComplete
+          ? (
+            <div className={styles.submitButton}>
+              <CustomButton
+                type="submit"
+                content="업로드"
+              />
+            </div>
+          )
+          : null}
+      </form>
     </div>
   );
 }

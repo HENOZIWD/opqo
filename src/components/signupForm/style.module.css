@@ -61,3 +61,17 @@
   gap: 2rem;
   justify-content: center;
 }
+
+@media (width < 40rem) {
+  .form {
+    width: 100%;
+  }
+
+  .verificationCode {
+    flex-direction: column;
+  }
+
+  .timer {
+    flex: 0;
+  }
+}

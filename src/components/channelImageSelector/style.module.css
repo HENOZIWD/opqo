@@ -33,3 +33,13 @@
 .label {
   cursor: pointer;
 }
+
+@media (width < 40rem) {
+  .container {
+    width: 100%;
+  }
+
+  .inputWrapper {
+    flex-direction: column;
+  }
+}

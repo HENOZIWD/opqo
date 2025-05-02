@@ -39,3 +39,8 @@
   font-size: 1.125rem;
 }
 
+@media (width < 40rem) {
+  .contentSection {
+    padding: 1.5rem 0;
+  }
+}
