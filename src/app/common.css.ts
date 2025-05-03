@@ -13,6 +13,14 @@ export const colorStyleVars = {
   lightGrayShadow: '#cccccc80',
 };
 
+export const errorPageStyle = style({
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: '3rem',
+  alignItems: 'center',
+  gap: '1.5rem',
+});
+
 export const mainLayoutContentStyle = style({
   position: 'relative',
   marginTop: '3.75rem',
@@ -25,14 +33,6 @@ export const pageTitleStyle = style({
   textAlign: 'center',
   margin: '4rem 0 3rem',
   fontWeight: 900,
-});
-
-export const errorPageStyle = style({
-  display: 'flex',
-  flexDirection: 'column',
-  marginTop: '3rem',
-  alignItems: 'center',
-  gap: '1.5rem',
 });
 
 export const videoSectionStyle = style({
