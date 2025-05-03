@@ -1,9 +1,9 @@
 'use client';
 
+import { studioLayoutStyle } from '@/styles/layout.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { studioLayoutContentStyle, studioLayoutMenuListStyle, studioLayoutMenuStyle, studioLayoutNavigationBarStyle, studioLayoutTitleStyle, studioLayoutCurrentStyle } from './style.css';
 
 const PATH_INFO = '/studio/info';
 const PATH_CONTENTS = '/studio/contents';
@@ -25,12 +25,12 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <nav className={studioLayoutNavigationBarStyle}>
-        <h3 className={studioLayoutTitleStyle}>내 스튜디오</h3>
-        <ul className={studioLayoutMenuListStyle}>
+      <nav className={studioLayoutStyle.navigationBar}>
+        <h3 className={studioLayoutStyle.title}>내 스튜디오</h3>
+        <ul className={studioLayoutStyle.menuList}>
           <li>
             <Link
-              className={`${studioLayoutMenuStyle}${currentPath === PATH_INFO ? ` ${studioLayoutCurrentStyle}` : ''}`}
+              className={`${studioLayoutStyle.menu}${currentPath === PATH_INFO ? ` ${studioLayoutStyle.currentMenu}` : ''}`}
               href={PATH_INFO}
               aria-current={currentPath === PATH_INFO ? 'page' : undefined}
             >
@@ -39,7 +39,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
           </li>
           <li>
             <Link
-              className={`${studioLayoutMenuStyle}${currentPath === PATH_CONTENTS ? ` ${studioLayoutCurrentStyle}` : ''}`}
+              className={`${studioLayoutStyle.menu}${currentPath === PATH_CONTENTS ? ` ${studioLayoutStyle.currentMenu}` : ''}`}
               href={PATH_CONTENTS}
               aria-current={currentPath === PATH_CONTENTS ? 'page' : undefined}
             >
@@ -48,7 +48,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
           </li>
         </ul>
       </nav>
-      <div className={studioLayoutContentStyle}>
+      <div className={studioLayoutStyle.content}>
         {children}
       </div>
     </>

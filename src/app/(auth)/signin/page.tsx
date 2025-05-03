@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import SigninForm from '@/components/signinForm/component';
-import { pageTitleStyle } from '@/app/common.css';
+import { commonStyle } from '@/styles/common.css';
 
 export const metadata: Metadata = {
   title: '로그인',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function SigninPage() {
   return (
     <main>
-      <h1 className={pageTitleStyle}>로그인</h1>
+      <h1 className={commonStyle.pageTitle}>로그인</h1>
       <SigninForm />
     </main>
   );

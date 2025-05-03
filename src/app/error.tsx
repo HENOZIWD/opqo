@@ -1,7 +1,7 @@
 'use client';
 
 import CustomButton from '@/components/customButton/component';
-import { errorPageStyle } from './common.css';
+import { commonStyle } from '@/styles/common.css';
 
 export default function GlobalError({
   error,
@@ -11,7 +11,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
-    <div className={errorPageStyle}>
+    <div className={commonStyle.pageTitle}>
       <h2>페이지 로드 중 오류가 발생했습니다.</h2>
       <CustomButton
         type="button"
