@@ -1,14 +1,17 @@
-import { createGlobalVar, createVar, style } from '@vanilla-extract/css';
+import { createVar, style } from '@vanilla-extract/css';
 
-export const whiteStyleVar = createGlobalVar('white');
-// const black = createGlobalVar('black');
-// const gray = createGlobalVar('gray');
-// const lightgray = createGlobalVar('lightgray');
-export const redStyleVar = createGlobalVar('red');
-export const blueStyleVar = createGlobalVar('blue');
-// const blackShadow = createGlobalVar('black-shadow');
-// const redShadow = createGlobalVar('red-shadow');
-export const lightgrayShadowStyleVar = createGlobalVar('lightgray-shadow');
+export const colorStyleVars = {
+  white: '#f1f1f1',
+  black: '#121223',
+  gray: '#777777',
+  lightGray: '#cccccc',
+  red: '#dd4c4c',
+  blue: '#567ace',
+
+  blackShadow: '#12122380',
+  redShadow: '#dd4c4c80',
+  lightGrayShadow: '#cccccc80',
+};
 
 export const mainLayoutContentStyle = style({
   position: 'relative',
@@ -78,7 +81,7 @@ export const formStyle = style({
 });
 
 export const formErrorStyle = style({
-  'color': redStyleVar,
+  'color': colorStyleVars.red,
   '::before': {
     content: '•',
     paddingRight: '0.5rem',

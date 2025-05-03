@@ -1,12 +1,12 @@
-import { blueStyleVar, lightgrayShadowStyleVar, whiteStyleVar } from '@/app/common.css';
+import { colorStyleVars } from '@/app/common.css';
 import { style } from '@vanilla-extract/css';
 
 export const studioLayoutNavigationBarStyle = style({
   'position': 'fixed',
   'width': '17.5rem',
-  'borderRight': `1px solid ${lightgrayShadowStyleVar}`,
+  'borderRight': `1px solid ${colorStyleVars.lightGrayShadow}`,
   'height': '100%',
-  'background': whiteStyleVar,
+  'background': colorStyleVars.white,
 
   '@media': {
     'screen and (width < 40rem)': {
@@ -14,7 +14,7 @@ export const studioLayoutNavigationBarStyle = style({
       width: '100%',
       height: 'auto',
       borderRight: 0,
-      borderBottom: `1px solid ${lightgrayShadowStyleVar}`,
+      borderBottom: `1px solid ${colorStyleVars.lightGrayShadow}`,
     },
   },
 });
@@ -39,12 +39,12 @@ export const studioLayoutMenuStyle = style({
 
 export const studioLayoutCurrentStyle = style({
   'fontWeight': 700,
-  'borderRight': `0.5rem solid ${blueStyleVar}`,
+  'borderRight': `0.5rem solid ${colorStyleVars.blue}`,
 
   '@media': {
     'screen and (width < 40rem)': {
       borderRight: 0,
-      borderLeft: `0.5rem solid ${blueStyleVar}`,
+      borderLeft: `0.5rem solid ${colorStyleVars.blue}`,
     },
   },
 });
