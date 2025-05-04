@@ -1,6 +1,6 @@
 'use client';
 
-import Toast from '@/components/toast/component';
+import Toast from '@/components/common/toast';
 import { useCountdown } from '@/hooks/useCountdown';
 import { TOAST_DURATION_SECOND } from '@/utils/constant';
 import { ToastType } from '@/utils/type';

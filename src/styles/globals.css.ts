@@ -1,5 +1,5 @@
 import { globalStyle } from '@vanilla-extract/css';
-import { colorStyleVars } from './common.css';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './common.css';
 
 globalStyle('html, body', {
   height: '100%',
@@ -33,4 +33,4 @@ globalStyle('a', {
 
 globalStyle('html', { '@media': { '(prefers-color-scheme: dark)': { colorScheme: 'dark' } } });
 
-globalStyle('main', { '@media': { 'screen and (width < 40rem)': { padding: '0 1rem 1rem' } } });
+globalStyle('main', { '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { padding: '0 1rem 1rem' } } });

@@ -1,12 +1,12 @@
 import { getChannelInfo } from '@/apis/channel';
-import ChannelProfileFetcher from '@/fetcher/channelProfileFetcher/component';
-import ChannelProfileSkeleton from '@/fetcher/channelProfileFetcher/skeleton';
-import ChannelVideoListFetcher from '@/fetcher/channelVideoListFetcher/component';
-import ChannelVideoListSkeleton from '@/fetcher/channelVideoListFetcher/skeleton';
-import { videoStyle } from '@/styles/video.css';
+import ChannelProfileFetcher from '@/fetcher/channelProfileFetcher';
+import ChannelProfileSkeleton from '@/components/channel/channelProfileSkeleton';
+import ChannelVideoListFetcher from '@/fetcher/channelVideoListFetcher';
+import { videoListStyle } from '@/styles/video.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
+import VideoListSkeleton from '@/components/video/videoListSkeleton';
 
 interface ChannelPageProps { params: Promise<{ channelId: string }> }
 
@@ -30,9 +30,9 @@ export default async function ChannelPage({ params }: ChannelPageProps) {
       <Suspense fallback={<ChannelProfileSkeleton />}>
         <ChannelProfileFetcher channelId={channelId} />
       </Suspense>
-      <section className={videoStyle.listSection}>
-        <h2 className={videoStyle.listSectionTitle}>업로드한 동영상</h2>
-        <Suspense fallback={<ChannelVideoListSkeleton />}>
+      <section className={videoListStyle.section}>
+        <h2 className={videoListStyle.title}>업로드한 동영상</h2>
+        <Suspense fallback={<VideoListSkeleton />}>
           <ChannelVideoListFetcher channelId={channelId} />
         </Suspense>
       </section>

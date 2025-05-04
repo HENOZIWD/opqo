@@ -1,5 +1,5 @@
 import { getVideoInfo } from '@/apis/video';
-import VideoFetcher from '@/fetcher/videoFetcher/component';
+import VideoFetcher from '@/fetcher/videoFetcher';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 
