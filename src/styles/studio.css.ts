@@ -1,27 +1,21 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars } from './common.css';
-
-const infoCategoryStyle = style({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.5rem',
-});
-
-const infoCategoryTitleStyle = style({
-  fontSize: '0.875rem',
-  color: colorStyleVars.gray,
-  fontWeight: 400,
-});
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './common.css';
 
 export const myVideoInfoStyle = {
-  container: style({ padding: '0 2rem 2rem' }),
+  container: style({
+    'padding': '0 2rem 2rem',
+
+    '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { padding: 0 } },
+  }),
 
   thumbnail: style({
-    width: '24rem',
-    aspectRatio: '16/9',
-    background: colorStyleVars.black,
-    borderRadius: '0.5rem',
-    overflow: 'hidden',
+    'width': '24rem',
+    'aspectRatio': '16/9',
+    'background': colorStyleVars.black,
+    'borderRadius': '0.5rem',
+    'overflow': 'hidden',
+
+    '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { width: '100%' } },
   }),
 
   info: style({
@@ -35,10 +29,6 @@ export const myVideoInfoStyle = {
     fontWeight: 700,
     fontSize: '1.25rem',
   }),
-
-  category: infoCategoryStyle,
-
-  categoryTitle: infoCategoryTitleStyle,
 };
 
 export const studioContentCardStyle = {
@@ -52,11 +42,12 @@ export const studioContentCardStyle = {
 
 export const studioInfoStyle = {
   container: style({
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem',
-    paddingTop: '1.5rem',
-    alignItems: 'center',
+    'display': 'flex',
+    'flexDirection': 'column',
+    'gap': '1.5rem',
+    'padding': '1.5rem',
+
+    '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { padding: 0 } },
   }),
 
   channelImage: style({
@@ -69,11 +60,21 @@ export const studioInfoStyle = {
     fontWeight: 700,
   }),
 
-  category: style([infoCategoryStyle, { alignItems: 'center' }]),
-
-  categoryTitle: infoCategoryTitleStyle,
-
-  categoryContent: style({ fontSize: '1.25rem' }),
-
   loadError: style({ textAlign: 'center' }),
+};
+
+export const studioInfoSectionStyle = {
+  container: style({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+  }),
+
+  title: style({
+    fontSize: '0.875rem',
+    color: colorStyleVars.gray,
+    fontWeight: 400,
+  }),
+
+  content: style({ wordBreak: 'break-all' }),
 };

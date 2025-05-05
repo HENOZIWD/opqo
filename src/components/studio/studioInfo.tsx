@@ -1,6 +1,7 @@
 import { formatDateString } from '@/utils/date';
 import ChannelImage from '@/components/channel/channelImage';
-import { studioInfoStyle } from '@/styles/studio.css';
+import { studioInfoSectionStyle, studioInfoStyle } from '@/styles/studio.css';
+import StudioInfoSection from './studioInfoSection';
 
 interface StudioInfoProps {
   id: string;
@@ -23,18 +24,16 @@ export default function StudioInfo({
           channelName={name}
         />
       </div>
-      <section className={studioInfoStyle.category}>
-        <h2 className={studioInfoStyle.categoryTitle}>채널 이름</h2>
+      <section className={studioInfoSectionStyle.container}>
+        <h2 className={studioInfoSectionStyle.title}>채널 이름</h2>
         <p className={studioInfoStyle.channelName}>{name}</p>
       </section>
-      <section className={studioInfoStyle.category}>
-        <h2 className={studioInfoStyle.categoryTitle}>채널 설명</h2>
-        <p className={studioInfoStyle.categoryContent}>{description}</p>
-      </section>
-      <section className={studioInfoStyle.category}>
-        <h2 className={studioInfoStyle.categoryTitle}>채널 개설일</h2>
-        <p className={studioInfoStyle.categoryContent}>{formatDateString(createdDate)}</p>
-      </section>
+      <StudioInfoSection title="채널 설명">
+        {description}
+      </StudioInfoSection>
+      <StudioInfoSection title="채널 개설일">
+        {formatDateString(createdDate)}
+      </StudioInfoSection>
     </div>
   );
 }

@@ -1,8 +1,7 @@
-import ChannelImage from '@/components/channel/channelImage';
 import { getChannelInfo } from '@/apis/channel';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
-import { formatDateString } from '@/utils/date';
 import { channelProfileStyle } from '@/styles/channel.css';
+import ChannelProfile from '@/components/channel/channelProfile';
 
 interface ChannelProfileFetcherProps { channelId: string }
 
@@ -14,26 +13,11 @@ export default async function ChannelProfileFetcher({ channelId }: ChannelProfil
   }
 
   return (
-    <div className={channelProfileStyle.container}>
-      <div className={channelProfileStyle.image}>
-        <ChannelImage
-          channelId={data.id}
-          channelName={data.name}
-        />
-      </div>
-      <div className={channelProfileStyle.info}>
-        <div className={channelProfileStyle.name}>
-          {data.name}
-        </div>
-        <div>
-          {data.description}
-        </div>
-        <div>
-          가입일
-          {' '}
-          {formatDateString(data.createdDate)}
-        </div>
-      </div>
-    </div>
+    <ChannelProfile
+      id={data.id}
+      name={data.name}
+      description={data.description}
+      createdDate={data.createdDate}
+    />
   );
 }

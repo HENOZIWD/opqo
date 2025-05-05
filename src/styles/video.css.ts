@@ -273,7 +273,11 @@ export const videoPageStyle = {
     left: 0,
   }),
 
-  content: style({
+  loadError: style({ margin: '1.5rem 2rem' }),
+};
+
+export const videoInfoStyle = {
+  container: style({
     'display': 'flex',
     'flexDirection': 'column',
     'gap': '1.5rem',
@@ -310,6 +314,4 @@ export const videoPageStyle = {
     gap: '1rem',
     fontSize: '1.125rem',
   }),
-
-  loadError: style({ margin: '1.5rem 2rem' }),
 };
