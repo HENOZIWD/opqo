@@ -1,7 +1,18 @@
+import { getVideoInfo } from '@/apis/video';
 import MyVideoInfoFetcher from '@/fetcher/myVideoInfoFetcher';
 import { pageStyle } from '@/styles/common.css';
+import { fetchHandlerWithServerComponent } from '@/utils/handler';
+import { Metadata } from 'next';
 
 interface MyVideoInfoPageProps { params: Promise<{ videoId: string }> }
+
+export async function generateMetadata({ params }: MyVideoInfoPageProps): Promise<Metadata> {
+  const { videoId } = await params;
+
+  const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({ videoId }));
+
+  return { title: `${data?.title} 정보` };
+}
 
 export default async function MyVideoInfoPage({ params }: MyVideoInfoPageProps) {
   const { videoId } = await params;
