@@ -46,6 +46,7 @@ export const buttonStyle = {
     'padding': '0.625rem 1.25rem',
     'fontWeight': 900,
     'fontSize': '1.125rem',
+    'justifySelf': 'center',
 
     ':disabled': {
       background: colorStyleVars.lightGray,
