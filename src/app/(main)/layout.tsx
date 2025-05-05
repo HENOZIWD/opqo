@@ -1,11 +1,11 @@
-import Header from '@/components/header/component';
-import styles from './layout.module.css';
+import Header from '@/components/layout/header';
+import { mainLayoutStyle } from '@/styles/layout.css';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <div className={styles.content}>
+      <div className={mainLayoutStyle.content}>
         {children}
       </div>
     </>

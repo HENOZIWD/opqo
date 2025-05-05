@@ -1,6 +1,6 @@
-import SignupForm from '@/components/signupForm/component';
-import styles from './page.module.css';
+import SignupForm from '@/components/form/signupForm';
 import { Metadata } from 'next';
+import { pageStyle } from '@/styles/common.css';
 
 export const metadata: Metadata = {
   title: '회원가입',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function SignupPage() {
   return (
     <main>
-      <h1 className={styles.title}>회원가입</h1>
+      <h1 className={pageStyle.pageTitle}>회원가입</h1>
       <SignupForm />
     </main>
   );

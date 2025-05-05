@@ -1,7 +1,7 @@
 'use client';
 
+import { studioLayoutStyle } from '@/styles/layout.css';
 import Link from 'next/link';
-import styles from './layout.module.css';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -25,12 +25,12 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <nav className={styles.navigationBar}>
-        <h3 className={styles.title}>내 스튜디오</h3>
-        <ul className={styles.menuList}>
+      <nav className={studioLayoutStyle.navigationBar}>
+        <h3 className={studioLayoutStyle.title}>내 스튜디오</h3>
+        <ul className={studioLayoutStyle.menuList}>
           <li>
             <Link
-              className={`${styles.menu}${currentPath === PATH_INFO ? ` ${styles.current}` : ''}`}
+              className={`${studioLayoutStyle.menu}${currentPath === PATH_INFO ? ` ${studioLayoutStyle.currentMenu}` : ''}`}
               href={PATH_INFO}
               aria-current={currentPath === PATH_INFO ? 'page' : undefined}
             >
@@ -39,7 +39,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
           </li>
           <li>
             <Link
-              className={`${styles.menu}${currentPath === PATH_CONTENTS ? ` ${styles.current}` : ''}`}
+              className={`${studioLayoutStyle.menu}${currentPath === PATH_CONTENTS ? ` ${studioLayoutStyle.currentMenu}` : ''}`}
               href={PATH_CONTENTS}
               aria-current={currentPath === PATH_CONTENTS ? 'page' : undefined}
             >
@@ -48,7 +48,7 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
           </li>
         </ul>
       </nav>
-      <div className={styles.content}>
+      <div className={studioLayoutStyle.content}>
         {children}
       </div>
     </>

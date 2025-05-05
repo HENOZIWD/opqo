@@ -1,10 +1,10 @@
-import styles from './page.module.css';
-import StudioInfoFetcher from '@/fetcher/studioInfoFetcher/component';
+import StudioInfoFetcher from '@/fetcher/studioInfoFetcher';
+import { pageStyle } from '@/styles/common.css';
 
 export default function StudioInfoPage() {
   return (
     <main>
-      <h1 className={styles.title}>내 채널 정보</h1>
+      <h1 className={pageStyle.pageTitle}>내 채널 정보</h1>
       <StudioInfoFetcher />
     </main>
   );

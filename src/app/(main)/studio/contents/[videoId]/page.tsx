@@ -1,5 +1,5 @@
-import styles from './page.module.css';
-import MyVideoInfoFetcher from '@/fetcher/myVIdeoInfoFetcher/component';
+import MyVideoInfoFetcher from '@/fetcher/myVideoInfoFetcher';
+import { pageStyle } from '@/styles/common.css';
 
 interface MyVideoInfoPageProps { params: Promise<{ videoId: string }> }
 
@@ -8,7 +8,7 @@ export default async function MyVideoInfoPage({ params }: MyVideoInfoPageProps) 
 
   return (
     <main>
-      <h1 className={styles.title}>내 콘텐츠 정보</h1>
+      <h1 className={pageStyle.pageTitle}>내 콘텐츠 정보</h1>
       <MyVideoInfoFetcher id={videoId} />
     </main>
   );
