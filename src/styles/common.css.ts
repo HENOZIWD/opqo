@@ -180,6 +180,7 @@ export const toastStyle = {
     'whiteSpace': 'pre',
     'textAlign': 'center',
     'background': colorStyleVars.white,
+    'zIndex': 9999,
 
     '@media': {
       [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
