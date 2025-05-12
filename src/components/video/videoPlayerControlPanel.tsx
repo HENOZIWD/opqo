@@ -157,6 +157,7 @@ export default function VideoPlayerControlPanel({
   return (
     <div className={videoPlayerControlPanelStyle.container}>
       <Slider
+        name="동영상 구간 탐색"
         min={0}
         max={duration}
         step="any"
@@ -185,6 +186,7 @@ export default function VideoPlayerControlPanel({
         </button>
         <div className={videoPlayerControlPanelStyle.volumeSlider}>
           <Slider
+            name="음량 조절"
             min={0}
             max={1}
             step={0.05}
