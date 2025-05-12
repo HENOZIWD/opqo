@@ -52,6 +52,10 @@ export const buttonStyle = {
       background: colorStyleVars.lightGray,
       cursor: 'default',
     },
+
+    ':focus': { boxShadow: `0 0 0 0.25rem ${colorStyleVars.blackShadow}` },
+
+    ':hover': { boxShadow: `0 0 0 0.25rem ${colorStyleVars.blackShadow}` },
   }),
 
   small: style({
