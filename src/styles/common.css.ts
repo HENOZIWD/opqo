@@ -4,10 +4,10 @@ import { calc } from '@vanilla-extract/css-utils';
 export const colorStyleVars = {
   white: '#f1f1f1',
   black: '#121223',
-  gray: '#777777',
+  gray: '#545454',
   lightGray: '#cccccc',
   red: '#dd4c4c',
-  blue: '#567ace',
+  blue: '#255CDE',
 
   blackShadow: '#12122380',
   redShadow: '#dd4c4c80',
