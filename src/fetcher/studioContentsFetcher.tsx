@@ -33,7 +33,7 @@ export default async function StudioContentsFetcher() {
             />
           </li>
         ))
-        : <div className={videoListStyle.fallback}>업로드 한 동영상이 없습니다.</div>}
+        : <li className={videoListStyle.fallback}>업로드 한 동영상이 없습니다.</li>}
     </ul>
   );
 }
