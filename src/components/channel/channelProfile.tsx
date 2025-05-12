@@ -24,9 +24,9 @@ export default function ChannelProfile({
         />
       </div>
       <div className={channelProfileStyle.info}>
-        <div className={channelProfileStyle.name}>
+        <h1 className={channelProfileStyle.name}>
           {name}
-        </div>
+        </h1>
         <div>
           {description}
         </div>
