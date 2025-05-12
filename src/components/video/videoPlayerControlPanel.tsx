@@ -170,12 +170,16 @@ export default function VideoPlayerControlPanel({
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.playPauseButton}`}
           onClick={handlePlayPause}
+          title={isPlaying ? '동영상 일시정지' : '동영상 재생'}
+          aria-label={isPlaying ? '동영상 일시정지' : '동영상 재생'}
         >
           {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.volumeButton}`}
           onClick={handleMuteVolume}
+          title={isMuted || volume === 0 ? '음소거 해제' : '음소거'}
+          aria-label={isMuted || volume === 0 ? '음소거 해제' : '음소거'}
         >
           {isMuted || volume === 0 ? <VolumeMuteIcon /> : <VolumeIcon />}
         </button>
@@ -201,6 +205,8 @@ export default function VideoPlayerControlPanel({
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.fullscreenButton}`}
           onClick={handleFullScreen}
+          title={isFullscreen ? '전체 화면 해제' : '전체 화면으로 전환'}
+          aria-label={isFullscreen ? '전체 화면 해제' : '전체 화면으로 전환'}
         >
           {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
         </button>
