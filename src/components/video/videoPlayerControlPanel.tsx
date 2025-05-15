@@ -13,31 +13,40 @@ import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
 
 interface VideoPlayerControlPanelProps {
-  containerRef: RefObject<HTMLElement | null>;
   videoRef: RefObject<HTMLVideoElement | null>;
   isPlaying: boolean;
   currentTime: number;
   duration: number;
-  setIsPlaying: Dispatch<SetStateAction<boolean>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   bufferedProgress: number;
+  playVideo: () => void;
+  pauseVideo: () => void;
+  handleMuteVolume: () => void;
+  handleFullscreen: () => void;
+  isMuted: boolean;
+  setIsMuted: Dispatch<SetStateAction<boolean>>;
+  isFullscreen: boolean;
+  handlePlayPause: () => void;
 }
 
 export default function VideoPlayerControlPanel({
-  containerRef,
   videoRef,
   isPlaying,
   currentTime,
   duration,
-  setIsPlaying,
   setCurrentTime,
   bufferedProgress,
+  playVideo,
+  pauseVideo,
+  handleMuteVolume,
+  handleFullscreen,
+  isMuted,
+  setIsMuted,
+  isFullscreen,
+  handlePlayPause,
 }: VideoPlayerControlPanelProps) {
   const [volume, setVolume] = useState<number>(0.5);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
-  const playPromiseRef = useRef<Promise<void>>(null);
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
     if (!videoRef.current) {
@@ -49,37 +58,6 @@ export default function VideoPlayerControlPanel({
     videoRef.current.currentTime = value;
     setCurrentTime(value);
   }, 50));
-
-  const playVideo = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    if (playPromiseRef.current) {
-      return;
-    }
-
-    const playPromise = videoRef.current.play();
-
-    if (playPromise !== undefined) {
-      playPromiseRef.current = playPromise;
-
-      playPromise.then(() => {
-        playPromiseRef.current = null;
-      }).catch(() => {
-        setIsPlaying(false);
-        playPromiseRef.current = null;
-      });
-    }
-  };
-
-  const pauseVideo = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    videoRef.current.pause();
-  };
 
   const handleStartSeek = () => {
     isPlayingBeforeSeek.current = isPlaying;
@@ -99,30 +77,6 @@ export default function VideoPlayerControlPanel({
     }
   };
 
-  const handlePlayPause = () => {
-    if (isPlaying) {
-      pauseVideo();
-    }
-    else {
-      playVideo();
-    }
-  };
-
-  const handleMuteVolume = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    if (videoRef.current.muted) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-    }
-    else {
-      videoRef.current.muted = true;
-      setIsMuted(true);
-    }
-  };
-
   const handleChangeVolume = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number.parseFloat(Number.parseFloat(e.target.value).toFixed(2));
 
@@ -137,21 +91,6 @@ export default function VideoPlayerControlPanel({
 
     videoRef.current.volume = value;
     setVolume(value);
-  };
-
-  const handleFullScreen = () => {
-    if (!containerRef.current) {
-      return;
-    }
-
-    if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen();
-      setIsFullscreen(true);
-    }
-    else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
   };
 
   return (
@@ -206,7 +145,7 @@ export default function VideoPlayerControlPanel({
         </div>
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.fullscreenButton}`}
-          onClick={handleFullScreen}
+          onClick={handleFullscreen}
           title={isFullscreen ? '전체 화면 해제' : '전체 화면으로 전환'}
           aria-label={isFullscreen ? '전체 화면 해제' : '전체 화면으로 전환'}
         >
