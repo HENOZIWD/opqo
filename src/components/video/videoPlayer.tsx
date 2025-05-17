@@ -145,6 +145,23 @@ export default function VideoPlayer({
     }
   };
 
+  const handleSkipTime = (dir: 'BACKWARD' | 'FORWARD') => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    if (dir === 'FORWARD') {
+      const changedTime = Math.max(currentTime - 5, 0);
+      videoRef.current.currentTime = changedTime;
+      setCurrentTime(changedTime);
+    }
+    else if (dir === 'BACKWARD') {
+      const changedTime = Math.min(currentTime + 5, duration);
+      videoRef.current.currentTime = changedTime;
+      setCurrentTime(changedTime);
+    }
+  };
+
   const handleShortcut = (e: KeyboardEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -171,6 +188,18 @@ export default function VideoPlayer({
 
       case 'arrowdown': {
         handleVolumeUpdown('DOWN');
+        break;
+      }
+
+      case 'arrowleft': {
+        handleShowPanel();
+        handleSkipTime('FORWARD');
+        break;
+      }
+
+      case 'arrowright': {
+        handleShowPanel();
+        handleSkipTime('BACKWARD');
         break;
       }
 
