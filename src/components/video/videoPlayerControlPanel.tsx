@@ -110,16 +110,16 @@ export default function VideoPlayerControlPanel({
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.playPauseButton}`}
           onClick={handlePlayPause}
-          title={isPlaying ? '동영상 일시정지' : '동영상 재생'}
-          aria-label={isPlaying ? '동영상 일시정지' : '동영상 재생'}
+          title={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
+          aria-label={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
         >
           {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.volumeButton}`}
           onClick={handleMuteVolume}
-          title={isMuted || volume === 0 ? '음소거 해제' : '음소거'}
-          aria-label={isMuted || volume === 0 ? '음소거 해제' : '음소거'}
+          title={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
+          aria-label={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
         >
           {isMuted || volume === 0 ? <VolumeMuteIcon /> : <VolumeIcon />}
         </button>
@@ -146,8 +146,8 @@ export default function VideoPlayerControlPanel({
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.fullscreenButton}`}
           onClick={handleFullscreen}
-          title={isFullscreen ? '전체 화면 해제' : '전체 화면으로 전환'}
-          aria-label={isFullscreen ? '전체 화면 해제' : '전체 화면으로 전환'}
+          title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+          aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
         >
           {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
         </button>
