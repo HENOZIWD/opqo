@@ -29,6 +29,7 @@ export default function VideoPlayer({
   const [isBuffering, setIsBuffering] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [volume, setVolume] = useState<number>(0.5);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
@@ -127,6 +128,23 @@ export default function VideoPlayer({
     }
   };
 
+  const handleVolumeUpdown = (dir: 'UP' | 'DOWN') => {
+    if (!videoRef.current) {
+      return;
+    }
+
+    if (dir === 'UP') {
+      const changedVolume = Math.min(Number.parseFloat((volume + 0.05).toFixed(2)), 1);
+      videoRef.current.volume = changedVolume;
+      setVolume(changedVolume);
+    }
+    else if (dir === 'DOWN') {
+      const changedVolume = Math.max(Number.parseFloat((volume - 0.05).toFixed(2)), 0);
+      videoRef.current.volume = changedVolume;
+      setVolume(changedVolume);
+    }
+  };
+
   const handleShortcut = (e: KeyboardEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -143,6 +161,16 @@ export default function VideoPlayer({
 
       case 'enter': {
         handleFullscreen();
+        break;
+      }
+
+      case 'arrowup': {
+        handleVolumeUpdown('UP');
+        break;
+      }
+
+      case 'arrowdown': {
+        handleVolumeUpdown('DOWN');
         break;
       }
 
@@ -199,6 +227,8 @@ export default function VideoPlayer({
           setIsMuted={setIsMuted}
           isFullscreen={isFullscreen}
           handlePlayPause={handlePlayPause}
+          volume={volume}
+          setVolume={setVolume}
         />
       </div>
       {isBuffering

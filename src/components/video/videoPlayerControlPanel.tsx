@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef, useState } from 'react';
+import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef } from 'react';
 import PauseIcon from '@/icons/pauseIcon';
 import PlayIcon from '@/icons/playIcon';
 import FullscreenIcon from '@/icons/fullscreenIcon';
@@ -27,6 +27,8 @@ interface VideoPlayerControlPanelProps {
   setIsMuted: Dispatch<SetStateAction<boolean>>;
   isFullscreen: boolean;
   handlePlayPause: () => void;
+  volume: number;
+  setVolume: Dispatch<SetStateAction<number>>;
 }
 
 export default function VideoPlayerControlPanel({
@@ -44,9 +46,9 @@ export default function VideoPlayerControlPanel({
   setIsMuted,
   isFullscreen,
   handlePlayPause,
+  volume,
+  setVolume,
 }: VideoPlayerControlPanelProps) {
-  const [volume, setVolume] = useState<number>(0.5);
-
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
     if (!videoRef.current) {
