@@ -128,6 +128,8 @@ export default function VideoPlayer({
   };
 
   const handleShortcut = (e: KeyboardEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     switch (e.key.toLowerCase()) {
       case ' ': {
         handlePlayPause();
