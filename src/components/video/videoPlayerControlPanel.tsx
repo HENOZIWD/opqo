@@ -11,6 +11,7 @@ import { numberToTime } from '@/utils/time';
 import { throttle } from '@/utils/throttle';
 import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
+import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -86,13 +87,15 @@ export default function VideoPlayerControlPanel({
       return;
     }
 
-    if (isMuted && value > 0) {
+    if (isMuted) {
       videoRef.current.muted = false;
       setIsMuted(false);
+      setMuteStorageValue(false);
     }
 
     videoRef.current.volume = value;
     setVolume(value);
+    setVolumeStorageValue(value);
   };
 
   return (
