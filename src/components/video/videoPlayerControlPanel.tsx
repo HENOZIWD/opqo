@@ -133,7 +133,7 @@ export default function VideoPlayerControlPanel({
             name="음량 조절"
             min={0}
             max={1}
-            step={0.05}
+            step={0.01}
             value={isMuted ? 0 : volume}
             onChange={handleChangeVolume}
           />
