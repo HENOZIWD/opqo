@@ -42,3 +42,8 @@ export interface AccessToken {
   role: typeof ROLE_USER | typeof ROLE_CHANNEL;
   exp: number;
 }
+
+export interface BadRequestResponse {
+  code: string;
+  message: string;
+}

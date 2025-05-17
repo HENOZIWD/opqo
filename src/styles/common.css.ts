@@ -4,10 +4,10 @@ import { calc } from '@vanilla-extract/css-utils';
 export const colorStyleVars = {
   white: '#f1f1f1',
   black: '#121223',
-  gray: '#777777',
+  gray: '#545454',
   lightGray: '#cccccc',
   red: '#dd4c4c',
-  blue: '#567ace',
+  blue: '#255CDE',
 
   blackShadow: '#12122380',
   redShadow: '#dd4c4c80',
@@ -46,11 +46,16 @@ export const buttonStyle = {
     'padding': '0.625rem 1.25rem',
     'fontWeight': 900,
     'fontSize': '1.125rem',
+    'justifySelf': 'center',
 
     ':disabled': {
       background: colorStyleVars.lightGray,
       cursor: 'default',
     },
+
+    ':focus': { boxShadow: `0 0 0 0.25rem ${colorStyleVars.blackShadow}` },
+
+    ':hover': { boxShadow: `0 0 0 0.25rem ${colorStyleVars.blackShadow}` },
   }),
 
   small: style({
@@ -179,6 +184,7 @@ export const toastStyle = {
     'whiteSpace': 'pre',
     'textAlign': 'center',
     'background': colorStyleVars.white,
+    'zIndex': 9999,
 
     '@media': {
       [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {

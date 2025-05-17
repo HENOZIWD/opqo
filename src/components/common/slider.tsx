@@ -4,6 +4,7 @@ import { ChangeEventHandler } from 'react';
 import { colorStyleVars, sliderStyle } from '@/styles/common.css';
 
 interface SliderProps {
+  name: string;
   min: number;
   max: number;
   step: number | 'any';
@@ -15,6 +16,7 @@ interface SliderProps {
 }
 
 export default function Slider({
+  name,
   min,
   max,
   step,
@@ -49,6 +51,7 @@ export default function Slider({
         }}
       />
       <input
+        aria-label={name}
         type="range"
         className={sliderStyle.input}
         min={min}

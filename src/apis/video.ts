@@ -161,6 +161,7 @@ export async function getVideoList({ category }: GetVideoListParams) {
 interface GetMyVideoListParams extends AuthenticationParams { }
 interface GetMyVideoListResponse {
   id: string;
+  title: string;
   status: string;
   createdDate: string;
 }

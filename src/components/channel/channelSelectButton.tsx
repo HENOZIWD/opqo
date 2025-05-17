@@ -1,7 +1,7 @@
 'use client';
 
 import { selectChannel } from '@/apis/channel';
-import { ERR_MSG_CHANNELSELECT_FAILED, ERR_MSG_INTERNAL_SERVER, ERR_MSG_AUTHORIZATION_FAILED } from '@/utils/message';
+import { ERR_MSG_CHANNELSELECT_FAILED, ERR_MSG_AUTHORIZATION_FAILED } from '@/utils/message';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { parseJwt } from '@/utils/token';
@@ -9,6 +9,7 @@ import { setAccessTokenCookie } from '@/serverActions/token';
 import { AuthenticationParams } from '@/apis/type';
 import ChannelImage from './channelImage';
 import { channelSelectButtonStyle } from '@/styles/channel.css';
+import { useDefaultError } from '@/hooks/useDefaultError';
 
 interface ChannelSelectButtonProps extends AuthenticationParams {
   channelId: string;
@@ -22,6 +23,7 @@ export default function ChannelSelectButton({
 }: ChannelSelectButtonProps) {
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const { handleDefaultError } = useDefaultError();
 
   const handleSelectChannel = () => {
     fetchHandler(({ controller }) => selectChannel({
@@ -67,10 +69,7 @@ export default function ChannelSelectButton({
           });
         }
         else {
-          showToast({
-            message: ERR_MSG_INTERNAL_SERVER,
-            type: 'error',
-          });
+          handleDefaultError(error?.status);
         }
       },
     });

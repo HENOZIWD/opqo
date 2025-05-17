@@ -9,7 +9,6 @@ import {
   ERR_MSG_DUPLICATED_PHONENUMBER,
   ERR_MSG_EMPTY_PHONENUMBER,
   ERR_MSG_EMPTY_VERIFICATIONCODE,
-  ERR_MSG_INTERNAL_SERVER,
   ERR_MSG_PASSWORD_RULE,
   ERR_MSG_TOO_MANY_REQUEST,
 } from '@/utils/message';
@@ -23,6 +22,7 @@ import { useToast } from '@/hooks/useToast';
 import { useCountdown } from '@/hooks/useCountdown';
 import { PHONENUMBER_VALIDATION_DURATION_SECOND } from '@/utils/constant';
 import { formStyle, signupFormStyle } from '@/styles/form.css';
+import { useDefaultError } from '@/hooks/useDefaultError';
 
 export default function SignupForm() {
   const {
@@ -48,6 +48,7 @@ export default function SignupForm() {
   } = useCountdown();
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const { handleDefaultError } = useDefaultError();
 
   const handleRequestVerificationCode = (data: SignupContent) => {
     fetchHandler(({ controller }) => requestVerificationCode({
@@ -63,11 +64,8 @@ export default function SignupForm() {
         setCountdown(PHONENUMBER_VALIDATION_DURATION_SECOND);
         setSignupStep(1);
       },
-      onError: () => {
-        showToast({
-          message: ERR_MSG_INTERNAL_SERVER,
-          type: 'error',
-        });
+      onError: (error) => {
+        handleDefaultError(error?.status);
       },
     });
   };
@@ -80,7 +78,7 @@ export default function SignupForm() {
     handleRequestVerificationCode(signupValue);
   };
 
-  const handleValidateVerificationCode = (data: { verificationCode: string }) => {
+  const handleSignup = (data: { verificationCode: string }) => {
     if (signupStep === 1 && signupValue) {
       fetchHandler(({ controller }) => signup({
         phoneNumber: signupValue.phoneNumber,
@@ -92,11 +90,19 @@ export default function SignupForm() {
           setSignupStep(2);
         },
         onError: (error) => {
-          if (error?.status === 401) {
-            showToast({
-              message: ERR_MSG_AUTHORIZATION_FAILED,
-              type: 'error',
-            });
+          if (error?.status === 400) {
+            if (error.response?.data.code === 'B') {
+              showToast({
+                message: ERR_MSG_TOO_MANY_REQUEST,
+                type: 'error',
+              });
+            }
+            else {
+              showToast({
+                message: ERR_MSG_AUTHORIZATION_FAILED,
+                type: 'error',
+              });
+            }
           }
           else if (error?.status === 409) {
             showToast({
@@ -106,17 +112,8 @@ export default function SignupForm() {
             resetField('verificationCode');
             setSignupStep(0);
           }
-          else if (error?.status === 429) {
-            showToast({
-              message: ERR_MSG_TOO_MANY_REQUEST,
-              type: 'error',
-            });
-          }
           else {
-            showToast({
-              message: ERR_MSG_INTERNAL_SERVER,
-              type: 'error',
-            });
+            handleDefaultError(error?.status);
           }
         },
       });
@@ -206,7 +203,7 @@ export default function SignupForm() {
       </form>
       {signupStep === 1 && (
         <form
-          onSubmit={handleVerificationSubmit((data) => { handleValidateVerificationCode(data); })}
+          onSubmit={handleVerificationSubmit((data) => { handleSignup(data); })}
           className={formStyle.container}
         >
           <label htmlFor="verificationCode">

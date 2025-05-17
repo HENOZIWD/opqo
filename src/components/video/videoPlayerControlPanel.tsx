@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef, useState } from 'react';
+import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef } from 'react';
 import PauseIcon from '@/icons/pauseIcon';
 import PlayIcon from '@/icons/playIcon';
 import FullscreenIcon from '@/icons/fullscreenIcon';
@@ -11,33 +11,45 @@ import { numberToTime } from '@/utils/time';
 import { throttle } from '@/utils/throttle';
 import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
+import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 
 interface VideoPlayerControlPanelProps {
-  containerRef: RefObject<HTMLElement | null>;
   videoRef: RefObject<HTMLVideoElement | null>;
   isPlaying: boolean;
   currentTime: number;
   duration: number;
-  setIsPlaying: Dispatch<SetStateAction<boolean>>;
   setCurrentTime: Dispatch<SetStateAction<number>>;
   bufferedProgress: number;
+  playVideo: () => void;
+  pauseVideo: () => void;
+  handleMuteVolume: () => void;
+  handleFullscreen: () => void;
+  isMuted: boolean;
+  setIsMuted: Dispatch<SetStateAction<boolean>>;
+  isFullscreen: boolean;
+  handlePlayPause: () => void;
+  volume: number;
+  setVolume: Dispatch<SetStateAction<number>>;
 }
 
 export default function VideoPlayerControlPanel({
-  containerRef,
   videoRef,
   isPlaying,
   currentTime,
   duration,
-  setIsPlaying,
   setCurrentTime,
   bufferedProgress,
+  playVideo,
+  pauseVideo,
+  handleMuteVolume,
+  handleFullscreen,
+  isMuted,
+  setIsMuted,
+  isFullscreen,
+  handlePlayPause,
+  volume,
+  setVolume,
 }: VideoPlayerControlPanelProps) {
-  const [volume, setVolume] = useState<number>(0.5);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-
-  const playPromiseRef = useRef<Promise<void>>(null);
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
     if (!videoRef.current) {
@@ -49,37 +61,6 @@ export default function VideoPlayerControlPanel({
     videoRef.current.currentTime = value;
     setCurrentTime(value);
   }, 50));
-
-  const playVideo = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    if (playPromiseRef.current) {
-      return;
-    }
-
-    const playPromise = videoRef.current.play();
-
-    if (playPromise !== undefined) {
-      playPromiseRef.current = playPromise;
-
-      playPromise.then(() => {
-        playPromiseRef.current = null;
-      }).catch(() => {
-        setIsPlaying(false);
-        playPromiseRef.current = null;
-      });
-    }
-  };
-
-  const pauseVideo = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    videoRef.current.pause();
-  };
 
   const handleStartSeek = () => {
     isPlayingBeforeSeek.current = isPlaying;
@@ -99,30 +80,6 @@ export default function VideoPlayerControlPanel({
     }
   };
 
-  const handlePlayPause = () => {
-    if (isPlaying) {
-      pauseVideo();
-    }
-    else {
-      playVideo();
-    }
-  };
-
-  const handleMuteVolume = () => {
-    if (!videoRef.current) {
-      return;
-    }
-
-    if (videoRef.current.muted) {
-      videoRef.current.muted = false;
-      setIsMuted(false);
-    }
-    else {
-      videoRef.current.muted = true;
-      setIsMuted(true);
-    }
-  };
-
   const handleChangeVolume = (e: ChangeEvent<HTMLInputElement>) => {
     const value = Number.parseFloat(Number.parseFloat(e.target.value).toFixed(2));
 
@@ -130,33 +87,21 @@ export default function VideoPlayerControlPanel({
       return;
     }
 
-    if (isMuted && value > 0) {
+    if (isMuted) {
       videoRef.current.muted = false;
       setIsMuted(false);
+      setMuteStorageValue(false);
     }
 
     videoRef.current.volume = value;
     setVolume(value);
-  };
-
-  const handleFullScreen = () => {
-    if (!containerRef.current) {
-      return;
-    }
-
-    if (!document.fullscreenElement) {
-      containerRef.current.requestFullscreen();
-      setIsFullscreen(true);
-    }
-    else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
+    setVolumeStorageValue(value);
   };
 
   return (
     <div className={videoPlayerControlPanelStyle.container}>
       <Slider
+        name="동영상 구간 탐색"
         min={0}
         max={duration}
         step="any"
@@ -170,20 +115,25 @@ export default function VideoPlayerControlPanel({
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.playPauseButton}`}
           onClick={handlePlayPause}
+          title={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
+          aria-label={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
         >
           {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.volumeButton}`}
           onClick={handleMuteVolume}
+          title={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
+          aria-label={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
         >
           {isMuted || volume === 0 ? <VolumeMuteIcon /> : <VolumeIcon />}
         </button>
         <div className={videoPlayerControlPanelStyle.volumeSlider}>
           <Slider
+            name="음량 조절"
             min={0}
             max={1}
-            step={0.05}
+            step={0.01}
             value={isMuted ? 0 : volume}
             onChange={handleChangeVolume}
           />
@@ -200,7 +150,9 @@ export default function VideoPlayerControlPanel({
         </div>
         <button
           className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.fullscreenButton}`}
-          onClick={handleFullScreen}
+          onClick={handleFullscreen}
+          title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+          aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
         >
           {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
         </button>

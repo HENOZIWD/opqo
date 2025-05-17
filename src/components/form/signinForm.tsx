@@ -3,7 +3,7 @@
 import CustomInput from '@/components/common/customInput';
 import CustomButton from '@/components/common/customButton';
 import { SigninContent } from '@/utils/type';
-import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_USER, ERR_MSG_SIGNIN_FAILED } from '@/utils/message';
+import { ERR_MSG_EMPTY_PASSWORD, ERR_MSG_EMPTY_PHONENUMBER, ERR_MSG_INVALID_USER, ERR_MSG_SIGNIN_FAILED } from '@/utils/message';
 import { useForm } from 'react-hook-form';
 import { signin } from '@/apis/user';
 import { useFetch } from '@/hooks/useFetch';
@@ -12,6 +12,7 @@ import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
 import { ROLE_USER } from '@/utils/constant';
 import { formStyle } from '@/styles/form.css';
+import { useDefaultError } from '@/hooks/useDefaultError';
 
 export default function SigninForm() {
   const {
@@ -22,6 +23,7 @@ export default function SigninForm() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const { handleDefaultError } = useDefaultError();
 
   const handleSignin = (data: SigninContent) => {
     fetchHandler(({ controller }) => signin({
@@ -66,17 +68,14 @@ export default function SigninForm() {
         window.location.replace('/');
       },
       onError: (error) => {
-        if (error?.status === 401) {
+        if (error?.status === 400 || error?.status === 401) {
           showToast({
             message: ERR_MSG_INVALID_USER,
             type: 'error',
           });
         }
         else {
-          showToast({
-            message: ERR_MSG_INTERNAL_SERVER,
-            type: 'error',
-          });
+          handleDefaultError(error?.status);
         }
       },
     });

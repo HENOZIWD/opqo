@@ -3,13 +3,14 @@
 import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '@/utils/video';
 import VideoPlayer from '../video/videoPlayer';
-import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INTERNAL_SERVER, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
+import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
 import { checkVideoChunkExist, createVideoMetadata, readyVideoUpload, uploadVideoChunk } from '@/apis/video';
 import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { videoUploaderStyle } from '@/styles/form.css';
 import ProgressBar from '../common/progressBar';
+import { useDefaultError } from '@/hooks/useDefaultError';
 
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
@@ -39,6 +40,7 @@ export default function VideoUploader({
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const { handleDefaultError } = useDefaultError();
 
   useEffect(() => {
     const uploadVideo = async () => {
@@ -232,11 +234,8 @@ export default function VideoUploader({
             }
             setIsUploadPrepared(true);
           },
-          onError: () => {
-            showToast({
-              message: ERR_MSG_INTERNAL_SERVER,
-              type: 'error',
-            });
+          onError: (error) => {
+            handleDefaultError(error?.status);
           },
         });
       });

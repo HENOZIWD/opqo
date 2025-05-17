@@ -1,8 +1,8 @@
 import { getAccessTokenCookie } from '@/serverActions/token';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { getMyVideoList } from '@/apis/video';
-import StudioContentCardFetcher from './studioContentCardFetcher';
 import { videoListStyle } from '@/styles/video.css';
+import StudioContentCard from '@/components/studio/studioContentCard';
 
 export default async function StudioContentsFetcher() {
   const accessToken = (await getAccessTokenCookie()) ?? null;
@@ -17,6 +17,7 @@ export default async function StudioContentsFetcher() {
       {data.length > 0
         ? data.map(({
           id,
+          title,
           status,
           createdDate,
         }) => (
@@ -24,14 +25,15 @@ export default async function StudioContentsFetcher() {
             className={videoListStyle.card}
             key={id}
           >
-            <StudioContentCardFetcher
+            <StudioContentCard
               id={id}
+              title={title}
               status={status}
               createdDate={createdDate}
             />
           </li>
         ))
-        : <div className={videoListStyle.fallback}>업로드 한 동영상이 없습니다.</div>}
+        : <li className={videoListStyle.fallback}>업로드 한 동영상이 없습니다.</li>}
     </ul>
   );
 }
