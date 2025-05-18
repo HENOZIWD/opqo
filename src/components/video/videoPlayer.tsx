@@ -252,6 +252,7 @@ export default function VideoPlayer({
         onCanPlay={() => setIsBuffering(false)}
         playsInline
         preload="metadata"
+        autoPlay
       >
         <source src={source} />
       </video>
