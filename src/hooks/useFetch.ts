@@ -1,6 +1,7 @@
 import { AxiosError, AxiosResponse, isAxiosError } from 'axios';
 import { useAbortController } from './useAbortController';
 import { useToken } from './useToken';
+import { BadRequestResponse } from '@/utils/type';
 
 interface FetchFnParams {
   controller: AbortController;
@@ -22,14 +23,14 @@ export function useFetch() {
       onFinal,
     }: {
       onSuccess: (response?: AxiosResponse<T>) => void;
-      onError: (error?: AxiosError) => void;
+      onError: (error?: AxiosError<BadRequestResponse>) => void;
       onFinal?: () => void;
     },
   ) => {
     const controller = createAbortController();
 
     const successAsyncFn = async (response?: AxiosResponse<T>) => onSuccess(response);
-    const errorAsyncFn = async (error?: AxiosError) => onError(error);
+    const errorAsyncFn = async (error?: AxiosError<BadRequestResponse>) => onError(error);
 
     try {
       const response = await fetchFn({

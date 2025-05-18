@@ -34,7 +34,7 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
           </li>
         ))
         : (
-          <div className={videoListStyle.fallback}>업로드 된 동영상이 없습니다.</div>
+          <li className={videoListStyle.fallback}>업로드 된 동영상이 없습니다.</li>
         )}
     </ul>
   );

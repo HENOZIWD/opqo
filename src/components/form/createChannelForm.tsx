@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { CreateChannelContent } from '@/utils/type';
 import CustomInput from '@/components/common/customInput';
-import { ERR_MSG_AUTHORIZATION_FAILED, ERR_MSG_CHANNEL_LIMIT_EXCEEDED, ERR_MSG_CHANNELNAME_RULE, ERR_MSG_DUPLICATED_CHANNELNAME, ERR_MSG_INTERNAL_SERVER } from '@/utils/message';
+import { ERR_MSG_CHANNEL_LIMIT_EXCEEDED, ERR_MSG_CHANNELNAME_RULE, ERR_MSG_DUPLICATED_CHANNELNAME } from '@/utils/message';
 import CustomButton from '@/components/common/customButton';
 import { REGEXP_CHANNELNAME } from '@/utils/regexp';
 import ChannelImageSelector from '@/components/form/channelImageSelector';
@@ -13,6 +13,7 @@ import { createChannel } from '@/apis/channel';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { formStyle } from '@/styles/form.css';
+import { useDefaultError } from '@/hooks/useDefaultError';
 
 export default function CreateChannelForm() {
   const {
@@ -27,6 +28,7 @@ export default function CreateChannelForm() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const { handleDefaultError } = useDefaultError();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
     fetchHandler(({
@@ -41,13 +43,7 @@ export default function CreateChannelForm() {
     }), {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
-        if (error?.status === 401) {
-          showToast({
-            message: ERR_MSG_AUTHORIZATION_FAILED,
-            type: 'error',
-          });
-        }
-        else if (error?.status === 409) {
+        if (error?.status === 409) {
           showToast({
             message: ERR_MSG_DUPLICATED_CHANNELNAME,
             type: 'error',
@@ -60,10 +56,7 @@ export default function CreateChannelForm() {
           });
         }
         else {
-          showToast({
-            message: ERR_MSG_INTERNAL_SERVER,
-            type: 'error',
-          });
+          handleDefaultError(error?.status);
         }
       },
     });

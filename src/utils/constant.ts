@@ -12,3 +12,6 @@ export const ROLE_USER = 'USER';
 export const ROLE_CHANNEL = 'CHANNEL';
 
 export const ACCESS_TOKEN_REFRESH_OFFSET = 60 * 1000; // 1분
+
+export const STORAGE_KEY_VOLUME = 'VOLUME';
+export const STORAGE_KEY_MUTE = 'MUTE';

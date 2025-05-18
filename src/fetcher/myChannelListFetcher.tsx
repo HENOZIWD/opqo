@@ -30,9 +30,9 @@ export default async function MyChannelListFetcher() {
           </li>
         ))
         : (
-          <div className={myChannelListStyle.empty}>
+          <li className={myChannelListStyle.empty}>
             채널이 없습니다. 채널을 생성해주세요.
-          </div>
+          </li>
         )}
     </ul>
   );
