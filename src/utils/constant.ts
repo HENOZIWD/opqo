@@ -1,3 +1,5 @@
+export const CONTENT_TYPE_APPLICATION_JSON = 'application/json';
+
 export const ACCESS_TOKEN = 'accessToken';
 
 export const PHONENUMBER_VALIDATION_DURATION_SECOND = 300;

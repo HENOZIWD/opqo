@@ -228,9 +228,10 @@ export default function VideoUploader({
           controller,
           accessToken,
         }), {
-          onSuccess: (response) => {
-            if (response?.data.videoId) {
-              setVideoId(response.data.videoId);
+          onSuccess: async (response) => {
+            const data = await response?.json();
+            if (data?.videoId) {
+              setVideoId(data.videoId);
             }
             setIsUploadPrepared(true);
           },

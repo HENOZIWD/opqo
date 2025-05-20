@@ -1,6 +1,7 @@
 import { accessTokenToBearer } from '@/utils/token';
 import { AuthenticationParams, FetchParams } from './type';
 import { fetchInstance } from './instance';
+import { CONTENT_TYPE_APPLICATION_JSON } from '@/utils/constant';
 
 interface CreateChannelParams extends FetchParams, AuthenticationParams {
   imageFile: Blob | null;
@@ -15,11 +16,16 @@ export async function createChannel({
   controller,
   accessToken,
 }: CreateChannelParams) {
-  return fetchInstance.postForm<void>('/channels', {
-    profileImage: imageFile,
-    name,
-    description,
-  }, {
+  const formData = new FormData();
+
+  if (imageFile) {
+    formData.append('profileImage', imageFile);
+  }
+  formData.append('name', name);
+  formData.append('description', description);
+
+  return fetchInstance.post<void>('channels', {
+    body: formData,
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });
@@ -34,12 +40,15 @@ export async function selectChannel({
   accessToken,
 }: SelectChannelParams) {
   return fetchInstance.put<SelectChannelResponse>(
-    `/token`,
-    { channelId },
+    `token`,
     {
-      headers: { Authorization: accessTokenToBearer(accessToken) },
+      json: { channelId },
+      headers: {
+        'Authorization': accessTokenToBearer(accessToken),
+        'Content-Type': CONTENT_TYPE_APPLICATION_JSON,
+      },
       signal: controller.signal,
-      withCredentials: true,
+      credentials: 'include',
     },
   );
 }
@@ -53,7 +62,7 @@ interface GetChannelInfoResponse {
 }
 
 export async function getChannelInfo({ channelId }: GetChannelInfoParams) {
-  return fetchInstance.get<GetChannelInfoResponse>(`/channels/${channelId}`);
+  return fetchInstance.get<GetChannelInfoResponse>(`channels/${channelId}`);
 }
 
 interface GetMyChannelListParams extends AuthenticationParams { }
@@ -64,7 +73,7 @@ interface GetMyChannelListResponse {
 
 export async function getMyChannelList({ accessToken }: GetMyChannelListParams) {
   return fetchInstance.get<GetMyChannelListResponse[]>(
-    '/users/me/channels',
+    'users/me/channels',
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }
@@ -79,7 +88,7 @@ interface GetMyChannelInfoResponse {
 
 export async function getMyChannelInfo({ accessToken }: GetMyChannelInfoParams) {
   return fetchInstance.get<GetMyChannelInfoResponse>(
-    '/channels/me',
+    'channels/me',
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }

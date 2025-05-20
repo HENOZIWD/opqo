@@ -1,11 +1,13 @@
-import { AxiosResponse } from 'axios';
+import { KyResponse } from 'ky';
 
-export async function fetchHandlerWithServerComponent<T>(fetchFn: () => Promise<AxiosResponse<T>>) {
+export async function fetchHandlerWithServerComponent<T>(fetchFn: () => Promise<KyResponse<T>>) {
   try {
     const response = await fetchFn();
 
+    const data = await response.json();
+
     return {
-      data: response.data,
+      data,
       error: null,
     };
   }

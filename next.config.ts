@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  logging: { fetches: { fullUrl: true } },
 };
 
 export default withVanillaExtract(nextConfig);

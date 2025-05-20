@@ -32,7 +32,7 @@ export default function SigninForm() {
       controller,
     }), {
       onSuccess: async (response) => {
-        const accessToken = response?.data.accessToken;
+        const accessToken = (await response?.json())?.accessToken;
 
         if (!accessToken) {
           showToast({

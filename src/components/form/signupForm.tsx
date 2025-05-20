@@ -89,9 +89,9 @@ export default function SignupForm() {
         onSuccess: () => {
           setSignupStep(2);
         },
-        onError: (error) => {
+        onError: async (error) => {
           if (error?.status === 400) {
-            if (error.response?.data.code === 'B') {
+            if ((await error.json()).code === 'B') {
               showToast({
                 message: ERR_MSG_TOO_MANY_REQUEST,
                 type: 'error',

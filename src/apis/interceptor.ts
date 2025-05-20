@@ -1,86 +1,97 @@
 import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
-import axios, { AxiosInstance } from 'axios';
+import ky, { KyRequest, KyResponse, NormalizedOptions } from 'ky';
 
-export function setTokenRefreshInterceptor(instance: AxiosInstance) {
-  let isRefreshing = false;
-  let failedQueue: {
-    resolve: (value: unknown) => void;
-    reject: (reason?: unknown) => void;
-  }[] = [];
+let isRefreshing = false;
+let failedQueue: {
+  resolve: (value: unknown) => void;
+  reject: (reason?: unknown) => void;
+}[] = [];
 
-  const processQueue = (error: unknown, token: string | null) => {
-    failedQueue.forEach(({
-      resolve,
-      reject,
-    }) => {
-      if (!error) {
-        resolve(token);
-      }
-      else {
-        reject(error);
-      }
+const processQueue = (error: unknown, token: string | null) => {
+  failedQueue.forEach(({
+    resolve,
+    reject,
+  }) => {
+    if (!error) {
+      resolve(token);
+    }
+    else {
+      reject(error);
+    }
+  });
+
+  failedQueue = [];
+};
+
+export const tokenRefreshInterceptor = async (
+  request: KyRequest,
+  options: NormalizedOptions,
+  response: KyResponse,
+): Promise<Response> => {
+  if (response.status !== 401 || request.headers.get('x-retry') === 'true') {
+    return response;
+  }
+
+  const originalRequest = request.clone();
+
+  if (isRefreshing) {
+    return new Promise<Response>((resolve, reject) => {
+      failedQueue.push({
+        resolve: (token) => {
+          const newRequest = new Request(originalRequest, {
+            headers: {
+              ...Object.fromEntries(originalRequest.headers.entries()),
+              'Authorization': `Bearer ${token}`,
+              'x-retry': '1',
+            },
+          });
+
+          resolve(ky(newRequest, options));
+        },
+        reject,
+      });
+    });
+  }
+
+  isRefreshing = true;
+
+  try {
+    const { accessToken } = await ky.post<{ accessToken: string }>(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/token/refresh`,
+      { credentials: 'include' },
+    ).json();
+
+    const decodedToken = parseJwt(accessToken);
+
+    if (!decodedToken) {
+      processQueue(new Error('Invalid Token'), null);
+      throw new Error('Invalid Token');
+    }
+
+    await setAccessTokenCookie({
+      accessToken,
+      expUnixTimeStamp: decodedToken.exp,
     });
 
-    failedQueue = [];
-  };
+    processQueue(null, accessToken);
 
-  instance.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
+    const retryRequest = new Request(originalRequest, {
+      headers: {
+        ...Object.fromEntries(originalRequest.headers.entries()),
+        'Authorization': `Bearer ${accessToken}`,
+        'x-retry': '1',
+      },
+    });
 
-      if (error.response && error.response.status === 401 && !originalRequest._retry) {
-        if (isRefreshing) {
-          return new Promise((resolve, reject) => {
-            failedQueue.push({
-              resolve,
-              reject,
-            });
-          })
-            .then((token) => {
-              originalRequest.headers['Authorization'] = `Bearer ${token}`;
+    return ky(retryRequest, options);
+  }
+  catch (error) {
+    processQueue(error, null);
 
-              return instance(originalRequest);
-            }).catch((err) => {
-              return Promise.reject(err);
-            });
-        }
-
-        originalRequest._retry = true;
-        isRefreshing = true;
-
-        return new Promise((resolve, reject) => {
-          axios.post<{ accessToken: string }>(`${process.env.NEXT_PUBLIC_SERVER_URL}/token/refresh`, undefined, { withCredentials: true })
-            .then(async ({ data }) => {
-              const { accessToken } = data;
-
-              const decodedToken = parseJwt(accessToken);
-
-              if (!decodedToken) {
-                processQueue(new Error('Invalid Token'), null);
-                return reject(new Error('Invalid Token'));
-              }
-
-              await setAccessTokenCookie({
-                accessToken,
-                expUnixTimeStamp: decodedToken.exp,
-              });
-
-              originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-
-              processQueue(null, accessToken);
-              resolve(instance(originalRequest));
-            })
-            .catch((err) => {
-              processQueue(err, null);
-              reject(err);
-            })
-            .finally(() => { isRefreshing = false; });
-        });
-      }
-
-      return Promise.reject(error);
-    },
-  );
-}
+    throw error;
+  }
+  finally {
+    isRefreshing = false;
+  }
+};
