@@ -46,9 +46,6 @@ export function useFetch() {
       else if (error instanceof TimeoutError) {
         await errorAsyncFn(error);
       }
-      else {
-        console.error(error);
-      }
     }
     finally {
       onFinal?.();

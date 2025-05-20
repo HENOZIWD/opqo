@@ -48,9 +48,7 @@ export default function TokenProvider({
 
       return true;
     }
-    catch (error) {
-      console.error(error);
-
+    catch {
       return false;
     }
   };

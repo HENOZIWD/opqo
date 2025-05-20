@@ -3,10 +3,7 @@
 import CustomButton from '@/components/common/customButton';
 import { pageStyle } from '@/styles/common.css';
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
+export default function GlobalError({ reset }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
