@@ -1,7 +1,7 @@
 import { accessTokenToBearer } from '@/utils/token';
 import { AuthenticationParams, FetchParams } from './type';
 import { fetchInstance } from './instance';
-import { CONTENT_TYPE_APPLICATION_JSON } from '@/utils/constant';
+import { CONTENT_TYPE_APPLICATION_JSON, FETCH_CACHE_POLICY } from '@/utils/constant';
 
 interface CreateChannelParams extends FetchParams, AuthenticationParams {
   imageFile: Blob | null;
@@ -62,7 +62,7 @@ interface GetChannelInfoResponse {
 }
 
 export async function getChannelInfo({ channelId }: GetChannelInfoParams) {
-  return fetchInstance.get<GetChannelInfoResponse>(`channels/${channelId}`);
+  return fetchInstance.get<GetChannelInfoResponse>(`channels/${channelId}`, FETCH_CACHE_POLICY);
 }
 
 interface GetMyChannelListParams extends AuthenticationParams { }

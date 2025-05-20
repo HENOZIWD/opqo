@@ -1,7 +1,7 @@
 import { accessTokenToBearer } from '@/utils/token';
 import { fetchInstance } from './instance';
 import { AuthenticationParams, FetchParams } from './type';
-import { CONTENT_TYPE_APPLICATION_JSON } from '@/utils/constant';
+import { CONTENT_TYPE_APPLICATION_JSON, FETCH_CACHE_POLICY } from '@/utils/constant';
 
 interface CreateVideoMetadataParams extends FetchParams, AuthenticationParams {
   hash: string;
@@ -135,7 +135,7 @@ interface GetChannelVideoListResponse {
 }
 
 export async function getChannelVideoList({ channelId }: GetChannelVideoListParams) {
-  return fetchInstance.get<GetChannelVideoListResponse[]>(`channels/${channelId}/contents`);
+  return fetchInstance.get<GetChannelVideoListResponse[]>(`channels/${channelId}/contents`, FETCH_CACHE_POLICY);
 }
 
 interface GetVideoInfoParams { videoId: string }
@@ -151,7 +151,7 @@ interface GetVideoInfoResponse {
 }
 
 export async function getVideoInfo({ videoId }: GetVideoInfoParams) {
-  return fetchInstance.get<GetVideoInfoResponse>(`contents/${videoId}`);
+  return fetchInstance.get<GetVideoInfoResponse>(`contents/${videoId}`, FETCH_CACHE_POLICY);
 }
 
 interface GetVideoListParams { category: string }
@@ -167,7 +167,7 @@ interface GetVideoListResponse {
 }
 
 export async function getVideoList({ category }: GetVideoListParams) {
-  return fetchInstance.get<GetVideoListResponse[]>(`contents?view=${category}`);
+  return fetchInstance.get<GetVideoListResponse[]>(`contents?view=${category}`, FETCH_CACHE_POLICY);
 }
 
 interface GetMyVideoListParams extends AuthenticationParams { }
