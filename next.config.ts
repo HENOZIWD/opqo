@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
     ],
   },
   logging: { fetches: { fullUrl: true } },
+  output: 'standalone',
 };
 
 export default withVanillaExtract(nextConfig);
