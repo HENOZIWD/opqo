@@ -23,6 +23,7 @@ import { useCountdown } from '@/hooks/useCountdown';
 import { PHONENUMBER_VALIDATION_DURATION_SECOND } from '@/utils/constant';
 import { formStyle, signupFormStyle } from '@/styles/form.css';
 import { useDefaultError } from '@/hooks/useDefaultError';
+import { TimeoutError } from 'ky';
 
 export default function SignupForm() {
   const {
@@ -48,7 +49,10 @@ export default function SignupForm() {
   } = useCountdown();
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { handleDefaultError } = useDefaultError();
+  const {
+    handleDefaultError,
+    handleTimeoutError,
+  } = useDefaultError();
 
   const handleRequestVerificationCode = (data: SignupContent) => {
     fetchHandler(({ controller }) => requestVerificationCode({
@@ -65,7 +69,12 @@ export default function SignupForm() {
         setSignupStep(1);
       },
       onError: (error) => {
-        handleDefaultError(error?.status);
+        if (error instanceof TimeoutError) {
+          handleTimeoutError();
+        }
+        else {
+          handleDefaultError(error?.status);
+        }
       },
     });
   };
@@ -90,7 +99,10 @@ export default function SignupForm() {
           setSignupStep(2);
         },
         onError: async (error) => {
-          if (error?.status === 400) {
+          if (error instanceof TimeoutError) {
+            handleTimeoutError();
+          }
+          else if (error?.status === 400) {
             if ((await error.json()).code === 'B') {
               showToast({
                 message: ERR_MSG_TOO_MANY_REQUEST,

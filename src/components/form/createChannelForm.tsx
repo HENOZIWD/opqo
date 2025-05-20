@@ -14,6 +14,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { formStyle } from '@/styles/form.css';
 import { useDefaultError } from '@/hooks/useDefaultError';
+import { TimeoutError } from 'ky';
 
 export default function CreateChannelForm() {
   const {
@@ -28,7 +29,10 @@ export default function CreateChannelForm() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { handleDefaultError } = useDefaultError();
+  const {
+    handleDefaultError,
+    handleTimeoutError,
+  } = useDefaultError();
 
   const handleCreateChannel = (data: CreateChannelContent) => {
     fetchHandler(({
@@ -43,7 +47,10 @@ export default function CreateChannelForm() {
     }), {
       onSuccess: () => { router.push('/selectChannel'); },
       onError: (error) => {
-        if (error?.status === 409) {
+        if (error instanceof TimeoutError) {
+          handleTimeoutError();
+        }
+        else if (error?.status === 409) {
           showToast({
             message: ERR_MSG_DUPLICATED_CHANNELNAME,
             type: 'error',

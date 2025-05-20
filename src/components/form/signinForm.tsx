@@ -13,6 +13,7 @@ import { parseJwt } from '@/utils/token';
 import { ROLE_USER } from '@/utils/constant';
 import { formStyle } from '@/styles/form.css';
 import { useDefaultError } from '@/hooks/useDefaultError';
+import { TimeoutError } from 'ky';
 
 export default function SigninForm() {
   const {
@@ -23,7 +24,10 @@ export default function SigninForm() {
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { handleDefaultError } = useDefaultError();
+  const {
+    handleDefaultError,
+    handleTimeoutError,
+  } = useDefaultError();
 
   const handleSignin = (data: SigninContent) => {
     fetchHandler(({ controller }) => signin({
@@ -68,7 +72,10 @@ export default function SigninForm() {
         window.location.replace('/');
       },
       onError: (error) => {
-        if (error?.status === 400 || error?.status === 401) {
+        if (error instanceof TimeoutError) {
+          handleTimeoutError();
+        }
+        else if (error?.status === 400 || error?.status === 401) {
           showToast({
             message: ERR_MSG_INVALID_USER,
             type: 'error',
