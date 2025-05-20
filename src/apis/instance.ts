@@ -1,10 +1,8 @@
-import axios from 'axios';
-import { setTokenRefreshInterceptor } from './interceptor';
+import { tokenRefreshInterceptor } from './interceptor';
+import ky from 'ky';
 
-export const fetchInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-  timeout: 30000,
-  headers: { 'Content-Type': 'application/json' },
+export const fetchInstance = ky.create({
+  prefixUrl: process.env.NEXT_PUBLIC_SERVER_URL,
+  timeout: 10000,
+  hooks: { afterResponse: [tokenRefreshInterceptor] },
 });
-
-setTokenRefreshInterceptor(fetchInstance);

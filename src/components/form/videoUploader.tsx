@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/useToast';
 import { videoUploaderStyle } from '@/styles/form.css';
 import ProgressBar from '../common/progressBar';
 import { useDefaultError } from '@/hooks/useDefaultError';
+import { TimeoutError } from 'ky';
 
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
@@ -40,7 +41,10 @@ export default function VideoUploader({
 
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { handleDefaultError } = useDefaultError();
+  const {
+    handleDefaultError,
+    handleTimeoutError,
+  } = useDefaultError();
 
   useEffect(() => {
     const uploadVideo = async () => {
@@ -228,14 +232,20 @@ export default function VideoUploader({
           controller,
           accessToken,
         }), {
-          onSuccess: (response) => {
-            if (response?.data.videoId) {
-              setVideoId(response.data.videoId);
+          onSuccess: async (response) => {
+            const data = await response?.json();
+            if (data?.videoId) {
+              setVideoId(data.videoId);
             }
             setIsUploadPrepared(true);
           },
           onError: (error) => {
-            handleDefaultError(error?.status);
+            if (error instanceof TimeoutError) {
+              handleTimeoutError();
+            }
+            else {
+              handleDefaultError(error?.status);
+            }
           },
         });
       });

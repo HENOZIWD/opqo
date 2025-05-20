@@ -11,7 +11,7 @@
   "dependencies": {
     "@vanilla-extract/css": "^1.17.1",
     "@vanilla-extract/css-utils": "^0.1.4",
-    "axios": "^1.7.9",
+    "ky": "^1.8.1",
     "next": "^15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

@@ -10,6 +10,7 @@ import { AuthenticationParams } from '@/apis/type';
 import ChannelImage from './channelImage';
 import { channelSelectButtonStyle } from '@/styles/channel.css';
 import { useDefaultError } from '@/hooks/useDefaultError';
+import { TimeoutError } from 'ky';
 
 interface ChannelSelectButtonProps extends AuthenticationParams {
   channelId: string;
@@ -23,7 +24,10 @@ export default function ChannelSelectButton({
 }: ChannelSelectButtonProps) {
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
-  const { handleDefaultError } = useDefaultError();
+  const {
+    handleDefaultError,
+    handleTimeoutError,
+  } = useDefaultError();
 
   const handleSelectChannel = () => {
     fetchHandler(({ controller }) => selectChannel({
@@ -32,7 +36,7 @@ export default function ChannelSelectButton({
       accessToken,
     }), {
       onSuccess: async (response) => {
-        const accessToken = response?.data.accessToken;
+        const accessToken = (await response?.json())?.accessToken;
 
         if (!accessToken) {
           showToast({
@@ -62,7 +66,10 @@ export default function ChannelSelectButton({
         window.location.href = '/';
       },
       onError: (error) => {
-        if (error?.status === 401 || error?.status === 403) {
+        if (error instanceof TimeoutError) {
+          handleTimeoutError();
+        }
+        else if (error?.status === 401 || error?.status === 403) {
           showToast({
             message: ERR_MSG_AUTHORIZATION_FAILED,
             type: 'error',

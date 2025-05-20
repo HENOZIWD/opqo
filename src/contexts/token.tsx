@@ -27,7 +27,7 @@ export default function TokenProvider({
       const controller = createAbortController();
       const response = await refreshToken({ controller });
 
-      const refreshedAccessToken = response?.data.accessToken;
+      const refreshedAccessToken = (await response.json()).accessToken;
 
       if (!refreshedAccessToken) {
         return false;

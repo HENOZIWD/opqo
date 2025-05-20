@@ -1,6 +1,7 @@
 import { accessTokenToBearer } from '@/utils/token';
 import { fetchInstance } from './instance';
 import { AuthenticationParams, FetchParams } from './type';
+import { CONTENT_TYPE_APPLICATION_JSON, FETCH_CACHE_POLICY } from '@/utils/constant';
 
 interface CreateVideoMetadataParams extends FetchParams, AuthenticationParams {
   hash: string;
@@ -22,15 +23,19 @@ export async function createVideoMetadata({
   controller,
   accessToken,
 }: CreateVideoMetadataParams) {
-  return fetchInstance.post<CreateVideoMetadataResponse>('/videos', {
-    hash,
-    width,
-    height,
-    duration,
-    extension,
-    size,
-  }, {
-    headers: { Authorization: accessTokenToBearer(accessToken) },
+  return fetchInstance.post<CreateVideoMetadataResponse>('videos', {
+    json: {
+      hash,
+      width,
+      height,
+      duration,
+      extension,
+      size,
+    },
+    headers: {
+      'Authorization': accessTokenToBearer(accessToken),
+      'Content-Type': CONTENT_TYPE_APPLICATION_JSON,
+    },
     signal: controller.signal,
   });
 }
@@ -46,7 +51,7 @@ export async function checkVideoChunkExist({
   controller,
   accessToken,
 }: CheckVideoChunkExistParams) {
-  return fetchInstance.head<void>(`/videos/${videoId}/chunks/${chunkIndex + 1}`, {
+  return fetchInstance.head(`videos/${videoId}/chunks/${chunkIndex + 1}`, {
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });
@@ -65,10 +70,14 @@ export async function uploadVideoChunk({
   controller,
   accessToken,
 }: UploadVideoChunkParams) {
-  return fetchInstance.postForm<void>(
-    `/videos/${videoId}/chunks/${chunkIndex + 1}`,
-    { chunkFile },
+  const formData = new FormData();
+
+  formData.append('chunkFile', chunkFile);
+
+  return fetchInstance.post<void>(
+    `videos/${videoId}/chunks/${chunkIndex + 1}`,
     {
+      body: formData,
       headers: { Authorization: accessTokenToBearer(accessToken) },
       signal: controller.signal,
     },
@@ -82,7 +91,7 @@ export async function readyVideoUpload({
   controller,
   accessToken,
 }: ReadyVideoUploadParams) {
-  return fetchInstance.post(`/videos/${videoId}/ready`, undefined, {
+  return fetchInstance.post(`videos/${videoId}/ready`, {
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });
@@ -103,12 +112,15 @@ export async function uploadVideoContent({
   controller,
   accessToken,
 }: UploadVideoContentParams) {
-  return fetchInstance.postForm<void>('/contents', {
-    thumbnailImage,
-    videoId,
-    title,
-    description,
-  }, {
+  const formData = new FormData();
+
+  formData.append('thumbnailImage', thumbnailImage);
+  formData.append('videoId', videoId);
+  formData.append('title', title);
+  formData.append('description', description);
+
+  return fetchInstance.post<void>('contents', {
+    body: formData,
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });
@@ -123,7 +135,7 @@ interface GetChannelVideoListResponse {
 }
 
 export async function getChannelVideoList({ channelId }: GetChannelVideoListParams) {
-  return fetchInstance.get<GetChannelVideoListResponse[]>(`/channels/${channelId}/contents`);
+  return fetchInstance.get<GetChannelVideoListResponse[]>(`channels/${channelId}/contents`, FETCH_CACHE_POLICY);
 }
 
 interface GetVideoInfoParams { videoId: string }
@@ -139,7 +151,7 @@ interface GetVideoInfoResponse {
 }
 
 export async function getVideoInfo({ videoId }: GetVideoInfoParams) {
-  return fetchInstance.get<GetVideoInfoResponse>(`/contents/${videoId}`);
+  return fetchInstance.get<GetVideoInfoResponse>(`contents/${videoId}`, FETCH_CACHE_POLICY);
 }
 
 interface GetVideoListParams { category: string }
@@ -155,7 +167,7 @@ interface GetVideoListResponse {
 }
 
 export async function getVideoList({ category }: GetVideoListParams) {
-  return fetchInstance.get<GetVideoListResponse[]>(`/contents?view=${category}`);
+  return fetchInstance.get<GetVideoListResponse[]>(`contents?view=${category}`, FETCH_CACHE_POLICY);
 }
 
 interface GetMyVideoListParams extends AuthenticationParams { }
@@ -168,7 +180,7 @@ interface GetMyVideoListResponse {
 
 export async function getMyVideoList({ accessToken }: GetMyVideoListParams) {
   return fetchInstance.get<GetMyVideoListResponse[]>(
-    '/channels/me/videos',
+    'channels/me/videos',
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }
@@ -190,7 +202,7 @@ export async function getMyVideoMetadata({
   id,
 }: GetMyVideoMetadataParams) {
   return fetchInstance.get<GetMyVideoMetadataResponse>(
-    `/videos/${id}`,
+    `videos/${id}`,
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }

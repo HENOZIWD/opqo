@@ -1,3 +1,4 @@
+import { CONTENT_TYPE_APPLICATION_JSON } from '@/utils/constant';
 import { fetchInstance } from './instance';
 import { FetchParams } from './type';
 
@@ -7,7 +8,11 @@ export async function requestVerificationCode({
   phoneNumber,
   controller,
 }: RequestVerificationCodeParams) {
-  return fetchInstance.post<void>('/phone-auth', { phoneNumber }, { signal: controller.signal });
+  return fetchInstance.post<void>('phone-auth', {
+    json: { phoneNumber },
+    signal: controller.signal,
+    headers: { 'Content-Type': CONTENT_TYPE_APPLICATION_JSON },
+  });
 }
 
 interface SignupParams extends FetchParams {
@@ -22,11 +27,15 @@ export async function signup({
   authCode,
   controller,
 }: SignupParams) {
-  return fetchInstance.post<void>('/users', {
-    phoneNumber,
-    password,
-    authCode,
-  }, { signal: controller.signal });
+  return fetchInstance.post<void>('users', {
+    json: {
+      phoneNumber,
+      password,
+      authCode,
+    },
+    signal: controller.signal,
+    headers: { 'Content-Type': CONTENT_TYPE_APPLICATION_JSON },
+  });
 }
 
 interface SigninParams extends FetchParams {
@@ -40,22 +49,23 @@ export async function signin({
   password,
   controller,
 }: SigninParams) {
-  return fetchInstance.post<SigninResponse>('/token', {
-    phoneNumber,
-    password,
-  }, {
+  return fetchInstance.post<SigninResponse>('token', {
+    json: {
+      phoneNumber,
+      password,
+    },
     signal: controller.signal,
-    withCredentials: true,
+    credentials: 'include',
+    headers: { 'Content-Type': CONTENT_TYPE_APPLICATION_JSON },
   });
 }
 
 export async function signout({ controller }: FetchParams) {
   return fetchInstance.post<void>(
-    '/token/expire',
-    undefined,
+    'token/expire',
     {
       signal: controller.signal,
-      withCredentials: true,
+      credentials: 'include',
     },
   );
 }
@@ -65,11 +75,10 @@ interface RefreshTokenResponse { accessToken: string }
 
 export async function refreshToken({ controller }: RefreshTokenParams) {
   return fetchInstance.post<RefreshTokenResponse>(
-    '/token/refresh',
-    undefined,
+    'token/refresh',
     {
       signal: controller.signal,
-      withCredentials: true,
+      credentials: 'include',
     },
   );
 }
