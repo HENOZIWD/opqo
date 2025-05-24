@@ -3,7 +3,7 @@ import { calc } from '@vanilla-extract/css-utils';
 
 export const colorStyleVars = {
   white: '#f1f1f1',
-  black: '#121223',
+  black: '#000000',
   gray: '#545454',
   lightGray: '#cccccc',
   red: '#dd4c4c',
