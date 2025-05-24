@@ -39,8 +39,6 @@ export const buttonStyle = {
     'borderRadius': 9999,
     'background': colorStyleVars.black,
     'color': colorStyleVars.white,
-    'border': 'none',
-    'outline': 'none',
     'cursor': 'pointer',
     'whiteSpace': 'nowrap',
     'padding': '0.625rem 1.25rem',

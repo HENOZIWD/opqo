@@ -236,17 +236,6 @@ export const videoPlayerControlPanelStyle = {
     alignItems: 'center',
   }),
 
-  panelButton: style({
-    position: 'relative',
-    border: 'none',
-    outline: 'none',
-    padding: 0,
-    margin: 0,
-    background: 'transparent',
-    color: 'inherit',
-    cursor: 'pointer',
-  }),
-
   playPauseButton: style({
     width: '2.5rem',
     height: '2.5rem',

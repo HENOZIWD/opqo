@@ -113,7 +113,7 @@ export default function VideoPlayerControlPanel({
       />
       <div className={videoPlayerControlPanelStyle.panel}>
         <button
-          className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.playPauseButton}`}
+          className={videoPlayerControlPanelStyle.playPauseButton}
           onClick={handlePlayPause}
           title={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
           aria-label={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
@@ -121,7 +121,7 @@ export default function VideoPlayerControlPanel({
           {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
         <button
-          className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.volumeButton}`}
+          className={videoPlayerControlPanelStyle.volumeButton}
           onClick={handleMuteVolume}
           title={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
           aria-label={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
@@ -149,7 +149,7 @@ export default function VideoPlayerControlPanel({
           {numberToTime(duration)}
         </div>
         <button
-          className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.fullscreenButton}`}
+          className={videoPlayerControlPanelStyle.fullscreenButton}
           onClick={handleFullscreen}
           title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
           aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
