@@ -12,6 +12,7 @@ import { throttle } from '@/utils/throttle';
 import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
 import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
+import * as Popover from '@radix-ui/react-popover';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -30,6 +31,9 @@ interface VideoPlayerControlPanelProps {
   handlePlayPause: () => void;
   volume: number;
   setVolume: Dispatch<SetStateAction<number>>;
+  availableResolutionList?: string[];
+  currentResolutionIndex?: number;
+  setCurrentResolutionIndex?: Dispatch<SetStateAction<number>>;
 }
 
 export default function VideoPlayerControlPanel({
@@ -49,6 +53,9 @@ export default function VideoPlayerControlPanel({
   handlePlayPause,
   volume,
   setVolume,
+  availableResolutionList,
+  currentResolutionIndex,
+  setCurrentResolutionIndex,
 }: VideoPlayerControlPanelProps) {
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
@@ -148,14 +155,54 @@ export default function VideoPlayerControlPanel({
           {' '}
           {numberToTime(duration)}
         </div>
-        <button
-          className={videoPlayerControlPanelStyle.fullscreenButton}
-          onClick={handleFullscreen}
-          title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
-          aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
-        >
-          {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
-        </button>
+        <div className={videoPlayerControlPanelStyle.rightSection}>
+          {availableResolutionList
+          && setCurrentResolutionIndex
+          && currentResolutionIndex !== undefined
+            ? (
+              <Popover.Root>
+                <Popover.Trigger asChild>
+                  <button
+                    type="button"
+                    className={videoPlayerControlPanelStyle.resolutionButton}
+                  >
+                    화질:
+                    {' '}
+                    {availableResolutionList[currentResolutionIndex]}
+                  </button>
+                </Popover.Trigger>
+
+                <Popover.Portal>
+                  <Popover.Content sideOffset={16}>
+                    <ul className={videoPlayerControlPanelStyle.resolutionList}>
+                      {availableResolutionList?.map((res, resolutionIndex) => (
+                        <li key={res}>
+                          <Popover.Close asChild>
+                            <button
+                              type="button"
+                              className={videoPlayerControlPanelStyle.resolutionItem}
+                              onClick={() => setCurrentResolutionIndex(resolutionIndex)}
+                            >
+                              {res}
+                            </button>
+                          </Popover.Close>
+                        </li>
+                      ))}
+                    </ul>
+                  </Popover.Content>
+                </Popover.Portal>
+              </Popover.Root>
+            )
+            : null}
+          <button
+            className={videoPlayerControlPanelStyle.fullscreenButton}
+            onClick={handleFullscreen}
+            title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+            aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+          >
+            {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+          </button>
+        </div>
       </div>
     </div>
   );

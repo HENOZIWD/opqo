@@ -248,10 +248,34 @@ export const videoPlayerControlPanelStyle = {
 
   volumeSlider: style({ width: '6rem' }),
 
+  rightSection: style({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '1rem',
+    alignItems: 'center',
+    marginLeft: 'auto',
+  }),
+
+  resolutionButton: style({ color: colorStyleVars.white }),
+
+  resolutionList: style({
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    background: colorStyleVars.gray,
+  }),
+
+  resolutionItem: style({
+    'color': colorStyleVars.white,
+    'padding': '1rem',
+    'width': '100%',
+    'textAlign': 'left',
+
+    ':hover': { background: colorStyleVars.blackShadow },
+  }),
+
   fullscreenButton: style({
     width: '2.5rem',
     height: '2.5rem',
-    marginLeft: 'auto',
   }),
 };
 

@@ -9,7 +9,7 @@ export const colorStyleVars = {
   red: '#dd4c4c',
   blue: '#255CDE',
 
-  blackShadow: '#12122380',
+  blackShadow: '#00000080',
   redShadow: '#dd4c4c80',
   lightGrayShadow: '#cccccc80',
 };

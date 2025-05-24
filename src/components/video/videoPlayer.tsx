@@ -11,12 +11,14 @@ interface VideoPlayerProps {
   source: string;
   title: string;
   thumbnail?: string;
+  availableResolutionList?: string[];
 }
 
 export default function VideoPlayer({
   source,
   title,
   thumbnail,
+  availableResolutionList,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -31,6 +33,7 @@ export default function VideoPlayer({
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5);
+  const [currentResolutionIndex, setCurrentResolutionIndex] = useState<number>(0);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
@@ -277,6 +280,9 @@ export default function VideoPlayer({
           handlePlayPause={handlePlayPause}
           volume={volume}
           setVolume={setVolume}
+          availableResolutionList={availableResolutionList}
+          currentResolutionIndex={currentResolutionIndex}
+          setCurrentResolutionIndex={setCurrentResolutionIndex}
         />
       </div>
       {isBuffering
