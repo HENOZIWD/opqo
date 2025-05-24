@@ -1,18 +1,13 @@
 'use client';
 
 import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef } from 'react';
-import PauseIcon from '@/icons/pauseIcon';
-import PlayIcon from '@/icons/playIcon';
-import FullscreenIcon from '@/icons/fullscreenIcon';
-import VolumeIcon from '@/icons/volumeIcon';
-import VolumeMuteIcon from '@/icons/volumeMuteIcon';
-import ExitFullscreenIcon from '@/icons/exitFullscreenIcon';
 import { numberToTime } from '@/utils/time';
 import { throttle } from '@/utils/throttle';
 import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
 import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import * as Popover from '@radix-ui/react-popover';
+import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon, SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -120,20 +115,22 @@ export default function VideoPlayerControlPanel({
       />
       <div className={videoPlayerControlPanelStyle.panel}>
         <button
-          className={videoPlayerControlPanelStyle.playPauseButton}
           onClick={handlePlayPause}
           title={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
           aria-label={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
         >
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+          {isPlaying
+            ? <PauseIcon className={videoPlayerControlPanelStyle.playPauseButton} />
+            : <PlayIcon className={videoPlayerControlPanelStyle.playPauseButton} />}
         </button>
         <button
-          className={videoPlayerControlPanelStyle.volumeButton}
           onClick={handleMuteVolume}
           title={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
           aria-label={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
         >
-          {isMuted || volume === 0 ? <VolumeMuteIcon /> : <VolumeIcon />}
+          {isMuted || volume === 0
+            ? <SpeakerOffIcon className={videoPlayerControlPanelStyle.volumeButton} />
+            : <SpeakerLoudIcon className={videoPlayerControlPanelStyle.volumeButton} />}
         </button>
         <div className={videoPlayerControlPanelStyle.volumeSlider}>
           <Slider
@@ -195,12 +192,13 @@ export default function VideoPlayerControlPanel({
             )
             : null}
           <button
-            className={videoPlayerControlPanelStyle.fullscreenButton}
             onClick={handleFullscreen}
             title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
             aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
           >
-            {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+            {isFullscreen
+              ? <ExitFullScreenIcon className={videoPlayerControlPanelStyle.fullscreenButton} />
+              : <EnterFullScreenIcon className={videoPlayerControlPanelStyle.fullscreenButton} />}
           </button>
         </div>
       </div>

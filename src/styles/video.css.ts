@@ -237,13 +237,13 @@ export const videoPlayerControlPanelStyle = {
   }),
 
   playPauseButton: style({
-    width: '2.5rem',
-    height: '2.5rem',
+    width: '2rem',
+    height: '2rem',
   }),
 
   volumeButton: style({
-    width: '1.75rem',
-    height: '1.75rem',
+    width: '1.25rem',
+    height: '1.25rem',
   }),
 
   volumeSlider: style({ width: '6rem' }),
@@ -274,8 +274,8 @@ export const videoPlayerControlPanelStyle = {
   }),
 
   fullscreenButton: style({
-    width: '2.5rem',
-    height: '2.5rem',
+    width: '1.75rem',
+    height: '1.75rem',
   }),
 };
 
