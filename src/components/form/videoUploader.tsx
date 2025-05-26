@@ -4,7 +4,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useEffect, useState } from 'reac
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '@/utils/video';
 import VideoPlayer from '../video/videoPlayer';
 import { ERR_MSG_FILE_LOAD_ERROR, ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '@/utils/message';
-import { checkVideoChunkExist, createVideoMetadata, readyVideoUpload, uploadVideoChunk } from '@/apis/video';
+import { checkVideoChunkExist, createVideoMetadata, uploadVideoChunk } from '@/apis/video';
 import { VIDEO_CHUNK_SIZE } from '@/utils/constant';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
@@ -16,20 +16,21 @@ import { TimeoutError } from 'ky';
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
   setIsVideoUploadComplete: Dispatch<SetStateAction<boolean>>;
-  videoId: string | null;
-  setVideoId: Dispatch<SetStateAction<string | null>>;
   setThumbnailData: Dispatch<SetStateAction<Blob | null>>;
+  videoHash: string | null;
+  setVideoHash: Dispatch<SetStateAction<string | null>>;
 }
 
 export default function VideoUploader({
   isVideoUploadComplete,
   setIsVideoUploadComplete,
-  videoId,
-  setVideoId,
   setThumbnailData,
+  videoHash,
+  setVideoHash,
 }: VideoUploaderProps) {
   const [videoData, setVideoData] = useState<Blob | null>(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string>('');
+  const [videoDuration, setVideoDuration] = useState<number>(0);
 
   const [isUploadPrepared, setIsUploadPrepared] = useState<boolean>(false);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -48,7 +49,7 @@ export default function VideoUploader({
 
   useEffect(() => {
     const uploadVideo = async () => {
-      if (!videoData || !videoId) {
+      if (!videoData || !videoHash) {
         showToast({
           message: ERR_MSG_FILE_LOAD_ERROR,
           type: 'error',
@@ -61,7 +62,7 @@ export default function VideoUploader({
 
       setIsUploading(true);
       setUploadProgress(0);
-      setMaxUploadProgress(totalVideoChunkCount + 1);
+      setMaxUploadProgress(totalVideoChunkCount);
 
       const videoChunkList = await generateVideoChunkList(videoData, totalVideoChunkCount);
 
@@ -70,7 +71,7 @@ export default function VideoUploader({
           controller,
           accessToken,
         }) => checkVideoChunkExist({
-          videoId,
+          videoHash,
           chunkIndex,
           controller,
           accessToken,
@@ -88,7 +89,7 @@ export default function VideoUploader({
                   controller,
                   accessToken,
                 }) => uploadVideoChunk({
-                  videoId,
+                  videoHash,
                   chunkIndex,
                   chunkFile: currentVideoChunk,
                   controller,
@@ -117,44 +118,32 @@ export default function VideoUploader({
       }));
     };
 
-    if (!isUploading && isUploadPrepared && videoData && videoId) {
+    if (!isUploading && isUploadPrepared) {
       uploadVideo();
     }
-  }, [isUploadPrepared, videoData, videoId, fetchHandler]);
+  }, [isUploadPrepared, videoData, videoHash]);
 
   useEffect(() => {
-    if (isUploading && uploadRequestProgress + 1 === maxUploadProgress) {
+    if (isUploading && uploadRequestProgress === maxUploadProgress) {
       setIsUploadProcessDone(true);
     }
   }, [isUploading, uploadRequestProgress, maxUploadProgress]);
 
   useEffect(() => {
-    (async () => {
-      if (!isUploadProcessDone || !videoId) {
-        return;
-      }
+    if (!isUploadProcessDone || !videoHash) {
+      return;
+    }
 
-      await fetchHandler(({
-        controller,
-        accessToken,
-      }) => readyVideoUpload({
-        videoId,
-        controller,
-        accessToken,
-      }), {
-        onSuccess: () => {
-          setUploadProgress(maxUploadProgress);
-          setIsVideoUploadComplete(true);
-        },
-        onError: () => {
-          showToast({
-            message: ERR_MSG_VIDEO_UPLOAD_FAILED,
-            type: 'error',
-          });
-        },
+    if (uploadProgress === maxUploadProgress) {
+      setIsVideoUploadComplete(true);
+    }
+    else {
+      showToast({
+        message: ERR_MSG_VIDEO_UPLOAD_FAILED,
+        type: 'error',
       });
-    })();
-  }, [isUploadProcessDone]);
+    }
+  }, [isUploadProcessDone, videoHash]);
 
   const handleSelectVideo = (e: ChangeEvent<HTMLInputElement>) => {
     if (isUploading) {
@@ -197,7 +186,6 @@ export default function VideoUploader({
       const url = URL.createObjectURL(videoFile);
 
       setVideoData(videoFile);
-      setVideoPreviewUrl(url);
       captureRandomThumbnailFromVideo(videoFile, (thumbnailData) => {
         setThumbnailData((prev) => {
           if (!prev) {
@@ -217,13 +205,16 @@ export default function VideoUploader({
           return;
         }
 
-        const videoHash = await generateVideoHash(videoFile);
+        setVideoPreviewUrl(url);
+        setVideoDuration(videoMetadata.duration);
+
+        const generateVideoHashResult = await generateVideoHash(videoFile);
 
         await fetchHandler(({
           controller,
           accessToken,
         }) => createVideoMetadata({
-          hash: videoHash,
+          hash: generateVideoHashResult,
           width: videoMetadata.width,
           height: videoMetadata.height,
           duration: videoMetadata.duration,
@@ -232,11 +223,8 @@ export default function VideoUploader({
           controller,
           accessToken,
         }), {
-          onSuccess: async (response) => {
-            const data = await response?.json();
-            if (data?.videoId) {
-              setVideoId(data.videoId);
-            }
+          onSuccess: () => {
+            setVideoHash(generateVideoHashResult);
             setIsUploadPrepared(true);
           },
           onError: (error) => {
@@ -256,10 +244,11 @@ export default function VideoUploader({
     <div className={videoUploaderStyle.container}>
       <div className={videoUploaderStyle.previewTitle}>미리보기</div>
       <div className={videoUploaderStyle.preview}>
-        {videoPreviewUrl && (
+        {videoPreviewUrl && videoDuration && (
           <VideoPlayer
             source={videoPreviewUrl}
             title="업로드 할 동영상 미리보기"
+            duration={videoDuration}
           />
         )}
       </div>

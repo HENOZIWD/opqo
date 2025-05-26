@@ -20,6 +20,7 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
           source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}`}
           title={data.title}
           thumbnail={`${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${data.id}`}
+          duration={data.video.duration}
         />
       </div>
       <VideoInfo

@@ -23,7 +23,7 @@ export default function UploadVideoForm() {
 
   const router = useRouter();
 
-  const [videoId, setVideoId] = useState<string | null>(null);
+  const [videoHash, setVideoHash] = useState<string | null>(null);
   const [thumbnailData, setThumbnailData] = useState<Blob | null>(null);
   const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
 
@@ -31,7 +31,7 @@ export default function UploadVideoForm() {
   const { showToast } = useToast();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
-    if (!videoId || !thumbnailData) {
+    if (!videoHash || !thumbnailData) {
       showToast({
         message: ERR_MSG_VIDEO_UPLOAD_FAILED,
         type: 'error',
@@ -45,7 +45,7 @@ export default function UploadVideoForm() {
       accessToken,
     }) => uploadVideoContent({
       thumbnailImage: thumbnailData,
-      videoId,
+      videoHash,
       title: data.videoTitle,
       description: data.description,
       controller,
@@ -68,9 +68,9 @@ export default function UploadVideoForm() {
       <VideoUploader
         isVideoUploadComplete={isVideoUploadComplete}
         setIsVideoUploadComplete={setIsVideoUploadComplete}
-        videoId={videoId}
-        setVideoId={setVideoId}
         setThumbnailData={setThumbnailData}
+        videoHash={videoHash}
+        setVideoHash={setVideoHash}
       />
       <ThumbnailSelector setImageData={setThumbnailData} />
       <form

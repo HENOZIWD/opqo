@@ -12,6 +12,7 @@ interface VideoPlayerProps {
   title: string;
   thumbnail?: string;
   availableResolutionList?: string[];
+  duration: number;
 }
 
 export default function VideoPlayer({
@@ -19,6 +20,7 @@ export default function VideoPlayer({
   title,
   thumbnail,
   availableResolutionList,
+  duration,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -27,7 +29,6 @@ export default function VideoPlayer({
   const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
   const [bufferedProgress, setBufferedProgress] = useState<number>(0);
   const [isBuffering, setIsBuffering] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
@@ -243,7 +244,6 @@ export default function VideoPlayer({
         key={source}
         className={videoPlayerStyle.video}
         ref={videoRef}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
