@@ -17,10 +17,11 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
     <div>
       <div className={videoPageStyle.video}>
         <VideoPlayer
-          source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}`}
+          source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/master.m3u8`}
           title={data.title}
           thumbnail={`${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${data.id}`}
           duration={data.video.duration}
+          hls
         />
       </div>
       <VideoInfo

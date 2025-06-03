@@ -6,6 +6,7 @@ import Spinner from './spinner';
 import { videoPlayerStyle } from '@/styles/video.css';
 import VideoPlayerControlPanel from './videoPlayerControlPanel';
 import { getMuteStorageValue, getVolumeStorageValue, setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
+import Hls from 'hls.js';
 
 interface VideoPlayerProps {
   source: string;
@@ -13,6 +14,7 @@ interface VideoPlayerProps {
   thumbnail?: string;
   availableResolutionList?: string[];
   duration: number;
+  hls?: boolean;
 }
 
 export default function VideoPlayer({
@@ -21,6 +23,7 @@ export default function VideoPlayer({
   thumbnail,
   availableResolutionList,
   duration,
+  hls = false,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,6 +42,26 @@ export default function VideoPlayer({
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
   useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    if (hls) {
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+      }
+      else if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(source);
+        hls.attachMedia(video);
+      }
+    }
+    else {
+      video.src = source;
+    }
+
     setVolume(getVolumeStorageValue());
     setIsMuted(getMuteStorageValue());
   }, []);
@@ -256,9 +279,7 @@ export default function VideoPlayer({
         playsInline
         preload="metadata"
         autoPlay
-      >
-        <source src={source} />
-      </video>
+      />
       <figcaption className={`${videoPlayerStyle.title}${isPanelShown ? '' : ` ${videoPlayerStyle.hidden}`}`}>
         {title}
       </figcaption>
