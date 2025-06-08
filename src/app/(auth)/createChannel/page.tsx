@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import CreateChannelForm from '@/components/form/createChannelForm';
 import { pageStyle } from '@/styles/common.css';
+import CreateChannelForm from './modules/components/createChannelForm';
 
 export const metadata: Metadata = { title: '채널 생성' };
 

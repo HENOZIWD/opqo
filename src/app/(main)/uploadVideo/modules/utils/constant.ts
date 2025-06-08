@@ -1,0 +1,2 @@
+export const VIDEO_UPLOAD_LIMIT_SIZE = 1024 * 1024 * 1024; // 1GB
+export const VIDEO_CHUNK_SIZE = 10 * 1024 * 1024; // 10MB

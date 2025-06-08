@@ -1,6 +1,6 @@
-import SignupForm from '@/components/form/signupForm';
 import { Metadata } from 'next';
 import { pageStyle } from '@/styles/common.css';
+import SignupForm from './modules/components/signupForm';
 
 export const metadata: Metadata = {
   title: '회원가입',

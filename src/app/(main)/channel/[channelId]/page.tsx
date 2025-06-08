@@ -1,12 +1,12 @@
-import { getChannelInfo } from '@/apis/channel';
-import ChannelProfileFetcher from '@/fetcher/channelProfileFetcher';
-import ChannelProfileSkeleton from '@/components/channel/channelProfileSkeleton';
-import ChannelVideoListFetcher from '@/fetcher/channelVideoListFetcher';
 import { videoListStyle } from '@/styles/video.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import VideoListSkeleton from '@/components/video/videoListSkeleton';
+import { getChannelInfo } from './modules/apis/getChannelInfo';
+import ChannelProfileSkeleton from './modules/components/channelProfileSkeleton';
+import ChannelProfileFetcher from './modules/components/channelProfileFetcher';
+import ChannelVideoListFetcher from './modules/components/channelVideoListFetcher';
 
 interface ChannelPageProps { params: Promise<{ channelId: string }> }
 

@@ -1,9 +1,9 @@
 'use client';
 
-import { studioLayoutStyle } from '@/styles/layout.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { studioLayoutStyle } from './modules/styles/studioLayoutStyle.css';
 
 const PATH_INFO = '/studio/info';
 const PATH_CONTENTS = '/studio/contents';
