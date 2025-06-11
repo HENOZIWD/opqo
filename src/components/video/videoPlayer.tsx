@@ -82,7 +82,7 @@ export default function VideoPlayer({
     if (videoRef.current.duration > 0) {
       for (let i = 0; i < videoRef.current.buffered.length; i += 1) {
         if (videoRef.current.buffered.start(videoRef.current.buffered.length - 1 - i)
-          < videoRef.current.currentTime) {
+          <= videoRef.current.currentTime) {
           setBufferedProgress((videoRef.current.buffered.end(videoRef.current.buffered.length - 1 - i) * 100)
             / videoRef.current.duration);
           break;
