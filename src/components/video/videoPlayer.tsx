@@ -12,18 +12,16 @@ interface VideoPlayerProps {
   source: string;
   title: string;
   thumbnail?: string;
-  availableResolutionList?: string[];
   duration: number;
-  hls?: boolean;
+  hlsMode?: boolean;
 }
 
 export default function VideoPlayer({
   source,
   title,
   thumbnail,
-  availableResolutionList,
   duration,
-  hls = false,
+  hlsMode = false,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -37,9 +35,12 @@ export default function VideoPlayer({
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5);
-  const [currentResolutionIndex, setCurrentResolutionIndex] = useState<number>(0);
+  const [currentResolutionLevel, setCurrentResolutionLevel] = useState<number>(-1);
+  const [resolutionLevels, setResolutionLevels] = useState<number[]>([]);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
+
+  const hlsRef = useRef<Hls | null>(null);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -48,14 +49,20 @@ export default function VideoPlayer({
       return;
     }
 
-    if (hls) {
+    if (hlsMode) {
       if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = source;
       }
       else if (Hls.isSupported()) {
         const hls = new Hls();
+        hlsRef.current = hls;
+
         hls.loadSource(source);
         hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+          const levels = data.levels.map(({ height }) => height);
+          setResolutionLevels(levels);
+        });
       }
     }
     else {
@@ -64,7 +71,22 @@ export default function VideoPlayer({
 
     setVolume(getVolumeStorageValue());
     setIsMuted(getMuteStorageValue());
+
+    return () => {
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    if (!hlsRef.current || !videoRef.current) {
+      return;
+    }
+
+    hlsRef.current.currentLevel = currentResolutionLevel;
+  }, [currentResolutionLevel]);
 
   const handleShowPanel = () => {
     if (!isPanelShown) {
@@ -301,9 +323,9 @@ export default function VideoPlayer({
           handlePlayPause={handlePlayPause}
           volume={volume}
           setVolume={setVolume}
-          availableResolutionList={availableResolutionList}
-          currentResolutionIndex={currentResolutionIndex}
-          setCurrentResolutionIndex={setCurrentResolutionIndex}
+          resolutionLevels={resolutionLevels}
+          currentResolutionLevel={currentResolutionLevel}
+          setCurrentResolutionLevel={setCurrentResolutionLevel}
         />
       </div>
       {isBuffering

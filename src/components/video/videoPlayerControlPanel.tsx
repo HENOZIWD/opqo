@@ -31,9 +31,9 @@ interface VideoPlayerControlPanelProps {
   handlePlayPause: () => void;
   volume: number;
   setVolume: Dispatch<SetStateAction<number>>;
-  availableResolutionList?: string[];
-  currentResolutionIndex?: number;
-  setCurrentResolutionIndex?: Dispatch<SetStateAction<number>>;
+  resolutionLevels: number[];
+  currentResolutionLevel?: number;
+  setCurrentResolutionLevel?: Dispatch<SetStateAction<number>>;
 }
 
 export default function VideoPlayerControlPanel({
@@ -53,9 +53,9 @@ export default function VideoPlayerControlPanel({
   handlePlayPause,
   volume,
   setVolume,
-  availableResolutionList,
-  currentResolutionIndex,
-  setCurrentResolutionIndex,
+  resolutionLevels,
+  currentResolutionLevel,
+  setCurrentResolutionLevel,
 }: VideoPlayerControlPanelProps) {
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
@@ -156,9 +156,9 @@ export default function VideoPlayerControlPanel({
           {numberToTime(duration)}
         </div>
         <div className={videoPlayerControlPanelStyle.rightSection}>
-          {availableResolutionList
-          && setCurrentResolutionIndex
-          && currentResolutionIndex !== undefined
+          {resolutionLevels.length > 0
+          && setCurrentResolutionLevel
+          && currentResolutionLevel !== undefined
             ? (
               <Popover.Root>
                 <Popover.Trigger asChild>
@@ -168,29 +168,42 @@ export default function VideoPlayerControlPanel({
                   >
                     화질:
                     {' '}
-                    {availableResolutionList[currentResolutionIndex]}
+                    {currentResolutionLevel === -1 ? '자동' : `${resolutionLevels[currentResolutionLevel]}p`}
                   </button>
                 </Popover.Trigger>
 
-                <Popover.Portal>
-                  <Popover.Content sideOffset={16}>
-                    <ul className={videoPlayerControlPanelStyle.resolutionList}>
-                      {availableResolutionList?.map((res, resolutionIndex) => (
-                        <li key={res}>
-                          <Popover.Close asChild>
-                            <button
-                              type="button"
-                              className={videoPlayerControlPanelStyle.resolutionItem}
-                              onClick={() => setCurrentResolutionIndex(resolutionIndex)}
-                            >
-                              {res}
-                            </button>
-                          </Popover.Close>
-                        </li>
-                      ))}
-                    </ul>
-                  </Popover.Content>
-                </Popover.Portal>
+                <Popover.Content
+                  sideOffset={16}
+                  side="top"
+                >
+                  <ul className={videoPlayerControlPanelStyle.resolutionList}>
+                    {resolutionLevels?.map((level, levelIndex) => (
+                      <li key={`${level}-${levelIndex}`}>
+                        <Popover.Close asChild>
+                          <button
+                            type="button"
+                            className={videoPlayerControlPanelStyle.resolutionItem}
+                            onClick={() => setCurrentResolutionLevel(levelIndex)}
+                          >
+                            {level}
+                            p
+                          </button>
+                        </Popover.Close>
+                      </li>
+                    ))}
+                    <li key="autoLevel">
+                      <Popover.Close asChild>
+                        <button
+                          type="button"
+                          className={videoPlayerControlPanelStyle.resolutionItem}
+                          onClick={() => setCurrentResolutionLevel(-1)}
+                        >
+                          자동
+                        </button>
+                      </Popover.Close>
+                    </li>
+                  </ul>
+                </Popover.Content>
               </Popover.Root>
             )
             : null}
