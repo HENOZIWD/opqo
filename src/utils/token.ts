@@ -1,13 +1,20 @@
 import { AccessToken } from './type';
+import jwt from 'jsonwebtoken';
 
 export function parseJwt(token: string): AccessToken | null {
   try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replaceAll('-', '+').replaceAll('_', '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+    const secret = process.env.NEXT_PUBLIC_JWT_SECRET;
 
-    return JSON.parse(jsonPayload);
+    if (!secret) {
+      throw new Error('No secret');
+    }
+
+    const decodedToken = jwt.verify(token, secret);
+
+    if (decodedToken && typeof decodedToken === 'object' && decodedToken !== null) {
+      return decodedToken as AccessToken;
+    }
+    return null;
   }
   catch {
     return null;

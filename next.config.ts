@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
         pathname: '/content/thumbnail/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        search: '',
+      },
     ],
   },
   logging: { fetches: { fullUrl: true } },

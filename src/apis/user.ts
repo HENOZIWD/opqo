@@ -6,7 +6,7 @@ interface RefreshTokenResponse { accessToken: string }
 
 export async function refreshToken({ controller }: RefreshTokenParams) {
   return fetchInstance.post<RefreshTokenResponse>(
-    'token/refresh',
+    'refreshToken',
     {
       signal: controller.signal,
       credentials: 'include',

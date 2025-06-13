@@ -13,6 +13,7 @@
     "@vanilla-extract/css": "^1.17.1",
     "@vanilla-extract/css-utils": "^0.1.4",
     "hls.js": "^1.6.5",
+    "jsonwebtoken": "^8.5.1",
     "ky": "^1.8.1",
     "next": "^15.2.3",
     "react": "^19.0.0",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@stylistic/eslint-plugin": "^2.12.1",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

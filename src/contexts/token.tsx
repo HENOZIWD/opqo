@@ -30,13 +30,13 @@ export default function TokenProvider({
       const refreshedAccessToken = (await response.json()).accessToken;
 
       if (!refreshedAccessToken) {
-        return false;
+        throw new Error('Invalid Token');
       }
 
       const decodedToken = parseJwt(refreshedAccessToken);
 
       if (!decodedToken) {
-        return false;
+        throw new Error('Invalid Token');
       }
 
       await setAccessTokenCookie({
