@@ -63,28 +63,40 @@ export const buttonStyle = {
   }),
 };
 
+const inputContainerStyle = style({
+  'border': `1px solid ${colorStyleVars.black}`,
+  'outline': 'none',
+  'borderRadius': '1rem',
+  'padding': '1rem 1.5rem',
+  'fontSize': '1.125rem',
+  'width': '100%',
+  'transition': 'box-shadow 0.25s',
+  'background': 'inherit',
+  'color': colorStyleVars.black,
+
+  ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.blackShadow}` },
+
+  ':disabled': { background: colorStyleVars.lightGray },
+});
+
+const inputErrorStyle = style({
+  'border': `1px solid ${colorStyleVars.red}`,
+
+  ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.redShadow}` },
+});
+
 export const inputStyle = {
-  container: style({
-    'border': `1px solid ${colorStyleVars.black}`,
-    'outline': 'none',
-    'borderRadius': '1rem',
-    'padding': '1rem 1.5rem',
-    'fontSize': '1.125rem',
-    'width': '100%',
-    'transition': 'box-shadow 0.25s',
-    'background': 'inherit',
-    'color': colorStyleVars.black,
+  container: inputContainerStyle,
+  error: inputErrorStyle,
+};
 
-    ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.blackShadow}` },
+export const textareaStyle = {
+  container: style([inputContainerStyle, {
+    resize: 'none',
+    overflow: 'hidden',
+  }]),
 
-    ':disabled': { background: colorStyleVars.lightGray },
-  }),
-
-  error: style({
-    'border': `1px solid ${colorStyleVars.red}`,
-
-    ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.redShadow}` },
-  }),
+  error: inputErrorStyle,
 };
 
 export const progressBarStyle = {

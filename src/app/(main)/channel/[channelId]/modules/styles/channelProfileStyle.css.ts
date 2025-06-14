@@ -34,7 +34,10 @@ export const channelProfileStyle = {
     fontWeight: 900,
   }),
 
-  description: style({ wordBreak: 'break-all' }),
+  description: style({
+    wordBreak: 'break-all',
+    whiteSpace: 'pre-wrap',
+  }),
 
   loadError: style({ margin: '1.5rem 2rem' }),
 };

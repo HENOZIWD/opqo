@@ -1,8 +1,8 @@
 import { formatDateString } from '@/utils/date';
 import ChannelImage from '@/components/channel/channelImage';
 import { studioInfoStyle } from '../styles/studioInfoStyle.css';
-import { studioInfoSectionStyle } from '../../../modules/styles/studioInfoSectionStyle.css';
 import StudioInfoSection from '../../../modules/components/studioInfoSection';
+import EditableStudioInfoSection from './editableStudioInfoSection';
 
 interface StudioInfoProps {
   email: string;
@@ -27,16 +27,20 @@ export default function StudioInfo({
           url={picture}
         />
       </div>
-      <section className={studioInfoSectionStyle.container}>
-        <h2 className={studioInfoSectionStyle.title}>채널 이름</h2>
-        <p className={studioInfoStyle.channelName}>{name}</p>
-      </section>
+      <EditableStudioInfoSection
+        title="채널 이름"
+        content={name}
+        infoKey="name"
+      />
       <StudioInfoSection title="이메일">
         {email}
       </StudioInfoSection>
-      <StudioInfoSection title="채널 설명">
-        {description}
-      </StudioInfoSection>
+      <EditableStudioInfoSection
+        title="채널 설명"
+        content={description !== '' ? description : '채널 설명이 없습니다.'}
+        multiline
+        infoKey="description"
+      />
       <StudioInfoSection title="채널 개설일">
         {formatDateString(createdDate)}
       </StudioInfoSection>
