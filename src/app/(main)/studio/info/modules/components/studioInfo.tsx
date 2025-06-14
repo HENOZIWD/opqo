@@ -5,30 +5,35 @@ import { studioInfoSectionStyle } from '../../../modules/styles/studioInfoSectio
 import StudioInfoSection from '../../../modules/components/studioInfoSection';
 
 interface StudioInfoProps {
-  id: string;
+  email: string;
   name: string;
   description: string;
   createdDate: string;
+  picture: string;
 }
 
 export default function StudioInfo({
-  id,
+  email,
   name,
   description,
   createdDate,
+  picture,
 }: StudioInfoProps) {
   return (
     <div className={studioInfoStyle.container}>
       <div className={studioInfoStyle.channelImage}>
         <ChannelImage
-          channelId={id}
           channelName={name}
+          url={picture}
         />
       </div>
       <section className={studioInfoSectionStyle.container}>
         <h2 className={studioInfoSectionStyle.title}>채널 이름</h2>
         <p className={studioInfoStyle.channelName}>{name}</p>
       </section>
+      <StudioInfoSection title="이메일">
+        {email}
+      </StudioInfoSection>
       <StudioInfoSection title="채널 설명">
         {description}
       </StudioInfoSection>
