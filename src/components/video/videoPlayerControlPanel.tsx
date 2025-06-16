@@ -12,6 +12,7 @@ import { throttle } from '@/utils/throttle';
 import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
 import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
+import * as Popover from '@radix-ui/react-popover';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -30,6 +31,9 @@ interface VideoPlayerControlPanelProps {
   handlePlayPause: () => void;
   volume: number;
   setVolume: Dispatch<SetStateAction<number>>;
+  resolutionLevels: number[];
+  currentResolutionLevel?: number;
+  setCurrentResolutionLevel?: Dispatch<SetStateAction<number>>;
 }
 
 export default function VideoPlayerControlPanel({
@@ -49,6 +53,9 @@ export default function VideoPlayerControlPanel({
   handlePlayPause,
   volume,
   setVolume,
+  resolutionLevels,
+  currentResolutionLevel,
+  setCurrentResolutionLevel,
 }: VideoPlayerControlPanelProps) {
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +120,7 @@ export default function VideoPlayerControlPanel({
       />
       <div className={videoPlayerControlPanelStyle.panel}>
         <button
-          className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.playPauseButton}`}
+          className={videoPlayerControlPanelStyle.playPauseButton}
           onClick={handlePlayPause}
           title={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
           aria-label={isPlaying ? '동영상 일시정지(Spacebar)' : '동영상 재생(Spacebar)'}
@@ -121,7 +128,7 @@ export default function VideoPlayerControlPanel({
           {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </button>
         <button
-          className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.volumeButton}`}
+          className={videoPlayerControlPanelStyle.volumeButton}
           onClick={handleMuteVolume}
           title={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
           aria-label={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
@@ -148,14 +155,67 @@ export default function VideoPlayerControlPanel({
           {' '}
           {numberToTime(duration)}
         </div>
-        <button
-          className={`${videoPlayerControlPanelStyle.panelButton} ${videoPlayerControlPanelStyle.fullscreenButton}`}
-          onClick={handleFullscreen}
-          title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
-          aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
-        >
-          {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
-        </button>
+        <div className={videoPlayerControlPanelStyle.rightSection}>
+          {resolutionLevels.length > 0
+          && setCurrentResolutionLevel
+          && currentResolutionLevel !== undefined
+            ? (
+              <Popover.Root>
+                <Popover.Trigger asChild>
+                  <button
+                    type="button"
+                    className={videoPlayerControlPanelStyle.resolutionButton}
+                  >
+                    화질:
+                    {' '}
+                    {currentResolutionLevel === -1 ? '자동' : `${resolutionLevels[currentResolutionLevel]}p`}
+                  </button>
+                </Popover.Trigger>
+
+                <Popover.Content
+                  sideOffset={16}
+                  side="top"
+                >
+                  <ul className={videoPlayerControlPanelStyle.resolutionList}>
+                    {resolutionLevels?.map((level, levelIndex) => (
+                      <li key={`${level}-${levelIndex}`}>
+                        <Popover.Close asChild>
+                          <button
+                            type="button"
+                            className={videoPlayerControlPanelStyle.resolutionItem}
+                            onClick={() => setCurrentResolutionLevel(levelIndex)}
+                          >
+                            {level}
+                            p
+                          </button>
+                        </Popover.Close>
+                      </li>
+                    ))}
+                    <li key="autoLevel">
+                      <Popover.Close asChild>
+                        <button
+                          type="button"
+                          className={videoPlayerControlPanelStyle.resolutionItem}
+                          onClick={() => setCurrentResolutionLevel(-1)}
+                        >
+                          자동
+                        </button>
+                      </Popover.Close>
+                    </li>
+                  </ul>
+                </Popover.Content>
+              </Popover.Root>
+            )
+            : null}
+          <button
+            className={videoPlayerControlPanelStyle.fullscreenButton}
+            onClick={handleFullscreen}
+            title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+            aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+          >
+            {isFullscreen ? <ExitFullscreenIcon /> : <FullscreenIcon />}
+          </button>
+        </div>
       </div>
     </div>
   );

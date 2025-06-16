@@ -1,7 +1,7 @@
 import CustomLink from '@/components/common/customLink';
-import MyChannelListFetcher from '@/fetcher/myChannelListFetcher';
 import { pageStyle } from '@/styles/common.css';
 import { Metadata } from 'next';
+import MyChannelListFetcher from './modules/components/myChannelListFetcher';
 
 export const metadata: Metadata = { title: '채널 선택' };
 

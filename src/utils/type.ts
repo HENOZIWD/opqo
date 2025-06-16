@@ -11,27 +11,10 @@ export interface SigninContent {
   password: string;
 }
 
-export interface CreateChannelContent {
-  channelName: string;
-  description: string;
-}
-
 export interface AuthSession {
   accessToken: string | null;
   channelId: string | null;
   channelName: string | null;
-}
-
-export interface UploadVideoContent {
-  videoTitle: string;
-  description: string;
-}
-
-export interface VideoMetadata {
-  width: number;
-  height: number;
-  duration: number;
-  extension: string;
 }
 
 export type ToastType = 'normal' | 'error';

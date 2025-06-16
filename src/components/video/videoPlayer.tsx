@@ -6,17 +6,22 @@ import Spinner from './spinner';
 import { videoPlayerStyle } from '@/styles/video.css';
 import VideoPlayerControlPanel from './videoPlayerControlPanel';
 import { getMuteStorageValue, getVolumeStorageValue, setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
+import Hls from 'hls.js';
 
 interface VideoPlayerProps {
   source: string;
   title: string;
   thumbnail?: string;
+  duration: number;
+  hlsMode?: boolean;
 }
 
 export default function VideoPlayer({
   source,
   title,
   thumbnail,
+  duration,
+  hlsMode = false,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -25,19 +30,63 @@ export default function VideoPlayer({
   const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<number>(0);
-  const [duration, setDuration] = useState<number>(0);
   const [bufferedProgress, setBufferedProgress] = useState<number>(0);
   const [isBuffering, setIsBuffering] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5);
+  const [currentResolutionLevel, setCurrentResolutionLevel] = useState<number>(-1);
+  const [resolutionLevels, setResolutionLevels] = useState<number[]>([]);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
+  const hlsRef = useRef<Hls | null>(null);
+
   useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    if (hlsMode) {
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+      }
+      else if (Hls.isSupported()) {
+        const hls = new Hls();
+        hlsRef.current = hls;
+
+        hls.loadSource(source);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+          const levels = data.levels.map(({ height }) => height);
+          setResolutionLevels(levels);
+        });
+      }
+    }
+    else {
+      video.src = source;
+    }
+
     setVolume(getVolumeStorageValue());
     setIsMuted(getMuteStorageValue());
+
+    return () => {
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    if (!hlsRef.current || !videoRef.current) {
+      return;
+    }
+
+    hlsRef.current.currentLevel = currentResolutionLevel;
+  }, [currentResolutionLevel]);
 
   const handleShowPanel = () => {
     if (!isPanelShown) {
@@ -55,7 +104,7 @@ export default function VideoPlayer({
     if (videoRef.current.duration > 0) {
       for (let i = 0; i < videoRef.current.buffered.length; i += 1) {
         if (videoRef.current.buffered.start(videoRef.current.buffered.length - 1 - i)
-          < videoRef.current.currentTime) {
+          <= videoRef.current.currentTime) {
           setBufferedProgress((videoRef.current.buffered.end(videoRef.current.buffered.length - 1 - i) * 100)
             / videoRef.current.duration);
           break;
@@ -240,7 +289,6 @@ export default function VideoPlayer({
         key={source}
         className={videoPlayerStyle.video}
         ref={videoRef}
-        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
@@ -253,9 +301,7 @@ export default function VideoPlayer({
         playsInline
         preload="metadata"
         autoPlay
-      >
-        <source src={source} />
-      </video>
+      />
       <figcaption className={`${videoPlayerStyle.title}${isPanelShown ? '' : ` ${videoPlayerStyle.hidden}`}`}>
         {title}
       </figcaption>
@@ -277,6 +323,9 @@ export default function VideoPlayer({
           handlePlayPause={handlePlayPause}
           volume={volume}
           setVolume={setVolume}
+          resolutionLevels={resolutionLevels}
+          currentResolutionLevel={currentResolutionLevel}
+          setCurrentResolutionLevel={setCurrentResolutionLevel}
         />
       </div>
       {isBuffering

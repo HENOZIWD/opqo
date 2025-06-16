@@ -1,5 +1,5 @@
-import Header from '@/components/layout/header';
-import { mainLayoutStyle } from '@/styles/layout.css';
+import Header from './modules/components/header';
+import { mainLayoutStyle } from './modules/styles/mainLayoutStyle.css';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (

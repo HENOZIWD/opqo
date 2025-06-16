@@ -1,8 +1,8 @@
-import VideoListFetcher from '@/fetcher/videoListFetcher';
 import { Suspense } from 'react';
 import VideoListSkeleton from '@/components/video/videoListSkeleton';
 import { videoListStyle } from '@/styles/video.css';
 import { pageStyle } from '@/styles/common.css';
+import VideoListFetcher from './modules/components/videoListFetcher';
 
 export default function MainPage() {
   return (

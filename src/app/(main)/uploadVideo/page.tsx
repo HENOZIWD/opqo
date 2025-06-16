@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import UploadVideoForm from '@/components/form/uploadVideoForm';
 import { pageStyle } from '@/styles/common.css';
+import UploadVideoForm from './modules/components/uploadVideoForm';
 
 export const metadata: Metadata = { title: '동영상 업로드' };
 

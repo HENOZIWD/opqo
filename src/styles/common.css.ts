@@ -3,13 +3,13 @@ import { calc } from '@vanilla-extract/css-utils';
 
 export const colorStyleVars = {
   white: '#f1f1f1',
-  black: '#121223',
+  black: '#000000',
   gray: '#545454',
   lightGray: '#cccccc',
   red: '#dd4c4c',
   blue: '#255CDE',
 
-  blackShadow: '#12122380',
+  blackShadow: '#00000080',
   redShadow: '#dd4c4c80',
   lightGrayShadow: '#cccccc80',
 };
@@ -39,8 +39,6 @@ export const buttonStyle = {
     'borderRadius': 9999,
     'background': colorStyleVars.black,
     'color': colorStyleVars.white,
-    'border': 'none',
-    'outline': 'none',
     'cursor': 'pointer',
     'whiteSpace': 'nowrap',
     'padding': '0.625rem 1.25rem',

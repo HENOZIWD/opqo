@@ -236,17 +236,6 @@ export const videoPlayerControlPanelStyle = {
     alignItems: 'center',
   }),
 
-  panelButton: style({
-    position: 'relative',
-    border: 'none',
-    outline: 'none',
-    padding: 0,
-    margin: 0,
-    background: 'transparent',
-    color: 'inherit',
-    cursor: 'pointer',
-  }),
-
   playPauseButton: style({
     width: '2.5rem',
     height: '2.5rem',
@@ -259,59 +248,33 @@ export const videoPlayerControlPanelStyle = {
 
   volumeSlider: style({ width: '6rem' }),
 
-  fullscreenButton: style({
-    width: '2.5rem',
-    height: '2.5rem',
-    marginLeft: 'auto',
-  }),
-};
-
-export const videoPageStyle = {
-  video: style({
-    width: '100%',
-    aspectRatio: '64/27',
-    left: 0,
-  }),
-
-  loadError: style({ margin: '1.5rem 2rem' }),
-};
-
-export const videoInfoStyle = {
-  container: style({
-    'display': 'flex',
-    'flexDirection': 'column',
-    'gap': '1.5rem',
-    'padding': '1.5rem 2rem',
-
-    '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { padding: '1.5rem 0' } },
-  }),
-
-  title: style({
-    fontSize: '1.5rem',
-    fontWeight: 700,
-  }),
-
-  channelSection: style({
+  rightSection: style({
     display: 'flex',
     flexDirection: 'row',
     gap: '1rem',
     alignItems: 'center',
+    marginLeft: 'auto',
   }),
 
-  channelImage: style({
-    width: '4rem',
-    height: '4rem',
-  }),
+  resolutionButton: style({ color: colorStyleVars.white }),
 
-  channelName: style({
-    fontSize: '1.5rem',
-    fontWeight: 700,
-  }),
-
-  description: style({
+  resolutionList: style({
     display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-    fontSize: '1.125rem',
+    flexDirection: 'column-reverse',
+    background: colorStyleVars.gray,
+  }),
+
+  resolutionItem: style({
+    'color': colorStyleVars.white,
+    'padding': '1rem',
+    'width': '100%',
+    'textAlign': 'left',
+
+    ':hover': { background: colorStyleVars.blackShadow },
+  }),
+
+  fullscreenButton: style({
+    width: '2.5rem',
+    height: '2.5rem',
   }),
 };

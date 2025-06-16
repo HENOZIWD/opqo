@@ -1,7 +1,7 @@
 import { getVideoInfo } from '@/apis/video';
-import VideoFetcher from '@/fetcher/videoFetcher';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
+import VideoFetcher from './modules/components/videoFetcher';
 
 interface VideoPageProps { params: Promise<{ videoId: string }> }
 

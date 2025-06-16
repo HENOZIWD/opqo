@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import SigninForm from '@/components/form/signinForm';
 import { pageStyle } from '@/styles/common.css';
+import SigninForm from './modules/components/signinForm';
 
 export const metadata: Metadata = {
   title: '로그인',
