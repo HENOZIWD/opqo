@@ -3,13 +3,13 @@ import { AuthenticationParams, FetchParams } from '@/apis/type';
 import { accessTokenToBearer } from '@/utils/token';
 
 interface UploadVideoChunkParams extends FetchParams, AuthenticationParams {
-  videoHash: string;
+  videoId: string;
   chunkIndex: number;
   chunkFile: Blob;
 }
 
 export async function uploadVideoChunk({
-  videoHash,
+  videoId,
   chunkIndex,
   chunkFile,
   controller,
@@ -20,7 +20,7 @@ export async function uploadVideoChunk({
   formData.append('chunkFile', chunkFile);
 
   return fetchInstance.post<void>(
-    `videos/${videoHash}/chunks/${chunkIndex + 1}`,
+    `uploadVideo/${videoId}/chunk/${chunkIndex}`,
     {
       body: formData,
       headers: { Authorization: accessTokenToBearer(accessToken) },

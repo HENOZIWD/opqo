@@ -10,7 +10,9 @@ interface CreateVideoMetadataParams extends FetchParams, AuthenticationParams {
   duration: number;
   extension: string;
   size: number;
+  totalChunkCount: number;
 }
+interface CreateVideoMetadataResponse { id: string }
 
 export async function createVideoMetadata({
   hash,
@@ -19,10 +21,11 @@ export async function createVideoMetadata({
   duration,
   extension,
   size,
+  totalChunkCount,
   controller,
   accessToken,
 }: CreateVideoMetadataParams) {
-  return fetchInstance.post<void>('videos', {
+  return fetchInstance.post<CreateVideoMetadataResponse>('uploadVideo/metadata', {
     json: {
       hash,
       width,
@@ -30,6 +33,7 @@ export async function createVideoMetadata({
       duration,
       extension,
       size,
+      totalChunkCount,
     },
     headers: {
       'Authorization': accessTokenToBearer(accessToken),

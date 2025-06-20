@@ -20,16 +20,16 @@ interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
   setIsVideoUploadComplete: Dispatch<SetStateAction<boolean>>;
   setThumbnailData: Dispatch<SetStateAction<Blob | null>>;
-  videoHash: string | null;
-  setVideoHash: Dispatch<SetStateAction<string | null>>;
+  videoId: string | null;
+  setVideoId: Dispatch<SetStateAction<string | null>>;
 }
 
 export default function VideoUploader({
   isVideoUploadComplete,
   setIsVideoUploadComplete,
   setThumbnailData,
-  videoHash,
-  setVideoHash,
+  videoId,
+  setVideoId,
 }: VideoUploaderProps) {
   const [videoData, setVideoData] = useState<Blob | null>(null);
   const [videoPreviewUrl, setVideoPreviewUrl] = useState<string>('');
@@ -52,7 +52,7 @@ export default function VideoUploader({
 
   useEffect(() => {
     const uploadVideo = async () => {
-      if (!videoData || !videoHash) {
+      if (!videoData || !videoId) {
         showToast({
           message: ERR_MSG_FILE_LOAD_ERROR,
           type: 'error',
@@ -74,7 +74,7 @@ export default function VideoUploader({
           controller,
           accessToken,
         }) => checkVideoChunkExist({
-          videoHash,
+          videoId,
           chunkIndex,
           controller,
           accessToken,
@@ -92,7 +92,7 @@ export default function VideoUploader({
                   controller,
                   accessToken,
                 }) => uploadVideoChunk({
-                  videoHash,
+                  videoId,
                   chunkIndex,
                   chunkFile: currentVideoChunk,
                   controller,
@@ -124,7 +124,7 @@ export default function VideoUploader({
     if (!isUploading && isUploadPrepared) {
       uploadVideo();
     }
-  }, [isUploadPrepared, videoData, videoHash]);
+  }, [isUploadPrepared, videoData, videoId]);
 
   useEffect(() => {
     if (isUploading && uploadRequestProgress === maxUploadProgress) {
@@ -133,7 +133,7 @@ export default function VideoUploader({
   }, [isUploading, uploadRequestProgress, maxUploadProgress]);
 
   useEffect(() => {
-    if (!isUploadProcessDone || !videoHash) {
+    if (!isUploadProcessDone || !videoId) {
       return;
     }
 
@@ -146,7 +146,7 @@ export default function VideoUploader({
         type: 'error',
       });
     }
-  }, [isUploadProcessDone, videoHash]);
+  }, [isUploadProcessDone, videoId]);
 
   const handleSelectVideo = (e: ChangeEvent<HTMLInputElement>) => {
     if (isUploading) {
@@ -225,12 +225,21 @@ export default function VideoUploader({
           duration: videoMetadata.duration,
           extension: videoMetadata.extension,
           size: videoFile.size,
+          totalChunkCount: Math.ceil(videoFile.size / VIDEO_CHUNK_SIZE),
           controller,
           accessToken,
         }), {
-          onSuccess: () => {
-            setVideoHash(generateVideoHashResult);
-            setIsUploadPrepared(true);
+          onSuccess: async (response) => {
+            const id = (await response?.json())?.id;
+
+            if (!id) {
+              setIsUploadProcessDone(true);
+              setVideoId('ERROR');
+            }
+            else {
+              setVideoId(id);
+              setIsUploadPrepared(true);
+            }
           },
           onError: (error) => {
             if (error instanceof TimeoutError) {
