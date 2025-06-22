@@ -60,7 +60,10 @@ export default function VideoPlayer({
         hls.loadSource(source);
         hls.attachMedia(video);
         hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-          const levels = data.levels.map(({ height }) => height);
+          const levels = data.levels.map(({
+            width,
+            height,
+          }) => width > height ? height : width);
           setResolutionLevels(levels);
         });
       }
