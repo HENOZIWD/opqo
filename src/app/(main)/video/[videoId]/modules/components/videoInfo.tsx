@@ -9,6 +9,7 @@ interface VideoInfoProps {
   createdDate: string;
   channelId: string;
   channelName: string;
+  channelImage: string;
 }
 
 export default function VideoInfo({
@@ -17,6 +18,7 @@ export default function VideoInfo({
   createdDate,
   channelId,
   channelName,
+  channelImage,
 }: VideoInfoProps) {
   return (
     <div className={videoInfoStyle.container}>
@@ -26,8 +28,8 @@ export default function VideoInfo({
       <div className={videoInfoStyle.channelSection}>
         <div className={videoInfoStyle.channelImage}>
           <ChannelImage
-            channelId={channelId}
             channelName={channelName}
+            url={channelImage}
           />
         </div>
         <Link

@@ -1,7 +1,7 @@
-import { getVideoInfo } from '@/apis/video';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import VideoFetcher from './modules/components/videoFetcher';
+import { getVideoInfo } from './modules/apis/getVideoInfo';
 
 interface VideoPageProps { params: Promise<{ videoId: string }> }
 
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: VideoPageProps): Promise<Meta
   return {
     title: `${data?.title}`,
     description: `${data?.description}`,
-    openGraph: { images: [`${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${data?.id}`] },
+    openGraph: { images: [`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data?.id}/thumbnail.webp`] },
   };
 }
 
