@@ -10,5 +10,5 @@ interface GetChannelVideoListResponse {
 }
 
 export async function getChannelVideoList({ channelId }: GetChannelVideoListParams) {
-  return fetchInstance.get<GetChannelVideoListResponse[]>(`channels/${channelId}/contents`, FETCH_CACHE_POLICY);
+  return fetchInstance.get<GetChannelVideoListResponse[]>(`${channelId}/videoList`, FETCH_CACHE_POLICY);
 }
