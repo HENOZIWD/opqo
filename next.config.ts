@@ -9,21 +9,14 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_CDN_HOSTNAME!,
-        port: '',
-        pathname: '/profile/**',
-        search: '',
-      },
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_CDN_HOSTNAME!,
-        port: '',
-        pathname: '/content/thumbnail/**',
-        search: '',
-      },
-      {
-        protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+        port: '',
+        search: '',
+      },
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_CDN_HOSTNAME!,
+        pathname: '/**/thumbnail.webp',
         port: '',
         search: '',
       },

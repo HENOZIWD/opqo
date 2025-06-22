@@ -1,7 +1,6 @@
 import { fetchInstance } from '@/apis/instance';
 import { FETCH_CACHE_POLICY } from '@/utils/constant';
 
-interface GetVideoListParams { category: string }
 interface GetVideoListResponse {
   id: string;
   title: string;
@@ -10,9 +9,10 @@ interface GetVideoListResponse {
   channel: {
     id: string;
     name: string;
+    picture: string;
   };
 }
 
-export async function getVideoList({ category }: GetVideoListParams) {
-  return fetchInstance.get<GetVideoListResponse[]>(`contents?view=${category}`, FETCH_CACHE_POLICY);
+export async function getVideoList() {
+  return fetchInstance.get<GetVideoListResponse[]>(`videoList`, FETCH_CACHE_POLICY);
 }

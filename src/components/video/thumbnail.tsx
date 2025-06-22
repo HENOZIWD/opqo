@@ -13,8 +13,8 @@ export default function Thumbnail({
   videoId,
   videoTitle,
 }: ThumbnailProps) {
-  const [src, setSrc] = useState<string>(process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL
-    ? `${process.env.NEXT_PUBLIC_CDN_THUMBNAIL_URL}/${videoId}`
+  const [src, setSrc] = useState<string>(process.env.NEXT_PUBLIC_CDN_VIDEO_URL
+    ? `${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${videoId}/thumbnail.webp`
     : '/assets/lightgray.png');
 
   const handleError = () => {

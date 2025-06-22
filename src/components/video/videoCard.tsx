@@ -13,6 +13,7 @@ interface VideoCardProps {
   channelInfo?: {
     id: string;
     name: string;
+    picture: string;
   };
 }
 
@@ -42,8 +43,8 @@ export default function VideoCard({
           ? (
             <div className={videoCardStyle.channelImage}>
               <ChannelImage
-                channelId={channelInfo.id}
                 channelName={channelInfo.name}
+                url={channelInfo.picture}
               />
             </div>
           )
