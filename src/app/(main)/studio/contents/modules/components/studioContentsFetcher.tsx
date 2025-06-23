@@ -18,8 +18,8 @@ export default async function StudioContentsFetcher() {
         ? data.map(({
           id,
           title,
-          status,
           createdDate,
+          isUploaded,
         }) => (
           <li
             className={videoListStyle.card}
@@ -28,7 +28,7 @@ export default async function StudioContentsFetcher() {
             <StudioContentCard
               id={id}
               title={title}
-              status={status}
+              isUploaded={isUploaded}
               createdDate={createdDate}
             />
           </li>

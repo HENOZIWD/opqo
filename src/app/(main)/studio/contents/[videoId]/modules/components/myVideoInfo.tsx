@@ -13,10 +13,10 @@ interface MyVideoInfoProps {
   duration: number;
   size: number;
   extension: string;
-  status: string;
   createdDate: string;
   title: string;
   description: string;
+  isUploaded: boolean;
 }
 
 export default function MyVideoInfo({
@@ -26,10 +26,10 @@ export default function MyVideoInfo({
   duration,
   size,
   extension,
-  status,
   createdDate,
   title,
   description,
+  isUploaded,
 }: MyVideoInfoProps) {
   return (
     <div className={myVideoInfoStyle.container}>
@@ -56,8 +56,8 @@ export default function MyVideoInfo({
         <StudioInfoSection title="확장자">
           {extension}
         </StudioInfoSection>
-        <StudioInfoSection title="상태">
-          {status}
+        <StudioInfoSection title="업로드 상태">
+          {isUploaded ? '업로드 완료' : '업로드 중'}
         </StudioInfoSection>
         <StudioInfoSection title="생성한 날짜">
           {formatDateTimeString(createdDate)}

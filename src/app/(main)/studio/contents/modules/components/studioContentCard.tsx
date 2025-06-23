@@ -8,14 +8,14 @@ interface StudioContentCardProps {
   id: string;
   title: string;
   createdDate: string;
-  status: string;
+  isUploaded: boolean;
 }
 
 export default function StudioContentCard({
   id,
   title,
   createdDate,
-  status,
+  isUploaded,
 }: StudioContentCardProps) {
   return (
     <article className={videoCardStyle.container}>
@@ -30,7 +30,7 @@ export default function StudioContentCard({
       </Link>
       <div className={studioContentCardStyle.info}>
         <div>{formatDateString(createdDate)}</div>
-        <div>{status}</div>
+        <div>{isUploaded ? '업로드 완료' : '업로드 중'}</div>
       </div>
     </article>
   );
