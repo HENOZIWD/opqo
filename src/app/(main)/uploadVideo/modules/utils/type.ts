@@ -1,5 +1,5 @@
 export interface UploadVideoContent {
-  videoTitle: string;
+  title: string;
   description: string;
 }
 
