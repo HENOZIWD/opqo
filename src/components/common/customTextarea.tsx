@@ -1,5 +1,5 @@
 import { textareaStyle } from '@/styles/common.css';
-import { ChangeEvent, TextareaHTMLAttributes, useState } from 'react';
+import { ChangeEvent, TextareaHTMLAttributes, useRef, useState } from 'react';
 
 interface CustomTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> { error?: boolean }
 
@@ -7,6 +7,7 @@ export default function CustomTextarea({
   error = false,
   ...props
 }: CustomTextareaProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const [currentLength, setCurrentLength] = useState<number>(() => {
     if (typeof props.defaultValue === 'string') {
       return props.defaultValue.length;
@@ -20,10 +21,17 @@ export default function CustomTextarea({
 
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
+
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollIntoView({ block: 'end' });
+    }
   };
 
   return (
-    <div className={textareaStyle.wrapper}>
+    <div
+      ref={wrapperRef}
+      className={textareaStyle.wrapper}
+    >
       <textarea
         {...props}
         className={`${textareaStyle.container}${error ? ` ${textareaStyle.error}` : ''}`}
