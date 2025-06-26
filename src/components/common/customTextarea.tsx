@@ -1,9 +1,13 @@
 import { textareaStyle } from '@/styles/common.css';
 import { ChangeEvent, TextareaHTMLAttributes, useRef, useState } from 'react';
 
-interface CustomTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> { error?: boolean }
+interface CustomTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  autoTrim?: boolean;
+  error?: boolean;
+}
 
 export default function CustomTextarea({
+  autoTrim,
   error = false,
   ...props
 }: CustomTextareaProps) {
@@ -39,6 +43,14 @@ export default function CustomTextarea({
           setCurrentLength(e.currentTarget.value.length);
           resizeTextarea(e);
           props.onChange?.(e);
+        }}
+        onBlur={(e) => {
+          if (autoTrim) {
+            const trimmed = e.currentTarget.value.trim();
+            e.currentTarget.value = trimmed;
+            setCurrentLength(trimmed.length);
+          }
+          props.onBlur?.(e);
         }}
       />
       {props.maxLength

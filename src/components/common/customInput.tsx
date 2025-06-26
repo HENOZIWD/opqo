@@ -1,9 +1,13 @@
 import { InputHTMLAttributes, useState } from 'react';
 import { inputStyle } from '@/styles/common.css';
 
-interface CustomInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> { error?: boolean }
+interface CustomInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  autoTrim?: boolean;
+  error?: boolean;
+}
 
 export default function CustomInput({
+  autoTrim,
   error = false,
   ...props
 }: CustomInputProps) {
@@ -24,6 +28,14 @@ export default function CustomInput({
         onChange={(e) => {
           setCurrentLength(e.currentTarget.value.length);
           props.onChange?.(e);
+        }}
+        onBlur={(e) => {
+          if (autoTrim) {
+            const trimmed = e.currentTarget.value.trim();
+            e.currentTarget.value = trimmed;
+            setCurrentLength(trimmed.length);
+          }
+          props.onBlur?.(e);
         }}
       />
       {props.maxLength
