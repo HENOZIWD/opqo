@@ -2,23 +2,19 @@ import { textareaStyle } from '@/styles/common.css';
 import { ChangeEvent, TextareaHTMLAttributes, useRef, useState } from 'react';
 
 interface CustomTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  defaultValueLength?: number;
   autoTrim?: boolean;
   error?: boolean;
 }
 
 export default function CustomTextarea({
+  defaultValueLength,
   autoTrim,
   error = false,
   ...props
 }: CustomTextareaProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [currentLength, setCurrentLength] = useState<number>(() => {
-    if (typeof props.defaultValue === 'string') {
-      return props.defaultValue.length;
-    }
-
-    return 0;
-  });
+  const [currentLength, setCurrentLength] = useState<number>(defaultValueLength ?? 0);
 
   const resizeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.currentTarget;

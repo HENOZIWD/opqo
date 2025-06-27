@@ -2,22 +2,18 @@ import { InputHTMLAttributes, useState } from 'react';
 import { inputStyle } from '@/styles/common.css';
 
 interface CustomInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  defaultValueLength?: number;
   autoTrim?: boolean;
   error?: boolean;
 }
 
 export default function CustomInput({
+  defaultValueLength,
   autoTrim,
   error = false,
   ...props
 }: CustomInputProps) {
-  const [currentLength, setCurrentLength] = useState<number>(() => {
-    if (typeof props.defaultValue === 'string') {
-      return props.defaultValue.length;
-    }
-
-    return 0;
-  });
+  const [currentLength, setCurrentLength] = useState<number>(defaultValueLength ?? 0);
 
   return (
     <div className={inputStyle.wrapper}>
