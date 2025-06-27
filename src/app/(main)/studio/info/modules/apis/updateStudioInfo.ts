@@ -4,8 +4,8 @@ import { CONTENT_TYPE_APPLICATION_JSON } from '@/utils/constant';
 import { accessTokenToBearer } from '@/utils/token';
 
 interface UpdateStudioInfoParams extends FetchParams, AuthenticationParams {
-  name?: string;
-  description?: string;
+  name: string;
+  description: string;
 }
 
 export async function updateStudioInfo({

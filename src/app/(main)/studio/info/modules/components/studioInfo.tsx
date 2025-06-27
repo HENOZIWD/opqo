@@ -1,8 +1,20 @@
+'use client';
+
 import { formatDateString } from '@/utils/date';
 import ChannelImage from '@/components/channel/channelImage';
 import { studioInfoStyle } from '../styles/studioInfoStyle.css';
+import CustomButton from '@/components/common/customButton';
+import { useForm } from 'react-hook-form';
+import { UpdateStudioInfo } from '../utils/type';
+import { useState } from 'react';
+import CustomInput from '@/components/common/customInput';
+import { ERR_MSG_CHANNEL_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_CHANNEL_NAME_LIMIT_EXCEEDED, ERR_MSG_EMPTY_CHANNEL_NAME, UPDATE_STUDIO_INFO_FAILED, UPDATE_STUDIO_INFO_SUCCEEDED } from '../utils/message';
 import StudioInfoSection from '../../../modules/components/studioInfoSection';
-import EditableStudioInfoSection from './editableStudioInfoSection';
+import { useFetch } from '@/hooks/useFetch';
+import { useToast } from '@/hooks/useToast';
+import { updateStudioInfo } from '../apis/updateStudioInfo';
+import CustomTextarea from '@/components/common/customTextarea';
+import { formStyle } from '@/styles/form.css';
 
 interface StudioInfoProps {
   email: string;
@@ -12,6 +24,9 @@ interface StudioInfoProps {
   picture: string;
 }
 
+const CHANNEL_NAME_LIMIT = 50;
+const CHANNEL_DESCRIPTION_LIMIT = 1000;
+
 export default function StudioInfo({
   email,
   name,
@@ -19,31 +34,152 @@ export default function StudioInfo({
   createdDate,
   picture,
 }: StudioInfoProps) {
+  const {
+    register,
+    handleSubmit,
+    formState,
+  } = useForm<UpdateStudioInfo>({
+    mode: 'all',
+    defaultValues: {
+      name,
+      description,
+    },
+  });
+
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editableData, setEditableData] = useState<UpdateStudioInfo>({
+    name,
+    description,
+  });
+
+  const { fetchHandler } = useFetch();
+  const { showToast } = useToast();
+
+  const handleUpdateStudioInfo = async (data: UpdateStudioInfo) => {
+    if (!isEditing) {
+      return;
+    }
+
+    fetchHandler(({
+      controller,
+      accessToken,
+    }) => updateStudioInfo({
+      name: data.name,
+      description: data.description,
+      controller,
+      accessToken,
+    }), {
+      onSuccess: () => {
+        setEditableData(data);
+        showToast({ message: UPDATE_STUDIO_INFO_SUCCEEDED });
+        setIsEditing(false);
+      },
+      onError: () => {
+        showToast({ message: UPDATE_STUDIO_INFO_FAILED });
+      },
+    });
+  };
+
   return (
-    <div className={studioInfoStyle.container}>
+    <form
+      onSubmit={handleSubmit((data) => { handleUpdateStudioInfo(data); })}
+      className={studioInfoStyle.container}
+    >
       <div className={studioInfoStyle.channelImage}>
         <ChannelImage
           channelName={name}
           url={picture}
         />
       </div>
-      <EditableStudioInfoSection
-        title="채널 이름"
-        content={name}
-        infoKey="name"
-      />
+      {isEditing
+        ? (
+          <div className={studioInfoStyle.input}>
+            <label htmlFor="채널 이름">
+              채널 이름
+            </label>
+            <CustomInput
+              id="채널 이름"
+              {...register('name', {
+                required: {
+                  value: true,
+                  message: ERR_MSG_EMPTY_CHANNEL_NAME,
+                },
+                maxLength: {
+                  value: CHANNEL_NAME_LIMIT,
+                  message: ERR_MSG_CHANNEL_NAME_LIMIT_EXCEEDED,
+                },
+              })}
+              error={formState.errors.name !== undefined}
+              maxLength={CHANNEL_NAME_LIMIT}
+              autoTrim
+              defaultValueLength={name.length}
+            />
+            {formState.errors.name ? <div className={formStyle.error}>{formState.errors.name.message}</div> : null}
+          </div>
+        )
+        : (
+          <StudioInfoSection title="채널 이름">
+            {editableData.name}
+          </StudioInfoSection>
+        )}
       <StudioInfoSection title="이메일">
         {email}
       </StudioInfoSection>
-      <EditableStudioInfoSection
-        title="채널 설명"
-        content={description !== '' ? description : '채널 설명이 없습니다.'}
-        multiline
-        infoKey="description"
-      />
+      {isEditing
+        ? (
+          <div className={studioInfoStyle.input}>
+            <label htmlFor="채널 설명">
+              채널 설명
+            </label>
+            <CustomTextarea
+              id="채널 설명"
+              {...register('description', {
+                maxLength: {
+                  value: CHANNEL_DESCRIPTION_LIMIT,
+                  message: ERR_MSG_CHANNEL_DESCRIPTION_LIMIT_EXCEEDED,
+                },
+              })}
+              error={formState.errors.description !== undefined}
+              maxLength={CHANNEL_DESCRIPTION_LIMIT}
+              defaultValueLength={description.length}
+            />
+            {formState.errors.description ? <div className={formStyle.error}>{formState.errors.description.message}</div> : null}
+          </div>
+        )
+        : (
+          <StudioInfoSection title="채널 설명">
+            {editableData.description}
+          </StudioInfoSection>
+        )}
       <StudioInfoSection title="채널 개설일">
         {formatDateString(createdDate)}
       </StudioInfoSection>
-    </div>
+      <div className={studioInfoStyle.button}>
+        {isEditing
+          ? (
+            <>
+              <CustomButton
+                type="button"
+                size="small"
+                content="취소"
+                clickAction={() => setIsEditing(false)}
+              />
+              <CustomButton
+                type="submit"
+                size="small"
+                content="완료"
+              />
+            </>
+          )
+          : (
+            <CustomButton
+              type="button"
+              size="small"
+              content="수정"
+              clickAction={() => setIsEditing(true)}
+            />
+          )}
+      </div>
+    </form>
   );
 }
