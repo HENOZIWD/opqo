@@ -39,33 +39,31 @@ export default function MyVideoInfo({
           videoTitle={title}
         />
       </div>
-      <div className={myVideoInfoStyle.info}>
-        <section className={studioInfoSectionStyle.container}>
-          <h2 className={studioInfoSectionStyle.title}>채널 이름</h2>
-          <p className={myVideoInfoStyle.title}>{title}</p>
-        </section>
-        <StudioInfoSection title="해상도">
-          {`${width} X ${height}`}
-        </StudioInfoSection>
-        <StudioInfoSection title="동영상 길이">
-          {numberToTime(duration)}
-        </StudioInfoSection>
-        <StudioInfoSection title="동영상 크기">
-          {numberToFileSize(size)}
-        </StudioInfoSection>
-        <StudioInfoSection title="확장자">
-          {extension}
-        </StudioInfoSection>
-        <StudioInfoSection title="업로드 상태">
-          {isUploaded ? '업로드 완료' : '업로드 중'}
-        </StudioInfoSection>
-        <StudioInfoSection title="생성한 날짜">
-          {formatDateTimeString(createdDate)}
-        </StudioInfoSection>
-        <StudioInfoSection title="동영상 설명">
-          {description}
-        </StudioInfoSection>
-      </div>
+      <section className={studioInfoSectionStyle.container}>
+        <h2 className={studioInfoSectionStyle.title}>동영상 제목</h2>
+        <p className={myVideoInfoStyle.title}>{title}</p>
+      </section>
+      <StudioInfoSection title="해상도">
+        {`${width} X ${height}`}
+      </StudioInfoSection>
+      <StudioInfoSection title="동영상 길이">
+        {numberToTime(duration)}
+      </StudioInfoSection>
+      <StudioInfoSection title="동영상 크기">
+        {numberToFileSize(size)}
+      </StudioInfoSection>
+      <StudioInfoSection title="확장자">
+        {extension}
+      </StudioInfoSection>
+      <StudioInfoSection title="업로드 상태">
+        {isUploaded ? '업로드 완료' : '업로드 중'}
+      </StudioInfoSection>
+      <StudioInfoSection title="생성한 날짜">
+        {formatDateTimeString(createdDate)}
+      </StudioInfoSection>
+      <StudioInfoSection title="동영상 설명">
+        {description}
+      </StudioInfoSection>
     </div>
   );
 }
