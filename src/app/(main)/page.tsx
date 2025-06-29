@@ -11,7 +11,7 @@ export default function MainPage() {
       <section className={videoListStyle.section}>
         <h2 className={videoListStyle.title}>최근 업로드 된 동영상</h2>
         <Suspense fallback={<VideoListSkeleton />}>
-          <VideoListFetcher category="recent" />
+          <VideoListFetcher />
         </Suspense>
       </section>
     </main>

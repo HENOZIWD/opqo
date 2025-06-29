@@ -4,14 +4,14 @@ import { accessTokenToBearer } from '@/utils/token';
 
 interface UploadVideoContentParams extends FetchParams, AuthenticationParams {
   thumbnailImage: Blob;
-  videoHash: string;
+  videoId: string;
   title: string;
   description: string;
 }
 
 export async function uploadVideoContent({
   thumbnailImage,
-  videoHash,
+  videoId,
   title,
   description,
   controller,
@@ -20,11 +20,10 @@ export async function uploadVideoContent({
   const formData = new FormData();
 
   formData.append('thumbnailImage', thumbnailImage);
-  formData.append('videoHash', videoHash);
   formData.append('title', title);
   formData.append('description', description);
 
-  return fetchInstance.post<void>('contents', {
+  return fetchInstance.post<void>(`uploadVideo/${videoId}`, {
     body: formData,
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,

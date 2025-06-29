@@ -3,17 +3,17 @@ import { AuthenticationParams, FetchParams } from '@/apis/type';
 import { accessTokenToBearer } from '@/utils/token';
 
 interface CheckVideoChunkExistParams extends FetchParams, AuthenticationParams {
-  videoHash: string;
+  videoId: string;
   chunkIndex: number;
 }
 
 export async function checkVideoChunkExist({
-  videoHash,
+  videoId,
   chunkIndex,
   controller,
   accessToken,
 }: CheckVideoChunkExistParams) {
-  return fetchInstance.head(`videos/${videoHash}/chunks/${chunkIndex + 1}`, {
+  return fetchInstance.head(`uploadVideo/${videoId}/chunk/${chunkIndex}`, {
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
   });

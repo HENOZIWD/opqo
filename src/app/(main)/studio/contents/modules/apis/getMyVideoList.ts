@@ -6,13 +6,13 @@ interface GetMyVideoListParams extends AuthenticationParams { }
 interface GetMyVideoListResponse {
   id: string;
   title: string;
-  status: string;
   createdDate: string;
+  isUploaded: boolean;
 }
 
 export async function getMyVideoList({ accessToken }: GetMyVideoListParams) {
   return fetchInstance.get<GetMyVideoListResponse[]>(
-    'channels/me/videos',
+    'studio/videoList',
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }

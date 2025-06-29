@@ -5,14 +5,16 @@ import { accessTokenToBearer } from '@/utils/token';
 interface GetMyChannelInfoParams extends AuthenticationParams { }
 interface GetMyChannelInfoResponse {
   id: string;
+  email: string;
   name: string;
   description: string;
   createdDate: string;
+  picture: string;
 }
 
-export async function getMyChannelInfo({ accessToken }: GetMyChannelInfoParams) {
+export async function getStudioInfo({ accessToken }: GetMyChannelInfoParams) {
   return fetchInstance.get<GetMyChannelInfoResponse>(
-    'channels/me',
+    'studio',
     { headers: { Authorization: accessTokenToBearer(accessToken) } },
   );
 }

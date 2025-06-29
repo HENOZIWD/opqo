@@ -29,11 +29,11 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
     });
   };
 
-  if (!auth || !auth.id || !auth.name) {
+  if (!auth) {
     return (
       <div className={authTopBarStyle.container}>
         <CustomLink
-          href="/signin"
+          href={process.env.NEXT_PUBLIC_LOGIN_URL ?? '/'}
           size="small"
           prefetch={false}
         >
@@ -66,8 +66,8 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
           onClick={() => { setIsExpanded((prev) => !prev); }}
         >
           <ChannelImage
-            channelId={auth.id}
             channelName={auth.name}
+            url={auth.picture}
           />
         </button>
       </div>
@@ -76,9 +76,6 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
           <div className={authTopBarStyle.menuContainer}>
             <div className={authTopBarStyle.channelInfo}>
               <div className={authTopBarStyle.channelName}>{auth.name}</div>
-              <div className={authTopBarStyle.changeChannel}>
-                <Link href="/selectChannel">채널 변경</Link>
-              </div>
             </div>
             <ul className={authTopBarStyle.menuList}>
               <li>

@@ -1,4 +1,7 @@
 export const ERR_MSG_EMPTY_VIDEO_TITLE = '동영상 제목을 입력하세요.';
+export const ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED = '동영상 제목은 100자 까지 작성할 수 있습니다.';
+export const ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED = '동영상 설명은 5000자 까지 작성할 수 있습니다.';
+
 export const ERR_MSG_EMPTY_VIDEO = '업로드 할 동영상을 선택하세요.';
 export const ERR_MSG_VIDEO_UPLOAD_FAILED = '동영상 업로드에 실패했습니다.';
 

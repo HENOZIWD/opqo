@@ -20,6 +20,7 @@ export const channelProfileStyle = {
   image: style({
     width: '9rem',
     height: '9rem',
+    flexShrink: 0,
   }),
 
   info: style({
@@ -31,6 +32,11 @@ export const channelProfileStyle = {
   name: style({
     fontSize: '2.5rem',
     fontWeight: 900,
+  }),
+
+  description: style({
+    wordBreak: 'break-all',
+    whiteSpace: 'pre-wrap',
   }),
 
   loadError: style({ margin: '1.5rem 2rem' }),

@@ -13,7 +13,7 @@ export default function StudioInfoSection({
   return (
     <section className={studioInfoSectionStyle.container}>
       <h2 className={studioInfoSectionStyle.title}>{title}</h2>
-      <p className={studioInfoSectionStyle.content}>{children}</p>
+      <div className={studioInfoSectionStyle.content}>{children}</div>
     </section>
   );
 }

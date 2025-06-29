@@ -43,14 +43,6 @@ export const authTopBarStyle = {
 
   channelName: style({ fontWeight: 700 }),
 
-  changeChannel: style({
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    fontSize: '0.875rem',
-    color: colorStyleVars.blue,
-  }),
-
   menuList: style({
     display: 'flex',
     flexDirection: 'column',

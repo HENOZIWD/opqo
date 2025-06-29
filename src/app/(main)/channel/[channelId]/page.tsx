@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: ChannelPageProps): Promise<Me
   return {
     title: `${data?.name} 채널`,
     description: `${data?.description}`,
-    openGraph: { images: [`${process.env.NEXT_PUBLIC_CDN_CHANNELIMAGE_URL}/${data?.id}`] },
+    openGraph: { images: [`${data?.picture}`] },
   };
 }
 

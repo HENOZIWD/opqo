@@ -58,7 +58,7 @@ export const tokenRefreshInterceptor = async (
 
   try {
     const { accessToken } = await ky.post<{ accessToken: string }>(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/token/refresh`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/refreshToken`,
       { credentials: 'include' },
     ).json();
 

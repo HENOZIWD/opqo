@@ -3,24 +3,26 @@ import { formatDateString } from '@/utils/date';
 import { channelProfileStyle } from '../styles/channelProfileStyle.css';
 
 interface ChannelProfileProps {
-  id: string;
+  email: string;
   name: string;
   description: string;
   createdDate: string;
+  picture: string;
 }
 
 export default function ChannelProfile({
-  id,
+  email,
   name,
   description,
   createdDate,
+  picture,
 }: ChannelProfileProps) {
   return (
     <div className={channelProfileStyle.container}>
       <div className={channelProfileStyle.image}>
         <ChannelImage
-          channelId={id}
           channelName={name}
+          url={picture}
         />
       </div>
       <div className={channelProfileStyle.info}>
@@ -28,6 +30,9 @@ export default function ChannelProfile({
           {name}
         </h1>
         <div>
+          {email}
+        </div>
+        <div className={channelProfileStyle.description}>
           {description}
         </div>
         <div>

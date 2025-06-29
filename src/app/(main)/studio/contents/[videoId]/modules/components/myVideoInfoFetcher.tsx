@@ -1,35 +1,34 @@
 import { getAccessTokenCookie } from '@/serverActions/token';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
-import { getVideoInfo } from '@/apis/video';
-import { getMyVideoMetadata } from '../apis/getMyVideoMetadata';
+
 import MyVideoInfo from './myVideoInfo';
+import { getMyVideoInfo } from '../apis/getMyVideoInfo';
 
 interface MyVideoInfoFetcherProps { id: string }
 
 export default async function MyVideoInfoFetcher({ id }: MyVideoInfoFetcherProps) {
   const accessToken = (await getAccessTokenCookie()) ?? null;
-  const { data: videoMetadata } = await fetchHandlerWithServerComponent(() => getMyVideoMetadata({
+  const { data } = await fetchHandlerWithServerComponent(() => getMyVideoInfo({
     accessToken,
     id,
   }));
-  const { data: videoData } = await fetchHandlerWithServerComponent(() => getVideoInfo({ videoId: id }));
 
-  if (!videoMetadata || !videoData) {
+  if (!data) {
     return <div>동영상 정보를 불러오지 못했습니다.</div>;
   }
 
   return (
     <MyVideoInfo
       id={id}
-      width={videoMetadata.width}
-      height={videoMetadata.height}
-      duration={videoMetadata.duration}
-      size={videoMetadata.size}
-      extension={videoMetadata.extension}
-      status={videoMetadata.status}
-      createdDate={videoMetadata.createdDate}
-      title={videoData.title}
-      description={videoData.description}
+      width={data.width}
+      height={data.height}
+      duration={data.duration}
+      size={data.size}
+      extension={data.extension}
+      createdDate={data.createdDate}
+      title={data.title}
+      description={data.description}
+      isUploaded={data.isUploaded}
     />
   );
 }

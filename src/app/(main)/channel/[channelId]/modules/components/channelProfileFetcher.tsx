@@ -14,10 +14,11 @@ export default async function ChannelProfileFetcher({ channelId }: ChannelProfil
 
   return (
     <ChannelProfile
-      id={data.id}
+      email={data.email}
       name={data.name}
       description={data.description}
       createdDate={data.createdDate}
+      picture={data.picture}
     />
   );
 }

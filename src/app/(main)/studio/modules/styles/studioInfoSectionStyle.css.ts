@@ -14,5 +14,8 @@ export const studioInfoSectionStyle = {
     fontWeight: 400,
   }),
 
-  content: style({ wordBreak: 'break-all' }),
+  content: style({
+    wordBreak: 'break-all',
+    whiteSpace: 'pre-wrap',
+  }),
 };

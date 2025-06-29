@@ -10,20 +10,24 @@ import { useToast } from '@/hooks/useToast';
 import { formStyle } from '@/styles/form.css';
 import VideoUploader from './videoUploader';
 import ThumbnailSelector from './thumbnailSelector';
-import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '../utils/message';
+import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED, ERR_MSG_VIDEO_UPLOAD_FAILED } from '../utils/message';
 import { uploadVideoContent } from '../apis/uploadVideoContent';
 import { UploadVideoContent } from '../utils/type';
+import CustomTextarea from '@/components/common/customTextarea';
+
+const VIDEO_TITLE_LIMIT = 100;
+const VIDEO_DESCRIPTION_LIMIT = 5000;
 
 export default function UploadVideoForm() {
   const {
     register,
     handleSubmit,
     formState,
-  } = useForm<UploadVideoContent>();
+  } = useForm<UploadVideoContent>({ mode: 'all' });
 
   const router = useRouter();
 
-  const [videoHash, setVideoHash] = useState<string | null>(null);
+  const [videoId, setVideoId] = useState<string | null>(null);
   const [thumbnailData, setThumbnailData] = useState<Blob | null>(null);
   const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
 
@@ -31,7 +35,11 @@ export default function UploadVideoForm() {
   const { showToast } = useToast();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
-    if (!videoHash || !thumbnailData) {
+    if (!isVideoUploadComplete) {
+      return;
+    }
+
+    if (!videoId || !thumbnailData) {
       showToast({
         message: ERR_MSG_VIDEO_UPLOAD_FAILED,
         type: 'error',
@@ -45,8 +53,8 @@ export default function UploadVideoForm() {
       accessToken,
     }) => uploadVideoContent({
       thumbnailImage: thumbnailData,
-      videoHash,
-      title: data.videoTitle,
+      videoId,
+      title: data.title,
       description: data.description,
       controller,
       accessToken,
@@ -69,37 +77,49 @@ export default function UploadVideoForm() {
         isVideoUploadComplete={isVideoUploadComplete}
         setIsVideoUploadComplete={setIsVideoUploadComplete}
         setThumbnailData={setThumbnailData}
-        videoHash={videoHash}
-        setVideoHash={setVideoHash}
+        videoId={videoId}
+        setVideoId={setVideoId}
       />
       <ThumbnailSelector setImageData={setThumbnailData} />
       <form
         onSubmit={handleSubmit((data) => { handleUploadVideoContent(data); })}
         className={formStyle.container}
       >
-        <label htmlFor="videoTitle">
+        <label htmlFor="title">
           동영상 제목
         </label>
         <CustomInput
-          id="videoTitle"
-          type="text"
-          {...register('videoTitle', {
+          id="title"
+          {...register('title', {
             required: {
               value: true,
               message: ERR_MSG_EMPTY_VIDEO_TITLE,
             },
+            maxLength: {
+              value: VIDEO_TITLE_LIMIT,
+              message: ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED,
+            },
           })}
-          error={formState?.errors?.videoTitle !== undefined}
+          error={formState?.errors?.title !== undefined}
+          maxLength={VIDEO_TITLE_LIMIT}
+          autoTrim
         />
-        {formState?.errors?.videoTitle && <div className={formStyle.error}>{formState.errors.videoTitle?.message}</div>}
+        {formState?.errors?.title && <div className={formStyle.error}>{formState.errors.title?.message}</div>}
         <label htmlFor="description">
           동영상 설명
         </label>
-        <CustomInput
+        <CustomTextarea
           id="description"
-          type="text"
-          {...register('description')}
+          {...register('description', {
+            maxLength: {
+              value: VIDEO_DESCRIPTION_LIMIT,
+              message: ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED,
+            },
+          })}
+          error={formState?.errors?.description !== undefined}
+          maxLength={VIDEO_DESCRIPTION_LIMIT}
         />
+        {formState?.errors?.description && <div className={formStyle.error}>{formState.errors.description?.message}</div>}
         {isVideoUploadComplete
           ? (
             <div className={formStyle.submit}>

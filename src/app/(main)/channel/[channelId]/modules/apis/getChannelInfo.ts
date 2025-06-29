@@ -4,11 +4,13 @@ import { FETCH_CACHE_POLICY } from '@/utils/constant';
 interface GetChannelInfoParams { channelId: string }
 interface GetChannelInfoResponse {
   id: string;
+  email: string;
   name: string;
   description: string;
   createdDate: string;
+  picture: string;
 }
 
 export async function getChannelInfo({ channelId }: GetChannelInfoParams) {
-  return fetchInstance.get<GetChannelInfoResponse>(`channels/${channelId}`, FETCH_CACHE_POLICY);
+  return fetchInstance.get<GetChannelInfoResponse>(`channel/${channelId}`, FETCH_CACHE_POLICY);
 }
