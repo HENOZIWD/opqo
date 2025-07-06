@@ -234,10 +234,15 @@ export default function VideoPlayer({
 
   const handleShortcut = (e: KeyboardEvent<HTMLElement>) => {
     const key = e.key.toLowerCase();
-    const preventDefaultKeys = [' ', 'm', 'enter', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+    const preventDefaultKeys = [' ', 'm', 'f', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+    const showPanelKeys = [...preventDefaultKeys, 'tab', 'enter'];
 
     if (preventDefaultKeys.includes(key)) {
       e.preventDefault();
+    }
+
+    if (showPanelKeys.includes(key)) {
+      handleShowPanel();
     }
 
     switch (key) {
@@ -251,7 +256,7 @@ export default function VideoPlayer({
         break;
       }
 
-      case 'enter': {
+      case 'f': {
         handleFullscreen();
         break;
       }
@@ -267,13 +272,11 @@ export default function VideoPlayer({
       }
 
       case 'arrowleft': {
-        handleShowPanel();
         handleSkipTime('FORWARD');
         break;
       }
 
       case 'arrowright': {
-        handleShowPanel();
         handleSkipTime('BACKWARD');
         break;
       }
