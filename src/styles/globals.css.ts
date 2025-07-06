@@ -39,7 +39,6 @@ globalStyle('button', {
   display: 'flex',
   position: 'relative',
   border: 'none',
-  outline: 'none',
   padding: 0,
   margin: 0,
   background: 'transparent',
