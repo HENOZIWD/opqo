@@ -233,9 +233,14 @@ export default function VideoPlayer({
   };
 
   const handleShortcut = (e: KeyboardEvent<HTMLElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    switch (e.key.toLowerCase()) {
+    const key = e.key.toLowerCase();
+    const preventDefaultKeys = [' ', 'm', 'enter', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+
+    if (preventDefaultKeys.includes(key)) {
+      e.preventDefault();
+    }
+
+    switch (key) {
       case ' ': {
         handlePlayPause();
         break;
