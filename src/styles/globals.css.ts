@@ -36,6 +36,7 @@ globalStyle('html', { '@media': { '(prefers-color-scheme: dark)': { colorScheme:
 globalStyle('main', { '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { padding: '0 1rem 1rem' } } });
 
 globalStyle('button', {
+  display: 'flex',
   position: 'relative',
   border: 'none',
   outline: 'none',
