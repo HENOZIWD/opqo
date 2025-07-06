@@ -8,6 +8,7 @@ import Slider from '../common/slider';
 import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import * as Popover from '@radix-ui/react-popover';
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon, SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
+import { VideoResolutionLevel } from './videoPlayer';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -26,9 +27,9 @@ interface VideoPlayerControlPanelProps {
   handlePlayPause: () => void;
   volume: number;
   setVolume: Dispatch<SetStateAction<number>>;
-  resolutionLevels: number[];
-  currentResolutionLevel?: number;
-  setCurrentResolutionLevel?: Dispatch<SetStateAction<number>>;
+  resolutionLevels: VideoResolutionLevel[];
+  currentResolutionLevel?: VideoResolutionLevel;
+  setCurrentResolutionLevel?: Dispatch<SetStateAction<VideoResolutionLevel>>;
 }
 
 export default function VideoPlayerControlPanel({
@@ -166,7 +167,7 @@ export default function VideoPlayerControlPanel({
                   >
                     화질:
                     {' '}
-                    {currentResolutionLevel === -1 ? '자동' : `${resolutionLevels[currentResolutionLevel]}p`}
+                    {currentResolutionLevel.level === -1 ? '자동' : `${currentResolutionLevel.name}p`}
                   </button>
                 </Popover.Trigger>
 
@@ -175,31 +176,34 @@ export default function VideoPlayerControlPanel({
                   side="top"
                 >
                   <ul className={videoPlayerControlPanelStyle.resolutionList}>
-                    {resolutionLevels?.map((level, levelIndex) => (
-                      <li key={`${level}-${levelIndex}`}>
-                        <Popover.Close asChild>
-                          <button
-                            type="button"
-                            className={videoPlayerControlPanelStyle.resolutionItem}
-                            onClick={() => setCurrentResolutionLevel(levelIndex)}
-                          >
-                            {level}
-                            p
-                          </button>
-                        </Popover.Close>
-                      </li>
-                    ))}
                     <li key="autoLevel">
                       <Popover.Close asChild>
                         <button
                           type="button"
                           className={videoPlayerControlPanelStyle.resolutionItem}
-                          onClick={() => setCurrentResolutionLevel(-1)}
+                          onClick={() => setCurrentResolutionLevel({
+                            level: -1,
+                            name: '자동',
+                          })}
                         >
                           자동
                         </button>
                       </Popover.Close>
                     </li>
+                    {resolutionLevels?.map((level) => (
+                      <li key={level.level}>
+                        <Popover.Close asChild>
+                          <button
+                            type="button"
+                            className={videoPlayerControlPanelStyle.resolutionItem}
+                            onClick={() => setCurrentResolutionLevel(level)}
+                          >
+                            {level.name}
+                            p
+                          </button>
+                        </Popover.Close>
+                      </li>
+                    ))}
                   </ul>
                 </Popover.Content>
               </Popover.Root>

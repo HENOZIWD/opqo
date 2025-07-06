@@ -260,7 +260,7 @@ export const videoPlayerControlPanelStyle = {
 
   resolutionList: style({
     display: 'flex',
-    flexDirection: 'column-reverse',
+    flexDirection: 'column',
     background: colorStyleVars.gray,
   }),
 
