@@ -211,8 +211,8 @@ export default function VideoPlayerControlPanel({
             : null}
           <button
             onClick={handleFullscreen}
-            title={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
-            aria-label={isFullscreen ? '전체 화면 해제(Enter)' : '전체 화면으로 전환(Enter)'}
+            title={isFullscreen ? '전체 화면 해제(F)' : '전체 화면으로 전환(F)'}
+            aria-label={isFullscreen ? '전체 화면 해제(F)' : '전체 화면으로 전환(F)'}
           >
             {isFullscreen
               ? <ExitFullScreenIcon className={videoPlayerControlPanelStyle.fullscreenButton} />
