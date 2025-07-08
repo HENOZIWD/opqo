@@ -1,6 +1,6 @@
 import { pageStyle } from '@/styles/common.css';
 import { Metadata } from 'next';
-import StudioInfoFetcher from './modules/components/studioInfoFetcher';
+import StudioInfoFetcher from './modules/components/studioInfoFetcher/component';
 
 export const metadata: Metadata = { title: '내 채널 정보' };
 

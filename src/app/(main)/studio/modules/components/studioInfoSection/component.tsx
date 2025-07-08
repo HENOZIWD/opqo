@@ -1,0 +1,19 @@
+import { ReactNode } from 'react';
+import { studioInfoSectionStyle } from './style.css';
+
+interface StudioInfoSectionProps {
+  title: string;
+  children: ReactNode;
+}
+
+export default function StudioInfoSection({
+  title,
+  children,
+}: StudioInfoSectionProps) {
+  return (
+    <section className={studioInfoSectionStyle.container}>
+      <h2 className={studioInfoSectionStyle.title}>{title}</h2>
+      <div className={studioInfoSectionStyle.content}>{children}</div>
+    </section>
+  );
+}

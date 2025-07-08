@@ -3,7 +3,7 @@ import { pageStyle } from '@/styles/common.css';
 import { videoListStyle } from '@/styles/video.css';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import StudioContentsFetcher from './modules/components/studioContentsFetcher';
+import StudioContentsFetcher from './modules/components/studioContentsFetcher/component';
 
 export const metadata: Metadata = { title: '내 콘텐츠 목록' };
 

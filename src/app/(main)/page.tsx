@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import VideoListSkeleton from '@/components/video/videoListSkeleton';
 import { videoListStyle } from '@/styles/video.css';
 import { pageStyle } from '@/styles/common.css';
-import VideoListFetcher from './modules/components/videoListFetcher';
+import VideoListFetcher from './modules/components/videoListFetcher/component';
 
 export default function MainPage() {
   return (

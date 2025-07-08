@@ -1,7 +1,7 @@
 import { pageStyle } from '@/styles/common.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
-import MyVideoInfoFetcher from './modules/components/myVideoInfoFetcher';
+import MyVideoInfoFetcher from './modules/components/myVideoInfoFetcher/component';
 import { getMyVideoInfo } from './modules/apis/getMyVideoInfo';
 import { getAccessTokenCookie } from '@/serverActions/token';
 

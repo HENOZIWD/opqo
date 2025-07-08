@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import VideoListSkeleton from '@/components/video/videoListSkeleton';
 import { getChannelInfo } from './modules/apis/getChannelInfo';
-import ChannelProfileSkeleton from './modules/components/channelProfileSkeleton';
-import ChannelProfileFetcher from './modules/components/channelProfileFetcher';
-import ChannelVideoListFetcher from './modules/components/channelVideoListFetcher';
+import ChannelProfileSkeleton from './modules/components/channelProfileSkeleton/component';
+import ChannelProfileFetcher from './modules/components/channelProfileFetcher/component';
+import ChannelVideoListFetcher from './modules/components/channelVideoListFetcher/component';
 
 interface ChannelPageProps { params: Promise<{ channelId: string }> }
 
