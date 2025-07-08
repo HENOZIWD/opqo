@@ -3,7 +3,6 @@
 import { formatDateString } from '@/utils/date';
 import ChannelImage from '@/components/channel/channelImage/component';
 import { studioInfoStyle } from './style.css';
-import CustomButton from '@/components/common/customButton';
 import { useForm } from 'react-hook-form';
 import { UpdateStudioInfo } from '../../utils/type';
 import { useState } from 'react';
@@ -15,6 +14,7 @@ import { useToast } from '@/hooks/useToast';
 import { updateStudioInfo } from '../../apis/updateStudioInfo';
 import CustomTextarea from '@/components/common/customTextarea';
 import { formStyle } from '@/styles/form.css';
+import { buttonStyle } from '@/styles/common/button.css';
 
 interface StudioInfoProps {
   email: string;
@@ -158,26 +158,29 @@ export default function StudioInfo({
         {isEditing
           ? (
             <>
-              <CustomButton
+              <button
+                className={buttonStyle.small}
                 type="button"
-                size="small"
-                content="취소"
-                clickAction={() => setIsEditing(false)}
-              />
-              <CustomButton
+                onClick={() => setIsEditing(false)}
+              >
+                취소
+              </button>
+              <button
+                className={buttonStyle.small}
                 type="submit"
-                size="small"
-                content="완료"
-              />
+              >
+                완료
+              </button>
             </>
           )
           : (
-            <CustomButton
+            <button
+              className={buttonStyle.small}
               type="button"
-              size="small"
-              content="수정"
-              clickAction={() => setIsEditing(true)}
-            />
+              onClick={() => setIsEditing(true)}
+            >
+              수정
+            </button>
           )}
       </div>
     </form>
