@@ -1,19 +1,19 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import CustomInput from '@/components/common/customInput';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
-import { formStyle } from '@/styles/form.css';
+import { formStyle } from '@/styles/common/form.css';
 import VideoUploader from '../videoUploader/component';
 import ThumbnailSelector from '../thumbnailSelector/component';
 import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED, ERR_MSG_VIDEO_UPLOAD_FAILED } from '../../utils/message';
 import { uploadVideoContent } from '../../apis/uploadVideoContent';
 import { UploadVideoContent } from '../../utils/type';
-import CustomTextarea from '@/components/common/customTextarea';
 import { buttonStyle } from '@/styles/common/button.css';
+import Input from '@/components/common/input/component';
+import Textarea from '@/components/common/textarea/component';
 
 const VIDEO_TITLE_LIMIT = 100;
 const VIDEO_DESCRIPTION_LIMIT = 5000;
@@ -88,7 +88,7 @@ export default function UploadVideoForm() {
         <label htmlFor="title">
           동영상 제목
         </label>
-        <CustomInput
+        <Input
           id="title"
           {...register('title', {
             required: {
@@ -108,7 +108,7 @@ export default function UploadVideoForm() {
         <label htmlFor="description">
           동영상 설명
         </label>
-        <CustomTextarea
+        <Textarea
           id="description"
           {...register('description', {
             maxLength: {

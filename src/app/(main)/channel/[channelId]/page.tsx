@@ -1,8 +1,8 @@
-import { videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoList.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import VideoListSkeleton from '@/components/video/videoListSkeleton';
+import VideoListSkeleton from '@/components/video/videoListSkeleton/component';
 import { getChannelInfo } from './modules/apis/getChannelInfo';
 import ChannelProfileSkeleton from './modules/components/channelProfileSkeleton/component';
 import ChannelProfileFetcher from './modules/components/channelProfileFetcher/component';

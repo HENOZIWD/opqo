@@ -1,5 +1,5 @@
-import { colorStyleVars } from '@/styles/common.css';
-import { formContainerStyle } from '@/styles/form.css';
+import { colorStyleVars } from '@/styles/constant';
+import { formContainerStyle } from '@/styles/common/form.css';
 import { style } from '@vanilla-extract/css';
 
 export const videoUploaderStyle = {

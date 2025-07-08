@@ -1,8 +1,8 @@
 'use client';
 
-import { thumbnailStyle } from '@/styles/video.css';
 import Image from 'next/image';
 import { useState } from 'react';
+import { thumbnailStyle } from './style.css';
 
 interface ThumbnailProps {
   videoId: string;

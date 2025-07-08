@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import Thumbnail from './thumbnail';
+import Thumbnail from '../thumbnail/component';
 import { formatDateString } from '@/utils/date';
 import { numberToTime } from '@/utils/time';
 import ChannelImage from '@/components/channel/channelImage/component';
-import { videoCardStyle } from '@/styles/video.css';
+import { videoCardStyle } from './style.css';
 
 interface VideoCardProps {
   videoId: string;

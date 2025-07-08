@@ -1,7 +1,7 @@
 import { numberToTime } from '@/utils/time';
 import { numberToFileSize } from '@/utils/convert';
 import { formatDateTimeString } from '@/utils/date';
-import Thumbnail from '@/components/video/thumbnail';
+import Thumbnail from '@/components/video/thumbnail/component';
 import { myVideoInfoStyle } from './style.css';
 import StudioInfoSection from '@/app/(main)/studio/modules/components/studioInfoSection/component';
 

@@ -2,11 +2,11 @@
 
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { debounce } from '@/utils/debounce';
-import Spinner from './spinner';
-import { videoPlayerStyle } from '@/styles/video.css';
-import VideoPlayerControlPanel from './videoPlayerControlPanel';
+import Spinner from '../spinner/component';
+import VideoPlayerControlPanel from '../videoPlayerControlPanel/component';
 import { getMuteStorageValue, getVolumeStorageValue, setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import Hls from 'hls.js';
+import { videoPlayerStyle } from './style.css';
 
 export interface VideoResolutionLevel {
   level: number;

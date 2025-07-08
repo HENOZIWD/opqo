@@ -1,7 +1,7 @@
 import { formatDateString } from '@/utils/date';
 import Link from 'next/link';
-import { videoCardStyle } from '@/styles/video.css';
-import Thumbnail from '@/components/video/thumbnail';
+import { videoCardStyle } from '@/styles/video/videoList.css';
+import Thumbnail from '@/components/video/thumbnail/component';
 import { studioContentCardStyle } from './style.css';
 
 interface StudioContentCardProps {

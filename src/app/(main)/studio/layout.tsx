@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { studioLayoutStyle } from './modules/styles/studioLayoutStyle.css';
+import { studioLayoutStyle } from './modules/styles/layout.css';
 
 const PATH_INFO = '/studio/info';
 const PATH_CONTENTS = '/studio/contents';

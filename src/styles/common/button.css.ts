@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars } from '../common.css';
+import { colorStyleVars } from '../constant';
 
 const containerStyle = style({
   'display': 'flex',

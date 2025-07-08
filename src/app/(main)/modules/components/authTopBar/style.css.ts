@@ -1,4 +1,4 @@
-import { colorStyleVars } from '@/styles/common.css';
+import { colorStyleVars } from '@/styles/constant';
 import { style } from '@vanilla-extract/css';
 
 export const authTopBarStyle = {

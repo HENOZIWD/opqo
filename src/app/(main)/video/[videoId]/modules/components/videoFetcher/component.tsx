@@ -1,4 +1,4 @@
-import VideoPlayer from '@/components/video/videoPlayer';
+import VideoPlayer from '@/components/video/videoPlayer/component';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { videoFetcherStyle } from './style.css';
 import { getVideoInfo } from '../../apis/getVideoInfo';

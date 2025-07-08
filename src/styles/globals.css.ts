@@ -1,5 +1,5 @@
 import { globalStyle } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './common.css';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './constant';
 
 globalStyle('html, body', {
   height: '100%',

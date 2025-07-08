@@ -1,6 +1,6 @@
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
-import VideoCard from '@/components/video/videoCard';
-import { videoListStyle } from '@/styles/video.css';
+import VideoCard from '@/components/video/videoCard/component';
+import { videoListStyle } from '@/styles/video/videoList.css';
 import { getVideoList } from '../../apis/getVideoList';
 
 export default async function VideoListFetcher() {

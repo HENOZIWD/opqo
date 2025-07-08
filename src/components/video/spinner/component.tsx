@@ -1,4 +1,4 @@
-import { spinnerStyle } from '@/styles/video.css';
+import { spinnerStyle } from './style.css';
 
 export default function Spinner() {
   return (

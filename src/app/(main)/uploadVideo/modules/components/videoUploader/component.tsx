@@ -6,7 +6,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { useDefaultError } from '@/hooks/useDefaultError';
 import { TimeoutError } from 'ky';
-import VideoPlayer from '@/components/video/videoPlayer';
+import VideoPlayer from '@/components/video/videoPlayer/component';
 import { uploadVideoChunk } from '../../apis/uploadVideoChunk';
 import { checkVideoChunkExist } from '../../apis/checkVideoChunkExist';
 import { ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '../../utils/message';
