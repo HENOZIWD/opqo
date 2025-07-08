@@ -8,6 +8,11 @@ import VideoPlayerControlPanel from './videoPlayerControlPanel';
 import { getMuteStorageValue, getVolumeStorageValue, setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import Hls from 'hls.js';
 
+export interface VideoResolutionLevel {
+  level: number;
+  name: string;
+}
+
 interface VideoPlayerProps {
   source: string;
   title: string;
@@ -35,8 +40,11 @@ export default function VideoPlayer({
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.5);
-  const [currentResolutionLevel, setCurrentResolutionLevel] = useState<number>(-1);
-  const [resolutionLevels, setResolutionLevels] = useState<number[]>([]);
+  const [currentResolutionLevel, setCurrentResolutionLevel] = useState<VideoResolutionLevel>({
+    level: -1,
+    name: '자동',
+  });
+  const [resolutionLevels, setResolutionLevels] = useState<VideoResolutionLevel[]>([]);
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
@@ -63,7 +71,13 @@ export default function VideoPlayer({
           const levels = data.levels.map(({
             width,
             height,
-          }) => width > height ? height : width);
+          }, index) => ({
+            level: index,
+            name: `${width > height ? height : width}`,
+          }));
+
+          levels.sort((a, b) => b.level - a.level);
+
           setResolutionLevels(levels);
         });
       }
@@ -88,7 +102,7 @@ export default function VideoPlayer({
       return;
     }
 
-    hlsRef.current.currentLevel = currentResolutionLevel;
+    hlsRef.current.currentLevel = currentResolutionLevel.level;
   }, [currentResolutionLevel]);
 
   const handleShowPanel = () => {
@@ -233,9 +247,19 @@ export default function VideoPlayer({
   };
 
   const handleShortcut = (e: KeyboardEvent<HTMLElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    switch (e.key.toLowerCase()) {
+    const key = e.key.toLowerCase();
+    const preventDefaultKeys = [' ', 'm', 'f', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+    const showPanelKeys = [...preventDefaultKeys, 'tab', 'enter'];
+
+    if (preventDefaultKeys.includes(key)) {
+      e.preventDefault();
+    }
+
+    if (showPanelKeys.includes(key)) {
+      handleShowPanel();
+    }
+
+    switch (key) {
       case ' ': {
         handlePlayPause();
         break;
@@ -246,7 +270,7 @@ export default function VideoPlayer({
         break;
       }
 
-      case 'enter': {
+      case 'f': {
         handleFullscreen();
         break;
       }
@@ -262,13 +286,11 @@ export default function VideoPlayer({
       }
 
       case 'arrowleft': {
-        handleShowPanel();
         handleSkipTime('FORWARD');
         break;
       }
 
       case 'arrowright': {
-        handleShowPanel();
         handleSkipTime('BACKWARD');
         break;
       }
