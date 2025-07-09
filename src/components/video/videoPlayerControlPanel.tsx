@@ -3,12 +3,12 @@
 import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef } from 'react';
 import { numberToTime } from '@/utils/time';
 import { throttle } from '@/utils/throttle';
-import { videoPlayerControlPanelStyle } from '@/styles/video.css';
 import Slider from '../common/slider';
 import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import * as Popover from '@radix-ui/react-popover';
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon, SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
 import { VideoResolutionLevel } from './videoPlayer';
+import { videoPlayerControlPanelStyle } from '@/styles/video/videoPlayerControlPanelStyle.css';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
