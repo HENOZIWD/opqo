@@ -1,5 +1,5 @@
-import { pageStyle } from '@/styles/common.css';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
+import { pageStyle } from '@/styles/common/pageStyle.css';
 import Link from 'next/link';
 
 export default function NotFound() {

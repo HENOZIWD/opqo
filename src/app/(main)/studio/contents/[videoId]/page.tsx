@@ -1,9 +1,9 @@
-import { pageStyle } from '@/styles/common.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import MyVideoInfoFetcher from './modules/components/myVideoInfoFetcher';
 import { getMyVideoInfo } from './modules/apis/getMyVideoInfo';
 import { getAccessTokenCookie } from '@/serverActions/token';
+import { pageStyle } from '@/styles/common/pageStyle.css';
 
 interface MyVideoInfoPageProps { params: Promise<{ videoId: string }> }
 

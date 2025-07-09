@@ -1,7 +1,7 @@
 'use client';
 
-import { pageStyle } from '@/styles/common.css';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
+import { pageStyle } from '@/styles/common/pageStyle.css';
 
 export default function GlobalError({ reset }: {
   error: Error & { digest?: string };
