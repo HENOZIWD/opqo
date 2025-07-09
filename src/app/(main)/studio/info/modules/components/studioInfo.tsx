@@ -11,7 +11,7 @@ import StudioInfoSection from '../../../modules/components/studioInfoSection';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { updateStudioInfo } from '../apis/updateStudioInfo';
-import { formStyle } from '@/styles/form.css';
+import { formStyle } from '@/styles/common/formStyle.css';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import Input from '@/components/common/input';
 import Textarea from '@/components/common/textarea';
