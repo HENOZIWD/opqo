@@ -3,7 +3,7 @@ import Thumbnail from './thumbnail';
 import { formatDateString } from '@/utils/date';
 import { numberToTime } from '@/utils/time';
 import ChannelImage from '@/components/channel/channelImage';
-import { videoCardStyle } from '@/styles/video.css';
+import { videoCardStyle } from '@/styles/video/videoCardStyle.css';
 
 interface VideoCardProps {
   videoId: string;
