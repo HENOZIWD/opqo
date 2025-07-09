@@ -46,17 +46,6 @@ export const videoListStyle = {
   }),
 };
 
-export const thumbnailStyle = {
-  container: style({
-    position: 'relative',
-    width: '100%',
-    height: '100%',
-    background: colorStyleVars.black,
-  }),
-
-  image: style({ objectFit: 'contain' }),
-};
-
 export const videoCardStyle = {
   container: style({
     position: 'relative',
