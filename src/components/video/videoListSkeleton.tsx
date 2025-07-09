@@ -1,4 +1,5 @@
-import { videoListSkeletonStyle, videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoListStyle.css';
+import { videoListSkeletonStyle } from '@/styles/video/videoListSkeletonStyle.css';
 
 export default function VideoListSkeleton() {
   return (

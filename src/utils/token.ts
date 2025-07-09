@@ -1,5 +1,12 @@
-import { AccessToken } from './type';
 import jwt from 'jsonwebtoken';
+
+interface AccessToken {
+  id: string;
+  email: string;
+  name: string;
+  picture: string;
+  exp: number;
+}
 
 export function parseJwt(token: string): AccessToken | null {
   try {

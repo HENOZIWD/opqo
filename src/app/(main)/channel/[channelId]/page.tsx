@@ -1,4 +1,4 @@
-import { videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import { Suspense } from 'react';

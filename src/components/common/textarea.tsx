@@ -1,18 +1,18 @@
-import { textareaStyle } from '@/styles/common.css';
+import { textareaStyle } from '@/styles/common/inputStyle.css';
 import { ChangeEvent, TextareaHTMLAttributes, useRef, useState } from 'react';
 
-interface CustomTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   defaultValueLength?: number;
   autoTrim?: boolean;
   error?: boolean;
 }
 
-export default function CustomTextarea({
+export default function Textarea({
   defaultValueLength,
   autoTrim,
   error = false,
   ...props
-}: CustomTextareaProps) {
+}: TextareaProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [currentLength, setCurrentLength] = useState<number>(defaultValueLength ?? 0);
 

@@ -7,9 +7,8 @@ import { AccessToken } from '@/utils/type';
 import { deleteAccessTokenCookie } from '../serverActions/token';
 import { signout } from '../apis/signout';
 import { authTopBarStyle } from '../styles/authTopBarStyle.css';
-import CustomLink from '@/components/common/customLink';
 import ChannelImage from '@/components/channel/channelImage';
-import CustomButton from '@/components/common/customButton';
+import { buttonStyle } from '@/styles/common/buttonStyle.css';
 
 interface AuthTopBarProps { auth: AccessToken | null }
 
@@ -32,20 +31,20 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
   if (!auth) {
     return (
       <div className={authTopBarStyle.container}>
-        <CustomLink
+        <Link
+          className={buttonStyle.small}
           href={process.env.NEXT_PUBLIC_LOGIN_URL ?? '/'}
-          size="small"
           prefetch={false}
         >
           로그인
-        </CustomLink>
-        <CustomLink
+        </Link>
+        <Link
+          className={buttonStyle.small}
           href="/signup"
-          size="small"
           prefetch={false}
         >
           회원가입
-        </CustomLink>
+        </Link>
       </div>
     );
   }
@@ -53,13 +52,13 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
   return (
     <>
       <div className={authTopBarStyle.container}>
-        <CustomLink
+        <Link
+          className={buttonStyle.small}
           href="/uploadVideo"
-          size="small"
           prefetch={false}
         >
           동영상 업로드
-        </CustomLink>
+        </Link>
         <button
           type="button"
           className={authTopBarStyle.accountMenu}
@@ -96,12 +95,13 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
               </li>
             </ul>
             <div className={authTopBarStyle.signout}>
-              <CustomButton
+              <button
+                className={buttonStyle.small}
                 type="button"
-                clickAction={handleSignout}
-                size="small"
-                content="로그아웃"
-              />
+                onClick={handleSignout}
+              >
+                로그아웃
+              </button>
             </div>
           </div>
         )

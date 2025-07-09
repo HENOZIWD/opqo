@@ -3,9 +3,10 @@
 import { refreshToken } from '@/apis/user';
 import { useAbortController } from '@/hooks/useAbortController';
 import { setAccessTokenCookie } from '@/serverActions/token';
-import { ACCESS_TOKEN_REFRESH_OFFSET } from '@/utils/constant';
 import { parseJwt } from '@/utils/token';
 import { createContext, ReactNode, useEffect, useState } from 'react';
+
+const ACCESS_TOKEN_REFRESH_OFFSET = 60 * 1000; // 1분
 
 export const TokenContext = createContext<string | null>(null);
 

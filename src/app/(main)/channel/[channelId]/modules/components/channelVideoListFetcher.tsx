@@ -1,5 +1,5 @@
 import VideoCard from '@/components/video/videoCard';
-import { videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { getChannelVideoList } from '../apis/getChannelVideoList';
 

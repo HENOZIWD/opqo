@@ -1,7 +1,7 @@
 'use client';
 
-import CustomButton from '@/components/common/customButton';
-import { pageStyle } from '@/styles/common.css';
+import { buttonStyle } from '@/styles/common/buttonStyle.css';
+import { pageStyle } from '@/styles/common/pageStyle.css';
 
 export default function GlobalError({ reset }: {
   error: Error & { digest?: string };
@@ -10,11 +10,13 @@ export default function GlobalError({ reset }: {
   return (
     <div className={pageStyle.errorPage}>
       <h2>페이지 로드 중 오류가 발생했습니다.</h2>
-      <CustomButton
+      <button
+        className={buttonStyle.default}
         type="button"
-        clickAction={() => reset()}
-        content="재시도"
-      />
+        onClick={() => reset()}
+      >
+        재시도
+      </button>
     </div>
   );
 }

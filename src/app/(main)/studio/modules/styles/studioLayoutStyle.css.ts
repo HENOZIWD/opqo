@@ -1,4 +1,4 @@
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/common.css';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
 import { style } from '@vanilla-extract/css';
 
 export const studioLayoutStyle = {

@@ -1,4 +1,5 @@
-import { STORAGE_KEY_MUTE, STORAGE_KEY_VOLUME } from './constant';
+const STORAGE_KEY_VOLUME = 'VOLUME';
+const STORAGE_KEY_MUTE = 'MUTE';
 
 export function setVolumeStorageValue(value: number) {
   localStorage.setItem(STORAGE_KEY_VOLUME, value.toString());

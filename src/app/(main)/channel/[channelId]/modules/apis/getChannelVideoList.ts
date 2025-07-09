@@ -1,5 +1,5 @@
 import { fetchInstance } from '@/apis/instance';
-import { FETCH_CACHE_POLICY } from '@/utils/constant';
+import { FETCH_CACHE_POLICY } from '@/apis/constant';
 
 interface GetChannelVideoListParams { channelId: string }
 interface GetChannelVideoListResponse {

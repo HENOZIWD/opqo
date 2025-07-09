@@ -1,11 +1,15 @@
 import { useAbortController } from './useAbortController';
 import { useToken } from './useToken';
-import { BadRequestResponse } from '@/utils/type';
 import { HTTPError, KyResponse, TimeoutError } from 'ky';
 
 interface FetchFnParams {
   controller: AbortController;
   accessToken: string | null;
+}
+
+interface BadRequestResponse {
+  code: string;
+  message: string;
 }
 
 export function useFetch() {

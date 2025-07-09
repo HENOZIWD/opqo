@@ -1,20 +1,20 @@
 'use client';
 
-import { formatDateString } from '@/utils/date';
+import { formatDateString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { studioInfoStyle } from '../styles/studioInfoStyle.css';
-import CustomButton from '@/components/common/customButton';
 import { useForm } from 'react-hook-form';
 import { UpdateStudioInfo } from '../utils/type';
 import { useState } from 'react';
-import CustomInput from '@/components/common/customInput';
 import { ERR_MSG_CHANNEL_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_CHANNEL_NAME_LIMIT_EXCEEDED, ERR_MSG_EMPTY_CHANNEL_NAME, UPDATE_STUDIO_INFO_FAILED, UPDATE_STUDIO_INFO_SUCCEEDED } from '../utils/message';
 import StudioInfoSection from '../../../modules/components/studioInfoSection';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { updateStudioInfo } from '../apis/updateStudioInfo';
-import CustomTextarea from '@/components/common/customTextarea';
-import { formStyle } from '@/styles/form.css';
+import { formStyle } from '@/styles/common/formStyle.css';
+import { buttonStyle } from '@/styles/common/buttonStyle.css';
+import Input from '@/components/common/input';
+import Textarea from '@/components/common/textarea';
 
 interface StudioInfoProps {
   email: string;
@@ -97,7 +97,7 @@ export default function StudioInfo({
             <label htmlFor="채널 이름">
               채널 이름
             </label>
-            <CustomInput
+            <Input
               id="채널 이름"
               {...register('name', {
                 required: {
@@ -131,7 +131,7 @@ export default function StudioInfo({
             <label htmlFor="채널 설명">
               채널 설명
             </label>
-            <CustomTextarea
+            <Textarea
               id="채널 설명"
               {...register('description', {
                 maxLength: {
@@ -158,26 +158,29 @@ export default function StudioInfo({
         {isEditing
           ? (
             <>
-              <CustomButton
+              <button
+                className={buttonStyle.small}
                 type="button"
-                size="small"
-                content="취소"
-                clickAction={() => setIsEditing(false)}
-              />
-              <CustomButton
+                onClick={() => setIsEditing(false)}
+              >
+                취소
+              </button>
+              <button
+                className={buttonStyle.small}
                 type="submit"
-                size="small"
-                content="완료"
-              />
+              >
+                완료
+              </button>
             </>
           )
           : (
-            <CustomButton
+            <button
+              className={buttonStyle.small}
               type="button"
-              size="small"
-              content="수정"
-              clickAction={() => setIsEditing(true)}
-            />
+              onClick={() => setIsEditing(true)}
+            >
+              수정
+            </button>
           )}
       </div>
     </form>

@@ -11,10 +11,10 @@ import { uploadVideoChunk } from '../apis/uploadVideoChunk';
 import { checkVideoChunkExist } from '../apis/checkVideoChunkExist';
 import { ERR_MSG_INVALID_VIDEO_SIZE, ERR_MSG_INVALID_VIDEO_TYPE, ERR_MSG_VIDEO_UPLOAD_FAILED } from '../utils/message';
 import { createVideoMetadata } from '../apis/createVideoMetadata';
-import ProgressBar from '@/components/common/progressBar';
 import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVideoChunkList, generateVideoHash, isValidVideoSize, isValidVideoType } from '../utils/video';
 import { VIDEO_CHUNK_SIZE } from '../utils/constant';
 import { videoUploaderStyle } from '../styles/videoUploaderStyle.css';
+import ProgressBar from './progressBar';
 
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;

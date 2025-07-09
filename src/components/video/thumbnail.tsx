@@ -1,6 +1,6 @@
 'use client';
 
-import { thumbnailStyle } from '@/styles/video.css';
+import { thumbnailStyle } from '@/styles/video/thumbnailStyle.css';
 import Image from 'next/image';
 import { useState } from 'react';
 

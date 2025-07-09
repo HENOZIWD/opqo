@@ -1,4 +1,4 @@
-import { formContainerStyle } from '@/styles/form.css';
+import { formContainerStyle } from '@/styles/common/formStyle.css';
 import { style } from '@vanilla-extract/css';
 
 export const thumbnailSelectorStyle = {
