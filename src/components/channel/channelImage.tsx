@@ -1,6 +1,6 @@
 'use client';
 
-import { channelImageStyle } from '@/styles/channel.css';
+import { channelImageStyle } from '@/styles/channel/channelImageStyle.css';
 import Image from 'next/image';
 
 interface ChannelImageProps {
