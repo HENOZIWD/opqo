@@ -4,7 +4,7 @@ import { ToastType } from '@/utils/type';
 import { useCountdown } from '@/hooks/useCountdown';
 import { useEffect } from 'react';
 import { TOAST_VISIBILITY_DURATION_SECOND } from '@/utils/constant';
-import { toastStyle } from '@/styles/common.css';
+import { toastStyle } from '@/styles/common/toastStyle.css';
 
 interface ToastProps {
   message: string;
