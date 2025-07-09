@@ -1,5 +1,5 @@
 import VideoListSkeleton from '@/components/video/videoListSkeleton';
-import { videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import StudioContentsFetcher from './modules/components/studioContentsFetcher';

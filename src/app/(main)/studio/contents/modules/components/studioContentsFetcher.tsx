@@ -1,6 +1,6 @@
 import { getAccessTokenCookie } from '@/serverActions/token';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
-import { videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import { getMyVideoList } from '../apis/getMyVideoList';
 import StudioContentCard from './studioContentCard';
 

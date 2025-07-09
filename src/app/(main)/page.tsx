@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import VideoListSkeleton from '@/components/video/videoListSkeleton';
-import { videoListStyle } from '@/styles/video.css';
+import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import VideoListFetcher from './modules/components/videoListFetcher';
 import { pageStyle } from '@/styles/common/pageStyle.css';
 

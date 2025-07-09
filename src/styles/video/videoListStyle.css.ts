@@ -1,5 +1,5 @@
 import { createVar, style } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './constants';
+import { MEDIA_QUERY_THRESHOLD } from '../constants';
 import { calc } from '@vanilla-extract/css-utils';
 
 const videoCardPerRow = createVar();
