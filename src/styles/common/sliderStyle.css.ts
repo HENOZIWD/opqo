@@ -1,5 +1,5 @@
 import { CSSProperties, style } from '@vanilla-extract/css';
-import { colorStyleVars } from '../common.css';
+import { colorStyleVars } from '../constants';
 
 const sliderThumbStyleProperties: CSSProperties = {
   appearance: 'none',

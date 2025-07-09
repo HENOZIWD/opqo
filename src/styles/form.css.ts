@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './common.css';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './constants';
 
 export const formContainerStyle = style({
   'width': '33rem',

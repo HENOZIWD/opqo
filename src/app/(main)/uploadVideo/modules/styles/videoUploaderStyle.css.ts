@@ -1,4 +1,4 @@
-import { colorStyleVars } from '@/styles/common.css';
+import { colorStyleVars } from '@/styles/constants';
 import { formContainerStyle } from '@/styles/form.css';
 import { style } from '@vanilla-extract/css';
 

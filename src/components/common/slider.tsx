@@ -1,7 +1,7 @@
 'use client';
 
 import { ChangeEventHandler } from 'react';
-import { colorStyleVars } from '@/styles/common.css';
+import { colorStyleVars } from '@/styles/constants';
 import { sliderStyle } from '@/styles/common/sliderStyle.css';
 
 interface SliderProps {

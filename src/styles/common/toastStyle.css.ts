@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '../common.css';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '../constants';
 import { calc } from '@vanilla-extract/css-utils';
 
 export const toastStyle = {
