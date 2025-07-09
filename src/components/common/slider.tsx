@@ -1,7 +1,8 @@
 'use client';
 
 import { ChangeEventHandler } from 'react';
-import { colorStyleVars, sliderStyle } from '@/styles/common.css';
+import { colorStyleVars } from '@/styles/common.css';
+import { sliderStyle } from '@/styles/common/sliderStyle.css';
 
 interface SliderProps {
   name: string;
@@ -31,7 +32,7 @@ export default function Slider({
       <div className={sliderStyle.container}>
         <div
           className={sliderStyle.progress}
-          style={{ backgroundColor: 'var(--gray)' }}
+          style={{ backgroundColor: colorStyleVars.gray }}
         />
       </div>
     );
