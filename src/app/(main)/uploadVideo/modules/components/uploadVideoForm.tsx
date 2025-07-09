@@ -1,6 +1,5 @@
 'use client';
 
-import CustomButton from '@/components/common/customButton';
 import { useForm } from 'react-hook-form';
 import CustomInput from '@/components/common/customInput';
 import { useState } from 'react';
@@ -14,6 +13,7 @@ import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED, ER
 import { uploadVideoContent } from '../apis/uploadVideoContent';
 import { UploadVideoContent } from '../utils/type';
 import CustomTextarea from '@/components/common/customTextarea';
+import { buttonStyle } from '@/styles/common/buttonStyle.css';
 
 const VIDEO_TITLE_LIMIT = 100;
 const VIDEO_DESCRIPTION_LIMIT = 5000;
@@ -123,10 +123,12 @@ export default function UploadVideoForm() {
         {isVideoUploadComplete
           ? (
             <div className={formStyle.submit}>
-              <CustomButton
+              <button
+                className={buttonStyle.default}
                 type="submit"
-                content="업로드"
-              />
+              >
+                업로드
+              </button>
             </div>
           )
           : null}
