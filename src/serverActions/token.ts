@@ -2,6 +2,8 @@
 
 import { cookies } from 'next/headers';
 
+const ACCESS_TOKEN = 'accessToken';
+
 interface SetAccessTokenCookieParams {
   accessToken: string;
   expUnixTimeStamp: number;
@@ -14,7 +16,7 @@ export async function setAccessTokenCookie({
   const cookie = await cookies();
 
   cookie.set({
-    name: 'accessToken',
+    name: ACCESS_TOKEN,
     value: accessToken,
     httpOnly: true,
     path: '/',
@@ -27,5 +29,5 @@ export async function setAccessTokenCookie({
 export async function getAccessTokenCookie() {
   const cookie = await cookies();
 
-  return cookie.get('accessToken')?.value;
+  return cookie.get(ACCESS_TOKEN)?.value;
 }

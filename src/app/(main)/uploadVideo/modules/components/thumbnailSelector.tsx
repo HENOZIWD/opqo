@@ -3,10 +3,10 @@
 import Image from 'next/image';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import { ERR_MSG_FILE_LOAD_ERROR } from '@/utils/message';
-import { isValidImageSize, isValidImageType } from '@/utils/image';
 import { useToast } from '@/hooks/useToast';
 import { ERR_MSG_INVALID_IMAGE_SIZE, ERR_MSG_INVALID_IMAGE_TYPE } from '../utils/message';
 import { thumbnailSelectorStyle } from '../styles/thumbnailSelectorStyle.css';
+import { isValidImageSize, isValidImageType } from '../utils/image';
 
 interface ThumbnailSelectorProps { setImageData: Dispatch<SetStateAction<Blob | null>> }
 

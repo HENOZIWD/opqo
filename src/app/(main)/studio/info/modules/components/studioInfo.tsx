@@ -1,6 +1,6 @@
 'use client';
 
-import { formatDateString } from '@/utils/date';
+import { formatDateString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { studioInfoStyle } from '../styles/studioInfoStyle.css';
 import { useForm } from 'react-hook-form';

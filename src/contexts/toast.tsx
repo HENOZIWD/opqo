@@ -2,9 +2,10 @@
 
 import Toast from '@/components/common/toast';
 import { useCountdown } from '@/hooks/useCountdown';
-import { TOAST_DURATION_SECOND } from '@/utils/constant';
 import { ToastType } from '@/utils/type';
 import { createContext, useEffect, useState } from 'react';
+
+const TOAST_DURATION_SECOND = 6;
 
 interface Toast {
   message: string;

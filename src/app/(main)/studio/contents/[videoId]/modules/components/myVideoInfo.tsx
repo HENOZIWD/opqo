@@ -1,6 +1,5 @@
-import { numberToTime } from '@/utils/time';
-import { numberToFileSize } from '@/utils/convert';
-import { formatDateTimeString } from '@/utils/date';
+import { numberToFileSize, numberToTime } from '@/utils/convert';
+import { formatDateTimeString } from '@/utils/dateFormat';
 import Thumbnail from '@/components/video/thumbnail';
 import { myVideoInfoStyle } from '../styles/myVideoInfoStyle.css';
 import { studioInfoSectionStyle } from '@/app/(main)/studio/modules/styles/studioInfoSectionStyle.css';

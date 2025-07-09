@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { formatDateTimeString } from '@/utils/date';
+import { formatDateTimeString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { videoInfoStyle } from '../styles/videoInfoStyle.css';
 

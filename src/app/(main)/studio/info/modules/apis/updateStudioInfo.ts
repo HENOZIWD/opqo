@@ -1,6 +1,6 @@
 import { fetchInstance } from '@/apis/instance';
 import { AuthenticationParams, FetchParams } from '@/apis/type';
-import { CONTENT_TYPE_APPLICATION_JSON } from '@/utils/constant';
+import { CONTENT_TYPE_APPLICATION_JSON } from '@/apis/constant';
 import { accessTokenToBearer } from '@/utils/token';
 
 interface UpdateStudioInfoParams extends FetchParams, AuthenticationParams {

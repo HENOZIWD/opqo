@@ -1,5 +1,5 @@
 import ChannelImage from '@/components/channel/channelImage';
-import { formatDateString } from '@/utils/date';
+import { formatDateString } from '@/utils/dateFormat';
 import { channelProfileStyle } from '../styles/channelProfileStyle.css';
 
 interface ChannelProfileProps {

@@ -1,4 +1,4 @@
-import { formatDateString } from '@/utils/date';
+import { formatDateString } from '@/utils/dateFormat';
 import Link from 'next/link';
 import Thumbnail from '@/components/video/thumbnail';
 import { studioContentCardStyle } from '../styles/studioContentCardStyle.css';
