@@ -6,15 +6,15 @@ import { studioInfoStyle } from '../styles/studioInfoStyle.css';
 import { useForm } from 'react-hook-form';
 import { UpdateStudioInfo } from '../utils/type';
 import { useState } from 'react';
-import CustomInput from '@/components/common/customInput';
 import { ERR_MSG_CHANNEL_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_CHANNEL_NAME_LIMIT_EXCEEDED, ERR_MSG_EMPTY_CHANNEL_NAME, UPDATE_STUDIO_INFO_FAILED, UPDATE_STUDIO_INFO_SUCCEEDED } from '../utils/message';
 import StudioInfoSection from '../../../modules/components/studioInfoSection';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { updateStudioInfo } from '../apis/updateStudioInfo';
-import CustomTextarea from '@/components/common/customTextarea';
 import { formStyle } from '@/styles/form.css';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
+import Input from '@/components/common/input';
+import Textarea from '@/components/common/textarea';
 
 interface StudioInfoProps {
   email: string;
@@ -97,7 +97,7 @@ export default function StudioInfo({
             <label htmlFor="채널 이름">
               채널 이름
             </label>
-            <CustomInput
+            <Input
               id="채널 이름"
               {...register('name', {
                 required: {
@@ -131,7 +131,7 @@ export default function StudioInfo({
             <label htmlFor="채널 설명">
               채널 설명
             </label>
-            <CustomTextarea
+            <Textarea
               id="채널 설명"
               {...register('description', {
                 maxLength: {

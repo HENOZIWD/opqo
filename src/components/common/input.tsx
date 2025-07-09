@@ -1,18 +1,18 @@
+import { inputStyle } from '@/styles/common/inputStyle.css';
 import { InputHTMLAttributes, useState } from 'react';
-import { inputStyle } from '@/styles/common.css';
 
-interface CustomInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   defaultValueLength?: number;
   autoTrim?: boolean;
   error?: boolean;
 }
 
-export default function CustomInput({
+export default function Input({
   defaultValueLength,
   autoTrim,
   error = false,
   ...props
-}: CustomInputProps) {
+}: InputProps) {
   const [currentLength, setCurrentLength] = useState<number>(defaultValueLength ?? 0);
 
   return (
