@@ -1,4 +1,4 @@
-import { progressBarStyle } from '@/styles/common.css';
+import { progressBarStyle } from '../styles/progressBarStyle.css';
 
 interface ProgressBarProps {
   current: number;
