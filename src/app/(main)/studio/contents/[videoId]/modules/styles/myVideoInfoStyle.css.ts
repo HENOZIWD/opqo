@@ -25,4 +25,17 @@ export const myVideoInfoStyle = {
     fontWeight: 700,
     fontSize: '1.25rem',
   }),
+
+  input: style({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+  }),
+
+  button: style({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '0.5rem',
+    justifyContent: 'flex-end',
+  }),
 };

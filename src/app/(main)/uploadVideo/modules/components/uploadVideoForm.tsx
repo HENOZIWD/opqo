@@ -8,15 +8,14 @@ import { useToast } from '@/hooks/useToast';
 import { formStyle } from '@/styles/common/formStyle.css';
 import VideoUploader from './videoUploader';
 import ThumbnailSelector from './thumbnailSelector';
-import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED, ERR_MSG_VIDEO_UPLOAD_FAILED } from '../utils/message';
+import { ERR_MSG_VIDEO_UPLOAD_FAILED } from '../utils/message';
 import { uploadVideoContent } from '../apis/uploadVideoContent';
 import { UploadVideoContent } from '../utils/type';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import Input from '@/components/common/input';
 import Textarea from '@/components/common/textarea';
-
-const VIDEO_TITLE_LIMIT = 100;
-const VIDEO_DESCRIPTION_LIMIT = 5000;
+import { ERR_MSG_EMPTY_VIDEO_TITLE, ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED } from '@/utils/message';
+import { VIDEO_DESCRIPTION_LIMIT, VIDEO_TITLE_LIMIT } from '@/utils/constant';
 
 export default function UploadVideoForm() {
   const {
