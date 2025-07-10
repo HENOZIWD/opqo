@@ -17,6 +17,7 @@ import { formStyle } from '@/styles/common/formStyle.css';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { updateMyVideoInfo } from '../apis/updateMyVideoInfo';
+import { deleteMyVideo } from '../apis/deleteMyVideo';
 
 interface MyVideoInfoProps {
   id: string;
@@ -38,6 +39,9 @@ interface UpdateVideoInfo {
 
 const UPDATE_VIDEO_INFO_SUCCEEDED = '동영상 정보 수정이 완료되었습니다.';
 const UPDATE_VIDEO_INFO_FAILED = '동영상 정보 수정에 실패했습니다.';
+
+const DELETE_VIDEO_SUCCEEDED = '동영상 삭제가 완료되었습니다.';
+const DELETE_VIDEO_FAILED = '동영상 삭제에 실패했습니다.';
 
 export default function MyVideoInfo({
   id,
@@ -95,6 +99,28 @@ export default function MyVideoInfo({
       onError: () => {
         showToast({
           message: UPDATE_VIDEO_INFO_FAILED,
+          type: 'error',
+        });
+      },
+    });
+  };
+
+  const handleDeleteVideo = async () => {
+    fetchHandler(({
+      accessToken,
+      controller,
+    }) => deleteMyVideo({
+      id,
+      accessToken,
+      controller,
+    }), {
+      onSuccess: () => {
+        showToast({ message: DELETE_VIDEO_SUCCEEDED });
+        window.location.replace('/studio/contents');
+      },
+      onError: () => {
+        showToast({
+          message: DELETE_VIDEO_FAILED,
           type: 'error',
         });
       },
@@ -206,14 +232,24 @@ export default function MyVideoInfo({
             </>
           )
           : (
-            <button
-              key="수정"
-              className={buttonStyle.small}
-              type="button"
-              onClick={() => setIsEditing(true)}
-            >
-              수정
-            </button>
+            <>
+              <button
+                key="삭제"
+                className={buttonStyle.small}
+                type="button"
+                onClick={handleDeleteVideo}
+              >
+                삭제
+              </button>
+              <button
+                key="수정"
+                className={buttonStyle.small}
+                type="button"
+                onClick={() => setIsEditing(true)}
+              >
+                수정
+              </button>
+            </>
           )}
       </div>
     </form>
