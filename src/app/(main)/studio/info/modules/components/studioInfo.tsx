@@ -6,7 +6,15 @@ import { studioInfoStyle } from '../styles/studioInfoStyle.css';
 import { useForm } from 'react-hook-form';
 import { UpdateStudioInfo } from '../utils/type';
 import { useState } from 'react';
-import { ERR_MSG_CHANNEL_DESCRIPTION_LIMIT_EXCEEDED, ERR_MSG_CHANNEL_NAME_LIMIT_EXCEEDED, ERR_MSG_EMPTY_CHANNEL_NAME, UPDATE_STUDIO_INFO_FAILED, UPDATE_STUDIO_INFO_SUCCEEDED } from '../utils/message';
+import {
+  DELETE_CHANNEL_FAILED,
+  DELETE_CHANNEL_SUCCEEDED,
+  ERR_MSG_CHANNEL_DESCRIPTION_LIMIT_EXCEEDED,
+  ERR_MSG_CHANNEL_NAME_LIMIT_EXCEEDED,
+  ERR_MSG_EMPTY_CHANNEL_NAME,
+  UPDATE_STUDIO_INFO_FAILED,
+  UPDATE_STUDIO_INFO_SUCCEEDED,
+} from '../utils/message';
 import StudioInfoSection from '../../../modules/components/studioInfoSection';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
@@ -15,6 +23,8 @@ import { formStyle } from '@/styles/common/formStyle.css';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import Input from '@/components/common/input';
 import Textarea from '@/components/common/textarea';
+import { deleteChannel } from '../apis/deleteChannel';
+import { deleteAccessTokenCookie } from '@/serverActions/token';
 
 interface StudioInfoProps {
   email: string;
@@ -76,6 +86,29 @@ export default function StudioInfo({
       },
       onError: () => {
         showToast({ message: UPDATE_STUDIO_INFO_FAILED });
+      },
+    });
+  };
+
+  const handleDeleteChannel = async () => {
+    fetchHandler(({
+      controller,
+      accessToken,
+    }) => deleteChannel({
+      controller,
+      accessToken,
+    }), {
+      onSuccess: async () => {
+        showToast({ message: DELETE_CHANNEL_SUCCEEDED });
+        await deleteAccessTokenCookie();
+
+        window.location.href = '/';
+      },
+      onError: () => {
+        showToast({
+          message: DELETE_CHANNEL_FAILED,
+          type: 'error',
+        });
       },
     });
   };
@@ -159,6 +192,7 @@ export default function StudioInfo({
           ? (
             <>
               <button
+                key="취소"
                 className={buttonStyle.small}
                 type="button"
                 onClick={() => setIsEditing(false)}
@@ -166,6 +200,7 @@ export default function StudioInfo({
                 취소
               </button>
               <button
+                key="완료"
                 className={buttonStyle.small}
                 type="submit"
               >
@@ -174,13 +209,24 @@ export default function StudioInfo({
             </>
           )
           : (
-            <button
-              className={buttonStyle.small}
-              type="button"
-              onClick={() => setIsEditing(true)}
-            >
-              수정
-            </button>
+            <>
+              <button
+                key="채널 삭제"
+                className={buttonStyle.small}
+                type="button"
+                onClick={handleDeleteChannel}
+              >
+                채널 삭제
+              </button>
+              <button
+                key="수정"
+                className={buttonStyle.small}
+                type="button"
+                onClick={() => setIsEditing(true)}
+              >
+                정보 수정
+              </button>
+            </>
           )}
       </div>
     </form>
