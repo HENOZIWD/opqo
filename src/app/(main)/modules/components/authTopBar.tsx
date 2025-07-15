@@ -4,11 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
 import { AccessToken } from '@/utils/type';
-import { deleteAccessTokenCookie } from '../serverActions/token';
 import { signout } from '../apis/signout';
 import { authTopBarStyle } from '../styles/authTopBarStyle.css';
 import ChannelImage from '@/components/channel/channelImage';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
+import { deleteAccessTokenCookie } from '@/serverActions/token';
 
 interface AuthTopBarProps { auth: AccessToken | null }
 

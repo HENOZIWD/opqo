@@ -31,3 +31,9 @@ export async function getAccessTokenCookie() {
 
   return cookie.get(ACCESS_TOKEN)?.value;
 }
+
+export async function deleteAccessTokenCookie() {
+  const cookie = await cookies();
+
+  cookie.delete(ACCESS_TOKEN);
+}
