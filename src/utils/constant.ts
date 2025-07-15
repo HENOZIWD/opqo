@@ -1,0 +1,2 @@
+export const VIDEO_TITLE_LIMIT = 100;
+export const VIDEO_DESCRIPTION_LIMIT = 5000;

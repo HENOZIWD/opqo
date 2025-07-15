@@ -6,3 +6,8 @@ export const ERR_MSG_TIMEOUT = '응답 시간이 초과되었습니다.';
 
 // file common
 export const ERR_MSG_FILE_LOAD_ERROR = '파일을 불러오는 데 실패했습니다.';
+
+// video info
+export const ERR_MSG_EMPTY_VIDEO_TITLE = '동영상 제목을 입력하세요.';
+export const ERR_MSG_VIDEO_TITLE_LIMIT_EXCEEDED = '동영상 제목은 100자 까지 작성할 수 있습니다.';
+export const ERR_MSG_VIDEO_DESCRIPTION_LIMIT_EXCEEDED = '동영상 설명은 5000자 까지 작성할 수 있습니다.';

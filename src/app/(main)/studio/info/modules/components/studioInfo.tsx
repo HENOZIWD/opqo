@@ -112,7 +112,7 @@ export default function StudioInfo({
               error={formState.errors.name !== undefined}
               maxLength={CHANNEL_NAME_LIMIT}
               autoTrim
-              defaultValueLength={name.length}
+              defaultValueLength={editableData.name.length}
             />
             {formState.errors.name ? <div className={formStyle.error}>{formState.errors.name.message}</div> : null}
           </div>
@@ -141,7 +141,7 @@ export default function StudioInfo({
               })}
               error={formState.errors.description !== undefined}
               maxLength={CHANNEL_DESCRIPTION_LIMIT}
-              defaultValueLength={description.length}
+              defaultValueLength={editableData.description.length}
             />
             {formState.errors.description ? <div className={formStyle.error}>{formState.errors.description.message}</div> : null}
           </div>
