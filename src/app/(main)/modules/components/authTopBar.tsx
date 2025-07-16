@@ -38,13 +38,6 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
         >
           로그인
         </Link>
-        <Link
-          className={buttonStyle.small}
-          href="/signup"
-          prefetch={false}
-        >
-          회원가입
-        </Link>
       </div>
     );
   }
