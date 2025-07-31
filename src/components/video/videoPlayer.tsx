@@ -14,6 +14,7 @@ interface VideoPlayerProps {
   thumbnail?: string;
   duration: number;
   hlsMode?: boolean;
+  watchProgress?: number;
 }
 
 export default function VideoPlayer({
@@ -22,6 +23,7 @@ export default function VideoPlayer({
   thumbnail,
   duration,
   hlsMode = false,
+  watchProgress,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -80,6 +82,8 @@ export default function VideoPlayer({
     else {
       video.src = source;
     }
+
+    video.currentTime = watchProgress ?? 0;
 
     return () => {
       if (hlsRef.current) {
