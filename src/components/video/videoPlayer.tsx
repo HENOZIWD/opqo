@@ -57,30 +57,25 @@ export default function VideoPlayer({
       return;
     }
 
-    if (hlsMode) {
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = source;
-      }
-      else if (Hls.isSupported()) {
-        const hls = new Hls();
-        hlsRef.current = hls;
+    if (hlsMode && !video.canPlayType('application/vnd.apple.mpegurl') && Hls.isSupported()) {
+      const hls = new Hls();
+      hlsRef.current = hls;
 
-        hls.loadSource(source);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-          const levels = data.levels.map(({
-            width,
-            height,
-          }, index) => ({
-            level: index,
-            name: `${width > height ? height : width}`,
-          }));
+      hls.loadSource(source);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        const levels = data.levels.map(({
+          width,
+          height,
+        }, index) => ({
+          level: index,
+          name: `${width > height ? height : width}`,
+        }));
 
-          levels.sort((a, b) => b.level - a.level);
+        levels.sort((a, b) => b.level - a.level);
 
-          setResolutionLevels(levels);
-        });
-      }
+        setResolutionLevels(levels);
+      });
     }
     else {
       video.src = source;
