@@ -1,25 +1,41 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-export function useCountdown() {
-  const [count, setCount] = useState<number>(0);
+export function useCountdown(initialCount = 0) {
+  const [count, setCount] = useState<number>(initialCount);
+  const timerRef = useRef<ReturnType<typeof setInterval>>(null);
 
-  const setCountdown = (value: number) => {
-    setCount(value);
+  const clearTimer = () => {
+    clearInterval(timerRef.current ?? undefined);
+    timerRef.current = null;
   };
 
-  useEffect(() => {
-    if (count <= 0) {
-      return;
-    }
+  const setCountdown = useCallback((value: number) => {
+    clearTimer();
 
-    const interval = setInterval(() => {
-      setCount((prev) => prev - 1);
-    }, 1000);
+    setCount(value);
+
+    if (value > 0) {
+      timerRef.current = setInterval(() => {
+        setCount((prev) => {
+          if (prev <= 1) {
+            clearTimer();
+
+            return 0;
+          }
+
+          return prev - 1;
+        });
+      }, 1000);
+    }
+  }, []);
+
+  useEffect(() => {
+    setCountdown(initialCount);
 
     return () => {
-      clearInterval(interval);
+      clearTimer();
     };
-  }, [count]);
+  }, [initialCount, setCountdown]);
 
   return {
     count,
