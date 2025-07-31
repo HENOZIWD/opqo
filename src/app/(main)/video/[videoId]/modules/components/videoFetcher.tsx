@@ -1,8 +1,9 @@
-import VideoPlayer from '@/components/video/videoPlayer';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { videoPageStyle } from '../styles/videoPageStyle.css';
 import VideoInfo from './videoInfo';
 import { getVideoInfo } from '../apis/getVideoInfo';
+import VideoPlayer from '@/components/video/videoPlayer';
+import VideoPlayerStateProvider from '@/components/video/videoPlayerStateProvider';
 
 interface VideoFetcherProps { videoId: string }
 
@@ -16,13 +17,15 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
   return (
     <div>
       <div className={videoPageStyle.video}>
-        <VideoPlayer
-          source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/master.m3u8`}
-          title={data.title}
-          thumbnail={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/thumbnail.webp`}
-          duration={data.duration}
-          hlsMode
-        />
+        <VideoPlayerStateProvider>
+          <VideoPlayer
+            source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/master.m3u8`}
+            title={data.title}
+            thumbnail={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/thumbnail.webp`}
+            duration={data.duration}
+            hlsMode
+          />
+        </VideoPlayerStateProvider>
       </div>
       <VideoInfo
         title={data.title}
