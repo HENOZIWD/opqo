@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/uploadVideo')
-    || request.nextUrl.pathname.startsWith('/studio')) { // 권한 필요
+  const privatePaths = [
+    '/uploadVideo',
+    '/studio',
+  ];
+
+  if (privatePaths.some((path) => request.nextUrl.pathname.startsWith(path))) { // 권한 필요
     const accessToken = request.cookies.get('accessToken')?.value;
 
     if (!(await isAccessTokenValid(accessToken))) {
