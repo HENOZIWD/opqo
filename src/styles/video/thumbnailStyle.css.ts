@@ -10,4 +10,16 @@ export const thumbnailStyle = {
   }),
 
   image: style({ objectFit: 'contain' }),
+
+  duration: style({
+    position: 'absolute',
+    right: '0.75rem',
+    bottom: '0.75rem',
+    padding: '0.25rem',
+    background: colorStyleVars.black,
+    borderRadius: '0.25rem',
+    fontSize: '0.75rem',
+    fontWeight: 700,
+    color: colorStyleVars.white,
+  }),
 };

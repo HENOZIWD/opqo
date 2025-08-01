@@ -3,7 +3,6 @@ import Thumbnail from './thumbnail';
 import { formatDateString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { videoCardStyle } from '@/styles/video/videoCardStyle.css';
-import { numberToTime } from '@/utils/convert';
 
 interface VideoCardProps {
   videoId: string;
@@ -34,8 +33,8 @@ export default function VideoCard({
           <Thumbnail
             videoId={videoId}
             videoTitle={videoTitle}
+            duration={videoDuration}
           />
-          <div className={videoCardStyle.duration}>{numberToTime(videoDuration)}</div>
         </div>
       </Link>
       <div className={videoCardStyle.infoSection}>
