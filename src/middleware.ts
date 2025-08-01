@@ -4,6 +4,7 @@ export async function middleware(request: NextRequest) {
   const privatePaths = [
     '/uploadVideo',
     '/studio',
+    '/history',
   ];
 
   if (privatePaths.some((path) => request.nextUrl.pathname.startsWith(path))) { // 권한 필요
@@ -21,6 +22,7 @@ export const config = {
   matcher: [
     '/uploadVideo',
     '/studio/:path*',
+    '/history',
   ],
 };
 

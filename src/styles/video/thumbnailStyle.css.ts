@@ -22,4 +22,11 @@ export const thumbnailStyle = {
     fontWeight: 700,
     color: colorStyleVars.white,
   }),
+
+  watchProgress: style({
+    position: 'absolute',
+    bottom: 0,
+    height: '0.375rem',
+    width: '100%',
+  }),
 };
