@@ -1,4 +1,4 @@
-import { MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
 import { style } from '@vanilla-extract/css';
 
 export const watchHistoryCardStyle = {
@@ -20,6 +20,7 @@ export const watchHistoryCardStyle = {
     'aspectRatio': '16/9',
     'borderRadius': '0.5rem',
     'overflow': 'hidden',
+    'flexShrink': 0,
 
     '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { height: 'auto' } },
   }),
@@ -29,6 +30,14 @@ export const watchHistoryCardStyle = {
     flexDirection: 'column',
     gap: '0.5rem',
     padding: '0.5rem 0',
+    flexGrow: 1,
+  }),
+
+  infoWrapper: style({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '0.5rem',
+    flexGrow: 1,
   }),
 
   title: style({ fontWeight: '700' }),
@@ -45,5 +54,14 @@ export const watchHistoryCardStyle = {
     width: '1.75rem',
     height: '1.75rem',
     borderRadius: '9999px',
+  }),
+
+  deleteButton: style({
+    'display': 'flex',
+    'alignSelf': 'flex-start',
+    'padding': '0.5rem',
+    'borderRadius': '9999px',
+
+    ':hover': { background: colorStyleVars.lightGrayShadow },
   }),
 };

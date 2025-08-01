@@ -1,55 +1,61 @@
+'use client';
+
 import Thumbnail from '@/components/video/thumbnail';
 import { watchHistoryCardStyle } from '../styles/watchHistoryCardStyle.css';
 import ChannelImage from '@/components/channel/channelImage';
 import Link from 'next/link';
+import { Cross1Icon } from '@radix-ui/react-icons';
+import { WatchHistory } from '../utils/type';
 
 interface WatchHistoryCardProps {
-  watchProgress: number;
-  video: {
-    id: string;
-    title: string;
-    duration: number;
-    user: {
-      id: string;
-      name: string;
-      picture: string;
-    };
-  };
+  data: WatchHistory;
+  handleDeleteWatchHistory: () => void;
 };
 
 export default function WatchHistoryCard({
-  watchProgress,
-  video,
+  data,
+  handleDeleteWatchHistory,
 }: WatchHistoryCardProps) {
   return (
     <div className={watchHistoryCardStyle.container}>
       <Link
         className={watchHistoryCardStyle.thumbnail}
-        href={`/video/${video.id}`}
+        href={`/video/${data.video.id}`}
       >
         <Thumbnail
-          videoId={video.id}
-          videoTitle={video.title}
-          duration={video.duration}
-          watchProgress={watchProgress}
+          videoId={data.video.id}
+          videoTitle={data.video.title}
+          duration={data.video.duration}
+          watchProgress={data.watchProgress}
         />
       </Link>
-      <div className={watchHistoryCardStyle.info}>
-        <Link
-          className={watchHistoryCardStyle.title}
-          href={`/video/${video.id}`}
-        >
-          {video.title}
-        </Link>
-        <div className={watchHistoryCardStyle.channel}>
-          <div className={watchHistoryCardStyle.channelImage}>
-            <ChannelImage
-              channelName={video.user.name}
-              url={video.user.picture}
-            />
+      <div className={watchHistoryCardStyle.infoWrapper}>
+        <div className={watchHistoryCardStyle.info}>
+          <Link
+            className={watchHistoryCardStyle.title}
+            href={`/video/${data.video.id}`}
+          >
+            {data.video.title}
+          </Link>
+          <div className={watchHistoryCardStyle.channel}>
+            <div className={watchHistoryCardStyle.channelImage}>
+              <ChannelImage
+                channelName={data.video.user.name}
+                url={data.video.user.picture}
+              />
+            </div>
+            <Link href={`/channel/${data.video.user.id}`}>{data.video.user.name}</Link>
           </div>
-          <Link href={`/channel/${video.user.id}`}>{video.user.name}</Link>
         </div>
+        <button
+          type="button"
+          title="시청 기록 삭제"
+          aria-label="시청 기록 삭제"
+          className={watchHistoryCardStyle.deleteButton}
+          onClick={handleDeleteWatchHistory}
+        >
+          <Cross1Icon />
+        </button>
       </div>
     </div>
   );
