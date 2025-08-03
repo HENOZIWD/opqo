@@ -14,6 +14,7 @@ interface VideoCardProps {
     name: string;
     picture: string;
   };
+  watchProgress?: number;
 }
 
 export default function VideoCard({
@@ -22,6 +23,7 @@ export default function VideoCard({
   videoTitle,
   createdDate,
   channelInfo,
+  watchProgress,
 }: VideoCardProps) {
   return (
     <article className={videoCardStyle.container}>
@@ -34,6 +36,7 @@ export default function VideoCard({
             videoId={videoId}
             videoTitle={videoTitle}
             duration={videoDuration}
+            watchProgress={watchProgress}
           />
         </div>
       </Link>

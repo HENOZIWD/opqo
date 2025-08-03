@@ -2,9 +2,11 @@ import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import VideoCard from '@/components/video/videoCard';
 import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import { getVideoList } from '../apis/getVideoList';
+import { getAccessTokenCookie } from '@/serverActions/token';
 
 export default async function VideoListFetcher() {
-  const { data } = await fetchHandlerWithServerComponent(() => getVideoList());
+  const accessToken = (await getAccessTokenCookie()) ?? null;
+  const { data } = await fetchHandlerWithServerComponent(() => getVideoList({ accessToken }));
 
   if (!data) {
     return <div className={videoListStyle.fallback}>동영상 목록을 불러오는 데 실패했습니다.</div>;
@@ -19,6 +21,7 @@ export default async function VideoListFetcher() {
           createdDate,
           duration,
           channel,
+          watchProgress,
         }) => (
           <li
             key={id}
@@ -30,6 +33,7 @@ export default async function VideoListFetcher() {
               videoDuration={duration}
               createdDate={createdDate}
               channelInfo={channel}
+              watchProgress={watchProgress}
             />
           </li>
         ))
