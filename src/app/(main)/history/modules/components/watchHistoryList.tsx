@@ -36,12 +36,22 @@ export default function WatchHistoryList({ data }: WatchHistoryListProps) {
       controller,
     }), {
       onSuccess: () => {
-        setWatchHistoryListByDate((prev) => prev.map((watchHistoryList, index) => index === dateIndex
-          ? {
-            ...watchHistoryList,
-            watchHistories: watchHistoryList.watchHistories.filter((e) => e.video.id !== videoId),
+        setWatchHistoryListByDate((prev) => prev.map((watchHistoryList, index) => {
+          if (index !== dateIndex) {
+            return watchHistoryList;
           }
-          : watchHistoryList));
+
+          const filteredWatchHistories = watchHistoryList.watchHistories.filter((e) => e.video.id !== videoId);
+
+          if (filteredWatchHistories.length > 0) {
+            return {
+              ...watchHistoryList,
+              watchHistories: filteredWatchHistories,
+            };
+          }
+
+          return null;
+        }).filter((e) => e !== null));
 
         showToast({ message: DELETE_WATCH_HISTORY_SUCCEEDED });
       },
