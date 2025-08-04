@@ -3,7 +3,6 @@ import Thumbnail from './thumbnail';
 import { formatDateString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { videoCardStyle } from '@/styles/video/videoCardStyle.css';
-import { numberToTime } from '@/utils/convert';
 
 interface VideoCardProps {
   videoId: string;
@@ -15,6 +14,7 @@ interface VideoCardProps {
     name: string;
     picture: string;
   };
+  watchProgress?: number;
 }
 
 export default function VideoCard({
@@ -23,6 +23,7 @@ export default function VideoCard({
   videoTitle,
   createdDate,
   channelInfo,
+  watchProgress,
 }: VideoCardProps) {
   return (
     <article className={videoCardStyle.container}>
@@ -34,8 +35,9 @@ export default function VideoCard({
           <Thumbnail
             videoId={videoId}
             videoTitle={videoTitle}
+            duration={videoDuration}
+            watchProgress={watchProgress}
           />
-          <div className={videoCardStyle.duration}>{numberToTime(videoDuration)}</div>
         </div>
       </Link>
       <div className={videoCardStyle.infoSection}>

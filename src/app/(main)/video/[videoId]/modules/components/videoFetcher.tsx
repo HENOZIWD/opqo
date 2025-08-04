@@ -1,13 +1,20 @@
-import VideoPlayer from '@/components/video/videoPlayer';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { videoPageStyle } from '../styles/videoPageStyle.css';
 import VideoInfo from './videoInfo';
 import { getVideoInfo } from '../apis/getVideoInfo';
+import VideoPlayer from '@/components/video/videoPlayer';
+import VideoPlayerStateProvider from '@/components/video/videoPlayerStateProvider';
+import { getAccessTokenCookie } from '@/serverActions/token';
+import WatchHistoryUpdater from './watchHistoryUpdater';
 
 interface VideoFetcherProps { videoId: string }
 
 export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
-  const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({ videoId }));
+  const accessToken = (await getAccessTokenCookie()) ?? null;
+  const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({
+    accessToken,
+    videoId,
+  }));
 
   if (!data) {
     return <div className={videoPageStyle.loadError}>동영상을 불러오지 못했습니다.</div>;
@@ -16,13 +23,24 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
   return (
     <div>
       <div className={videoPageStyle.video}>
-        <VideoPlayer
-          source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/master.m3u8`}
-          title={data.title}
-          thumbnail={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/thumbnail.webp`}
-          duration={data.duration}
-          hlsMode
-        />
+        <VideoPlayerStateProvider>
+          {accessToken
+            ? (
+              <WatchHistoryUpdater
+                videoId={data.id}
+                prevWatchProgress={data.watchProgress ?? 0}
+              />
+            )
+            : null}
+          <VideoPlayer
+            source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/master.m3u8`}
+            title={data.title}
+            thumbnail={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/${data.id}/thumbnail.webp`}
+            duration={data.duration}
+            hlsMode
+            watchProgress={data.watchProgress ?? 0}
+          />
+        </VideoPlayerStateProvider>
       </div>
       <VideoInfo
         title={data.title}

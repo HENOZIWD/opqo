@@ -1,5 +1,6 @@
 User-Agent: *
 Allow: /
-Disallow: /createChannel
-Disallow: /selectChannel
+Disallow: /auth
 Disallow: /uploadVideo
+Disallow: /studio
+Disallow: /history

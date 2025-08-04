@@ -1,17 +1,12 @@
 'use client';
 
-import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useRef } from 'react';
 import { debounce } from '@/utils/debounce';
 import Spinner from './spinner';
 import VideoPlayerControlPanel from './videoPlayerControlPanel';
-import { getMuteStorageValue, getVolumeStorageValue, setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import Hls from 'hls.js';
 import { videoPlayerStyle } from '@/styles/video/videoPlayerStyle.css';
-
-export interface VideoResolutionLevel {
-  level: number;
-  name: string;
-}
+import { useVideoPlayerState } from '@/hooks/useVideoPlayerState';
 
 interface VideoPlayerProps {
   source: string;
@@ -19,6 +14,7 @@ interface VideoPlayerProps {
   thumbnail?: string;
   duration: number;
   hlsMode?: boolean;
+  watchProgress?: number;
 }
 
 export default function VideoPlayer({
@@ -27,24 +23,30 @@ export default function VideoPlayer({
   thumbnail,
   duration,
   hlsMode = false,
+  watchProgress,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const playPromiseRef = useRef<Promise<void>>(null);
 
-  const [isPanelShown, setIsPanelShown] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [bufferedProgress, setBufferedProgress] = useState<number>(0);
-  const [isBuffering, setIsBuffering] = useState<boolean>(false);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [volume, setVolume] = useState<number>(0.5);
-  const [currentResolutionLevel, setCurrentResolutionLevel] = useState<VideoResolutionLevel>({
-    level: -1,
-    name: '자동',
-  });
-  const [resolutionLevels, setResolutionLevels] = useState<VideoResolutionLevel[]>([]);
+  const {
+    isPanelShown,
+    setIsPanelShown,
+    isPlaying,
+    setIsPlaying,
+    currentTime,
+    setCurrentTime,
+    setBufferedProgress,
+    isBuffering,
+    setIsBuffering,
+    isMuted,
+    setIsMuted,
+    setIsFullscreen,
+    volume,
+    setVolume,
+    currentResolutionLevel,
+    setResolutionLevels,
+  } = useVideoPlayerState();
 
   const debouncedHidePanelRef = useRef(debounce(() => setIsPanelShown(false), 3000));
 
@@ -57,37 +59,31 @@ export default function VideoPlayer({
       return;
     }
 
-    if (hlsMode) {
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = source;
-      }
-      else if (Hls.isSupported()) {
-        const hls = new Hls();
-        hlsRef.current = hls;
+    if (hlsMode && !video.canPlayType('application/vnd.apple.mpegurl') && Hls.isSupported()) {
+      const hls = new Hls();
+      hlsRef.current = hls;
 
-        hls.loadSource(source);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-          const levels = data.levels.map(({
-            width,
-            height,
-          }, index) => ({
-            level: index,
-            name: `${width > height ? height : width}`,
-          }));
+      hls.loadSource(source);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
+        const levels = data.levels.map(({
+          width,
+          height,
+        }, index) => ({
+          level: index,
+          name: `${width > height ? height : width}`,
+        }));
 
-          levels.sort((a, b) => b.level - a.level);
+        levels.sort((a, b) => b.level - a.level);
 
-          setResolutionLevels(levels);
-        });
-      }
+        setResolutionLevels(levels);
+      });
     }
     else {
       video.src = source;
     }
 
-    setVolume(getVolumeStorageValue());
-    setIsMuted(getMuteStorageValue());
+    video.currentTime = watchProgress ?? 0;
 
     return () => {
       if (hlsRef.current) {
@@ -178,12 +174,10 @@ export default function VideoPlayer({
     if (videoRef.current.muted) {
       videoRef.current.muted = false;
       setIsMuted(false);
-      setMuteStorageValue(false);
     }
     else {
       videoRef.current.muted = true;
       setIsMuted(true);
-      setMuteStorageValue(true);
     }
   };
 
@@ -212,20 +206,17 @@ export default function VideoPlayer({
     if (isMuted) {
       videoRef.current.muted = false;
       setIsMuted(false);
-      setMuteStorageValue(false);
     }
 
     if (dir === 'UP') {
       const changedVolume = Math.min(Number.parseFloat((currentVolume + 0.05).toFixed(2)), 1);
       videoRef.current.volume = changedVolume;
       setVolume(changedVolume);
-      setVolumeStorageValue(changedVolume);
     }
     else if (dir === 'DOWN') {
       const changedVolume = Math.max(Number.parseFloat((currentVolume - 0.05).toFixed(2)), 0);
       videoRef.current.volume = changedVolume;
       setVolume(changedVolume);
-      setVolumeStorageValue(changedVolume);
     }
   };
 
@@ -333,24 +324,12 @@ export default function VideoPlayer({
       <div className={`${videoPlayerStyle.panel}${isPanelShown ? '' : ` ${videoPlayerStyle.hidden}`}`}>
         <VideoPlayerControlPanel
           videoRef={videoRef}
-          isPlaying={isPlaying}
-          currentTime={currentTime}
           duration={duration}
-          setCurrentTime={setCurrentTime}
-          bufferedProgress={bufferedProgress}
           playVideo={playVideo}
           pauseVideo={pauseVideo}
           handleMuteVolume={handleMuteVolume}
           handleFullscreen={handleFullscreen}
-          isMuted={isMuted}
-          setIsMuted={setIsMuted}
-          isFullscreen={isFullscreen}
           handlePlayPause={handlePlayPause}
-          volume={volume}
-          setVolume={setVolume}
-          resolutionLevels={resolutionLevels}
-          currentResolutionLevel={currentResolutionLevel}
-          setCurrentResolutionLevel={setCurrentResolutionLevel}
         />
       </div>
       {isBuffering

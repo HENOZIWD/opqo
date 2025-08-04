@@ -1,58 +1,48 @@
 'use client';
 
-import { ChangeEvent, Dispatch, RefObject, SetStateAction, useRef } from 'react';
+import { ChangeEvent, RefObject, useRef } from 'react';
 import { throttle } from '@/utils/throttle';
 import Slider from '../common/slider';
-import { setMuteStorageValue, setVolumeStorageValue } from '@/utils/storage';
 import * as Popover from '@radix-ui/react-popover';
 import { EnterFullScreenIcon, ExitFullScreenIcon, PauseIcon, PlayIcon, SpeakerLoudIcon, SpeakerOffIcon } from '@radix-ui/react-icons';
-import { VideoResolutionLevel } from './videoPlayer';
 import { videoPlayerControlPanelStyle } from '@/styles/video/videoPlayerControlPanelStyle.css';
 import { numberToTime } from '@/utils/convert';
+import { useVideoPlayerState } from '@/hooks/useVideoPlayerState';
 
 interface VideoPlayerControlPanelProps {
   videoRef: RefObject<HTMLVideoElement | null>;
-  isPlaying: boolean;
-  currentTime: number;
   duration: number;
-  setCurrentTime: Dispatch<SetStateAction<number>>;
-  bufferedProgress: number;
   playVideo: () => void;
   pauseVideo: () => void;
   handleMuteVolume: () => void;
   handleFullscreen: () => void;
-  isMuted: boolean;
-  setIsMuted: Dispatch<SetStateAction<boolean>>;
-  isFullscreen: boolean;
   handlePlayPause: () => void;
-  volume: number;
-  setVolume: Dispatch<SetStateAction<number>>;
-  resolutionLevels: VideoResolutionLevel[];
-  currentResolutionLevel?: VideoResolutionLevel;
-  setCurrentResolutionLevel?: Dispatch<SetStateAction<VideoResolutionLevel>>;
 }
 
 export default function VideoPlayerControlPanel({
   videoRef,
-  isPlaying,
-  currentTime,
   duration,
-  setCurrentTime,
-  bufferedProgress,
   playVideo,
   pauseVideo,
   handleMuteVolume,
   handleFullscreen,
-  isMuted,
-  setIsMuted,
-  isFullscreen,
   handlePlayPause,
-  volume,
-  setVolume,
-  resolutionLevels,
-  currentResolutionLevel,
-  setCurrentResolutionLevel,
 }: VideoPlayerControlPanelProps) {
+  const {
+    isPlaying,
+    currentTime,
+    setCurrentTime,
+    bufferedProgress,
+    isMuted,
+    setIsMuted,
+    isFullscreen,
+    volume,
+    setVolume,
+    currentResolutionLevel,
+    setCurrentResolutionLevel,
+    resolutionLevels,
+  } = useVideoPlayerState();
+
   const isPlayingBeforeSeek = useRef<boolean>(null);
   const throttledHandleSeekRef = useRef(throttle((e: ChangeEvent<HTMLInputElement>) => {
     if (!videoRef.current) {
@@ -93,12 +83,10 @@ export default function VideoPlayerControlPanel({
     if (isMuted) {
       videoRef.current.muted = false;
       setIsMuted(false);
-      setMuteStorageValue(false);
     }
 
     videoRef.current.volume = value;
     setVolume(value);
-    setVolumeStorageValue(value);
   };
 
   return (
@@ -125,7 +113,6 @@ export default function VideoPlayerControlPanel({
             : <PlayIcon className={videoPlayerControlPanelStyle.playPauseButton} />}
         </button>
         <button
-
           onClick={handleMuteVolume}
           title={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
           aria-label={isMuted || volume === 0 ? '음소거 해제(M)' : '음소거(M)'}
@@ -156,8 +143,6 @@ export default function VideoPlayerControlPanel({
         </div>
         <div className={videoPlayerControlPanelStyle.rightSection}>
           {resolutionLevels.length > 0
-          && setCurrentResolutionLevel
-          && currentResolutionLevel !== undefined
             ? (
               <Popover.Root>
                 <Popover.Trigger asChild>

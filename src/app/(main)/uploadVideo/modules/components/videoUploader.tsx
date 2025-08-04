@@ -15,6 +15,7 @@ import { captureRandomThumbnailFromVideo, extractMetadataFromVideo, generateVide
 import { VIDEO_CHUNK_SIZE } from '../utils/constant';
 import { videoUploaderStyle } from '../styles/videoUploaderStyle.css';
 import ProgressBar from './progressBar';
+import VideoPlayerStateProvider from '@/components/video/videoPlayerStateProvider';
 
 interface VideoUploaderProps {
   isVideoUploadComplete: boolean;
@@ -259,11 +260,13 @@ export default function VideoUploader({
       <div className={videoUploaderStyle.previewTitle}>미리보기</div>
       <div className={videoUploaderStyle.preview}>
         {videoPreviewUrl && videoDuration && (
-          <VideoPlayer
-            source={videoPreviewUrl}
-            title="업로드 할 동영상 미리보기"
-            duration={videoDuration}
-          />
+          <VideoPlayerStateProvider>
+            <VideoPlayer
+              source={videoPreviewUrl}
+              title="업로드 할 동영상 미리보기"
+              duration={videoDuration}
+            />
+          </VideoPlayerStateProvider>
         )}
       </div>
       {!isUploading

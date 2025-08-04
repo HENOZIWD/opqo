@@ -86,6 +86,14 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
                   내 스튜디오
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/history"
+                  className={authTopBarStyle.menu}
+                >
+                  시청 기록
+                </Link>
+              </li>
             </ul>
             <div className={authTopBarStyle.signout}>
               <button
