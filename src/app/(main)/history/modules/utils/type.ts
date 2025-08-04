@@ -1,6 +1,5 @@
 export interface WatchHistory {
   watchProgress: number;
-  watchedDate: string;
   video: {
     id: string;
     title: string;
@@ -12,3 +11,8 @@ export interface WatchHistory {
     };
   };
 }
+
+export type WatchHistoryListByDate = {
+  watchedDate: string;
+  watchHistories: WatchHistory[];
+}[];

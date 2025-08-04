@@ -11,9 +11,5 @@ export default async function WatchHistoryFetcher() {
     return <div>error</div>;
   }
 
-  return (
-    <div>
-      <WatchHistoryList data={data} />
-    </div>
-  );
+  return <WatchHistoryList data={data} />;
 }

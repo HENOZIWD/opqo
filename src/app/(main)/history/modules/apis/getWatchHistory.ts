@@ -1,10 +1,10 @@
 import { fetchInstance } from '@/apis/instance';
 import { AuthenticationParams } from '@/apis/type';
 import { accessTokenToBearer } from '@/utils/token';
-import { WatchHistory } from '../utils/type';
+import { WatchHistoryListByDate } from '../utils/type';
 
 interface GetWatchHistoryParams extends AuthenticationParams {}
-type GetWatchHistoryResponse = WatchHistory[];
+type GetWatchHistoryResponse = WatchHistoryListByDate;
 
 export async function getWatchHistory({ accessToken }: GetWatchHistoryParams) {
   return fetchInstance.get<GetWatchHistoryResponse>(

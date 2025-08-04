@@ -19,4 +19,10 @@ export const watchHistoryListStyle = {
     flexDirection: 'column',
     gap: '1rem',
   }),
+
+  date: style({
+    margin: '1rem 0',
+    fontSize: '1.25rem',
+    fontWeight: 700,
+  }),
 };
