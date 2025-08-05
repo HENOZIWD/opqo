@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { useFetch } from '@/hooks/useFetch';
 import { AccessToken } from '@/utils/type';
@@ -9,12 +8,11 @@ import { authTopBarStyle } from '../styles/authTopBarStyle.css';
 import ChannelImage from '@/components/channel/channelImage';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import { deleteAccessTokenCookie } from '@/serverActions/token';
+import * as Popover from '@radix-ui/react-popover';
 
 interface AuthTopBarProps { auth: AccessToken | null }
 
 export default function AuthTopBar({ auth }: AuthTopBarProps) {
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
   const { fetchHandler } = useFetch();
 
   const handleSignout = () => {
@@ -43,28 +41,26 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
   }
 
   return (
-    <>
-      <div className={authTopBarStyle.container}>
-        <Link
-          className={buttonStyle.small}
-          href="/uploadVideo"
-          prefetch={false}
-        >
-          동영상 업로드
-        </Link>
-        <button
-          type="button"
-          className={authTopBarStyle.accountMenu}
-          onClick={() => { setIsExpanded((prev) => !prev); }}
-        >
+    <div className={authTopBarStyle.container}>
+      <Link
+        className={buttonStyle.small}
+        href="/uploadVideo"
+        prefetch={false}
+      >
+        동영상 업로드
+      </Link>
+      <Popover.Root>
+        <Popover.Trigger className={authTopBarStyle.accountMenu}>
           <ChannelImage
             channelName={auth.name}
             url={auth.picture}
           />
-        </button>
-      </div>
-      {isExpanded
-        ? (
+        </Popover.Trigger>
+
+        <Popover.Content
+          sideOffset={16}
+          align="end"
+        >
           <div className={authTopBarStyle.menuContainer}>
             <div className={authTopBarStyle.channelInfo}>
               <div className={authTopBarStyle.channelName}>{auth.name}</div>
@@ -105,8 +101,8 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
               </button>
             </div>
           </div>
-        )
-        : null}
-    </>
+        </Popover.Content>
+      </Popover.Root>
+    </div>
   );
 }
