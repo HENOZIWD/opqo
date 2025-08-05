@@ -2,13 +2,18 @@ import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { Metadata } from 'next';
 import VideoFetcher from './modules/components/videoFetcher';
 import { getVideoInfo } from './modules/apis/getVideoInfo';
+import { getAccessTokenCookie } from '@/serverActions/token';
 
 interface VideoPageProps { params: Promise<{ videoId: string }> }
 
 export async function generateMetadata({ params }: VideoPageProps): Promise<Metadata> {
+  const accessToken = (await getAccessTokenCookie()) ?? null;
   const { videoId } = await params;
 
-  const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({ videoId }));
+  const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({
+    accessToken,
+    videoId,
+  }));
 
   return {
     title: `${data?.title}`,
