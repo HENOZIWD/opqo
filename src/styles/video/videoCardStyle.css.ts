@@ -26,6 +26,7 @@ export const videoCardStyle = {
   }),
 
   channelImage: style({
+    flexShrink: 0,
     width: '2.5rem',
     height: '2.5rem',
   }),
