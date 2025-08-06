@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OpqO
 
-## Getting Started
+[https://opqo.kr](https://opqo.kr)
 
-First, run the development server:
+<img width="720" alt="OpqO 홈 페이지" src="https://github.com/user-attachments/assets/c4be9c5a-9136-490d-98bc-2d025867bbce" />
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<img width="720" alt="OpqO 동영상 플레이어" src="https://github.com/user-attachments/assets/84af1066-e13b-4e6e-9aef-ce541c7bf474" />
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 소개
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+동영상을 업로드하고 스트리밍할 수 있는 동영상 공유 플랫폼입니다.
+지속적으로 기능을 추가시켜 나가고 있습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 주요 기능
 
-## Learn More
+### 구글 로그인
 
-To learn more about Next.js, take a look at the following resources:
+- Google OAuth2 로그인 방식을 사용하여 간편하게 채널을 생성하고 관리할 수 있습니다.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 동영상 업로드
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 동영상을 청크 단위로 분리하여 업로드합니다.
+- 동영상의 임의 구간 장면을 가져와 썸네일을 자동 지정하거나, 원하는 썸네일 장면을 선택하여 업로드 할 수 있습니다.
 
-## Deploy on Vercel
+### 동영상 화질 조절
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 업로드 된 동영상은 후처리를 거쳐 다양한 화질로 변환됩니다.
+- HTTP Live Streaming 프로토콜을 사용하여 네트워크 환경에 따라 동적으로 동영상의 화질을 조절하고 안정적인 시청 환경을 제공합니다.
+- 사용자는 자동 화질 또는 원하는 화질을 직접 선택하여 동영상을 시청할 수 있습니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 동영상 시청 기록
+
+- 동영상 시청 기록을 저장하여 마지막으로 시청한 시점부터 이어서 시청할 수 있습니다.
+- 동영상 썸네일에 시청 여부를 표시하여 제공합니다.
+
+## 사용 기술
+
+- [**React**](https://react.dev/): 컴포넌트 기반 아키텍처로 UI를 구축합니다.
+- [**Next.js**](https://nextjs.org/): 페이지 기반 라우팅, Server-Side Rendering 및 미들웨어 등의 기능을 사용하여 보다 견고한 아키텍처를 구성합니다.
+- [**TypeScript**](https://www.typescriptlang.org/): 정적 타입 검사를 통해 버그 발생 확률을 낮춥니다.
+- [**vanilla-extract**](https://vanilla-extract.style/): 빌드 타임 CSS 라이브러리를 사용하여 Server-Component에서 사용성을 높이고, 스타일 재사용성 및 확장성을 높입니다.
+- [**Jotai**](https://jotai.org/): 클라이언트 상태 관리를 통해 안정적인 UI를 제공합니다.
+- [**Ky**](https://github.com/sindresorhus/ky): Fetch API 기반 HTTP 클라이언트를 사용하여 웹 표준 및 Next.js의 Data Cache 등 다양한 기능과의 호환성을 높입니다.
+- [**React Hook Form**](https://react-hook-form.com/): 시용자 입력을 검증하여 신뢰성을 높이고 입력 시 불필요한 렌더링을 최소화하여 페이지 성능을 향상시킵니다.
+- [**ESLint**](https://eslint.org/): 코드 컨벤션을 일정하게 유지하여 개발 생산성을 높입니다.
+- **[webpack](https://webpack.kr/), [SWC](https://swc.rs/)**: 빠른 빌드 및 배포로 개발 생산성을 높입니다.
+- [**Github Actions**](https://github.com/features/actions): release 시 자동으로 빌드를 수행하여 개발 생산성을 높입니다.
+- [**Docker**](https://www.docker.com/): 컨테이너 기반 가상화 기술을 통해 빠르고 안정적인 배포를 제공합니다.
