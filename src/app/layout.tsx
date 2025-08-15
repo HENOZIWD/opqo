@@ -4,6 +4,7 @@ import '@/styles/globals.css';
 import ToastProvider from '@/contexts/toast';
 import TokenProvider from '@/contexts/token';
 import { getAccessTokenCookie } from '@/serverActions/token';
+import DateTimeFormatProvider from './modules/components/DateTimeFormatProvider';
 
 export const metadata: Metadata = {
   title: {
@@ -35,7 +36,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const accessToken = await getAccessTokenCookie();
 
   return (
-    <html lang="ko">
+    <DateTimeFormatProvider>
       <body className={`${myFont.className}`}>
         <ToastProvider>
           <TokenProvider token={accessToken ?? null}>
@@ -43,6 +44,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           </TokenProvider>
         </ToastProvider>
       </body>
-    </html>
+    </DateTimeFormatProvider>
   );
 }
