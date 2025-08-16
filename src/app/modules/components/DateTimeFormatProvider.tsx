@@ -28,7 +28,7 @@ export default function DateTimeFormatProvider({ children }: DateTimeFormatProvi
       setLocale(getLocale());
     }
     if (!timeZone) {
-      setTimeZone(getTimeZone);
+      setTimeZone(getTimeZone());
     }
   }, [locale, timeZone, setLocale, setTimeZone]);
 

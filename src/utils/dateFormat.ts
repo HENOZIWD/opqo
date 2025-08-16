@@ -1,11 +1,22 @@
-export function formatDateString(isoDateStr: string) {
-  const date = new Date(isoDateStr);
-
-  return date.toLocaleDateString();
+interface DateFormatOptionParams {
+  locale?: string;
+  timeZone?: string;
 }
 
-export function formatDateTimeString(isoDateStr: string) {
-  const date = new Date(isoDateStr);
+export function formatDateString(
+  dateStr: string,
+  options?: DateFormatOptionParams,
+) {
+  const date = new Date(dateStr);
 
-  return date.toLocaleString();
+  return date.toLocaleDateString(options?.locale, { timeZone: options?.timeZone });
+}
+
+export function formatDateTimeString(
+  dateStr: string,
+  options?: DateFormatOptionParams,
+) {
+  const date = new Date(dateStr);
+
+  return date.toLocaleString(options?.locale, { timeZone: options?.timeZone });
 }

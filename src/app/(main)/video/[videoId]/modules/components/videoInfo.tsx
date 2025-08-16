@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { formatDateTimeString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { videoInfoStyle } from '../styles/videoInfoStyle.css';
+import Date from '@/components/common/date';
 
 interface VideoInfoProps {
   title: string;
@@ -40,7 +40,12 @@ export default function VideoInfo({
         </Link>
       </div>
       <div className={videoInfoStyle.description}>
-        <div>{formatDateTimeString(createdDate)}</div>
+        <div>
+          <Date
+            dateStr={createdDate}
+            type="time"
+          />
+        </div>
         <div>{description}</div>
       </div>
     </div>
