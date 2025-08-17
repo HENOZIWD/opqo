@@ -1,8 +1,8 @@
-import { formatDateString } from '@/utils/dateFormat';
 import Link from 'next/link';
 import Thumbnail from '@/components/video/thumbnail';
 import { studioContentCardStyle } from '../styles/studioContentCardStyle.css';
 import { videoCardStyle } from '@/styles/video/videoCardStyle.css';
+import Date from '@/components/common/date';
 
 interface StudioContentCardProps {
   id: string;
@@ -29,7 +29,12 @@ export default function StudioContentCard({
         <h2 className={videoCardStyle.title}>{title}</h2>
       </Link>
       <div className={studioContentCardStyle.info}>
-        <div>{formatDateString(createdDate)}</div>
+        <div>
+          <Date
+            dateStr={createdDate}
+            type="date"
+          />
+        </div>
         <div>{isUploaded ? '업로드 완료' : '업로드 중'}</div>
       </div>
     </article>

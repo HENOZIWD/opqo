@@ -1,7 +1,6 @@
 'use client';
 
 import { numberToFileSize, numberToTime } from '@/utils/convert';
-import { formatDateTimeString } from '@/utils/dateFormat';
 import Thumbnail from '@/components/video/thumbnail';
 import { myVideoInfoStyle } from '../styles/myVideoInfoStyle.css';
 import { studioInfoSectionStyle } from '@/app/(main)/studio/modules/styles/studioInfoSectionStyle.css';
@@ -18,6 +17,7 @@ import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { updateMyVideoInfo } from '../apis/updateMyVideoInfo';
 import { deleteMyVideo } from '../apis/deleteMyVideo';
+import Date from '@/components/common/date';
 
 interface MyVideoInfoProps {
   id: string;
@@ -184,7 +184,10 @@ export default function MyVideoInfo({
         {isUploaded ? '업로드 완료' : '업로드 중'}
       </StudioInfoSection>
       <StudioInfoSection title="생성한 날짜">
-        {formatDateTimeString(createdDate)}
+        <Date
+          dateStr={createdDate}
+          type="time"
+        />
       </StudioInfoSection>
       {isEditing
         ? (

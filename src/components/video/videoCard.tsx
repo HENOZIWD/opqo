@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import Thumbnail from './thumbnail';
-import { formatDateString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { videoCardStyle } from '@/styles/video/videoCardStyle.css';
+import Date from '../common/date';
 
 interface VideoCardProps {
   videoId: string;
@@ -67,7 +67,12 @@ export default function VideoCard({
               </Link>
             )
             : null}
-          <div>{formatDateString(createdDate)}</div>
+          <div>
+            <Date
+              dateStr={createdDate}
+              type="date"
+            />
+          </div>
         </div>
       </div>
     </article>

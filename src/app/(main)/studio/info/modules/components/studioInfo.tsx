@@ -1,6 +1,5 @@
 'use client';
 
-import { formatDateString } from '@/utils/dateFormat';
 import ChannelImage from '@/components/channel/channelImage';
 import { studioInfoStyle } from '../styles/studioInfoStyle.css';
 import { useForm } from 'react-hook-form';
@@ -25,6 +24,7 @@ import Input from '@/components/common/input';
 import Textarea from '@/components/common/textarea';
 import { deleteChannel } from '../apis/deleteChannel';
 import { deleteAccessTokenCookie } from '@/serverActions/token';
+import Date from '@/components/common/date';
 
 interface StudioInfoProps {
   email: string;
@@ -185,7 +185,10 @@ export default function StudioInfo({
           </StudioInfoSection>
         )}
       <StudioInfoSection title="채널 개설일">
-        {formatDateString(createdDate)}
+        <Date
+          dateStr={createdDate}
+          type="date"
+        />
       </StudioInfoSection>
       <div className={studioInfoStyle.button}>
         {isEditing

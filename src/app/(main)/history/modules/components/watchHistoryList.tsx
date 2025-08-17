@@ -7,7 +7,7 @@ import { WatchHistoryListByDate } from '../utils/type';
 import { useFetch } from '@/hooks/useFetch';
 import { useToast } from '@/hooks/useToast';
 import { deleteWatchHistory } from '../apis/deleteWatchHistory';
-import { formatDateString } from '@/utils/dateFormat';
+import Date from '@/components/common/date';
 
 const DELETE_WATCH_HISTORY_SUCCEEDED = '시청 기록을 삭제했습니다.';
 const DELETE_WATCH_HISTORY_FAILED = '시청 기록 삭제에 실패했습니다.';
@@ -73,7 +73,12 @@ export default function WatchHistoryList({ data }: WatchHistoryListProps) {
             watchHistories,
           }, dateIndex) => (
             <li key={watchedDate}>
-              <div className={watchHistoryListStyle.date}>{formatDateString(watchedDate)}</div>
+              <div className={watchHistoryListStyle.date}>
+                <Date
+                  dateStr={watchedDate}
+                  type="date"
+                />
+              </div>
               <ul className={watchHistoryListStyle.list}>
                 {watchHistories.map((watchHistory) => (
                   <li key={watchHistory.video.id}>
