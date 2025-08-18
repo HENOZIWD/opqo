@@ -6,6 +6,7 @@ import VideoPlayer from '@/components/video/videoPlayer';
 import VideoPlayerStateProvider from '@/components/video/videoPlayerStateProvider';
 import { getAccessTokenCookie } from '@/serverActions/token';
 import WatchHistoryUpdater from './watchHistoryUpdater';
+import CommentUploader from './commentUploader';
 
 interface VideoFetcherProps { videoId: string }
 
@@ -50,6 +51,7 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
         channelName={data.channel.name}
         channelImage={data.channel.picture}
       />
+      {accessToken ? <CommentUploader videoId={data.id} /> : null}
     </div>
   );
 }
