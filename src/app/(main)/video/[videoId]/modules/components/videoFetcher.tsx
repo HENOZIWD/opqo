@@ -7,12 +7,19 @@ import VideoPlayerStateProvider from '@/components/video/videoPlayerStateProvide
 import { getAccessTokenCookie } from '@/serverActions/token';
 import WatchHistoryUpdater from './watchHistoryUpdater';
 import CommentUploader from './commentUploader';
+import CommentList from './commentList';
+import { getCommentList } from '../apis/getCommentList';
 
 interface VideoFetcherProps { videoId: string }
 
 export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
   const accessToken = (await getAccessTokenCookie()) ?? null;
   const { data } = await fetchHandlerWithServerComponent(() => getVideoInfo({
+    accessToken,
+    videoId,
+  }));
+
+  const { data: commentData } = await fetchHandlerWithServerComponent(() => getCommentList({
     accessToken,
     videoId,
   }));
@@ -52,6 +59,7 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
         channelImage={data.channel.picture}
       />
       {accessToken ? <CommentUploader videoId={data.id} /> : null}
+      <CommentList data={commentData} />
     </div>
   );
 }
