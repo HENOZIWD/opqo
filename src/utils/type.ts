@@ -7,3 +7,5 @@ export interface AccessToken {
   picture: string;
   exp: number;
 }
+
+export interface TextareaHandle { update: () => void }

@@ -6,7 +6,8 @@ import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import { useFetch } from '@/hooks/useFetch';
 import { uploadComment } from '../apis/uploadComment';
 import { useToast } from '@/hooks/useToast';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
+import { TextareaHandle } from '@/utils/type';
 
 const COMMENT_LIMIT = 5000;
 
@@ -14,8 +15,15 @@ interface CommentUploadProps { videoId: string }
 
 export default function CommentUploader({ videoId }: CommentUploadProps) {
   const [comment, setComment] = useState<string>('');
+  const [resizeFlag, setResizeFlag] = useState<boolean>(false);
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+
+  const textareaUpdateRef = useRef<TextareaHandle>(null);
+
+  useEffect(() => {
+    textareaUpdateRef.current?.update();
+  }, [resizeFlag]);
 
   const handleUploadComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +45,9 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
     }), {
       onSuccess: () => {
         showToast({ message: '댓글 등록에 성공했습니다.' });
+
         setComment('');
+        setResizeFlag((prev) => !prev);
       },
       onError: () => {
         showToast({
@@ -61,6 +71,7 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
             value={comment}
             onChange={(e) => setComment(e.currentTarget.value)}
             maxLength={COMMENT_LIMIT}
+            updateRef={textareaUpdateRef}
           />
         </div>
         <button
