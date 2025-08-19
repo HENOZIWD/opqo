@@ -16,6 +16,7 @@ export const commentStyle = {
   commentWrapper: style({
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'flex-start',
     gap: '0.5rem',
   }),
 
