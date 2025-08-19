@@ -1,5 +1,5 @@
 import { textareaStyle } from '@/styles/common/inputStyle.css';
-import { ChangeEvent, TextareaHTMLAttributes, useRef, useState } from 'react';
+import { ChangeEvent, TextareaHTMLAttributes, useState } from 'react';
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   defaultValueLength?: number;
@@ -13,7 +13,6 @@ export default function Textarea({
   error = false,
   ...props
 }: TextareaProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const [currentLength, setCurrentLength] = useState<number>(defaultValueLength ?? 0);
 
   const resizeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -21,17 +20,10 @@ export default function Textarea({
 
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
-
-    if (wrapperRef.current) {
-      wrapperRef.current.scrollIntoView({ block: 'end' });
-    }
   };
 
   return (
-    <div
-      ref={wrapperRef}
-      className={textareaStyle.wrapper}
-    >
+    <div className={textareaStyle.wrapper}>
       <textarea
         {...props}
         className={`${textareaStyle.container}${error ? ` ${textareaStyle.error}` : ''}`}
