@@ -26,7 +26,7 @@ export default function Comment({
         >
           {user.name}
         </Link>
-        <div>{comment}</div>
+        <div className={commentStyle.comment}>{comment}</div>
         <div className={commentStyle.createdDate}>
           <Date
             dateStr={createdDate}

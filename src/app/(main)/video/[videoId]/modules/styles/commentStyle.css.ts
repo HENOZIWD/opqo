@@ -25,6 +25,11 @@ export const commentStyle = {
     fontSize: '1rem',
   }),
 
+  comment: style({
+    wordBreak: 'break-all',
+    whiteSpace: 'pre-wrap',
+  }),
+
   createdDate: style({
     fontSize: '0.875rem',
     color: colorStyleVars.gray,
