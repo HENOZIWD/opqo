@@ -9,6 +9,7 @@ import WatchHistoryUpdater from './watchHistoryUpdater';
 import CommentUploader from './commentUploader';
 import CommentList from './commentList';
 import { getCommentList } from '../apis/getCommentList';
+import CommentStateProvider from './commentStateProvider';
 
 interface VideoFetcherProps { videoId: string }
 
@@ -58,8 +59,10 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
         channelName={data.channel.name}
         channelImage={data.channel.picture}
       />
-      {accessToken ? <CommentUploader videoId={data.id} /> : null}
-      <CommentList data={commentData} />
+      <CommentStateProvider>
+        {accessToken ? <CommentUploader videoId={data.id} /> : null}
+        <CommentList data={commentData} />
+      </CommentStateProvider>
     </div>
   );
 }

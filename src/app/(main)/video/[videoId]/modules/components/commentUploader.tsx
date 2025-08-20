@@ -8,6 +8,7 @@ import { uploadComment } from '../apis/uploadComment';
 import { useToast } from '@/hooks/useToast';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { TextareaHandle } from '@/utils/type';
+import { useCommentState } from '../hooks/useCommentState';
 
 const COMMENT_LIMIT = 5000;
 
@@ -15,15 +16,19 @@ interface CommentUploadProps { videoId: string }
 
 export default function CommentUploader({ videoId }: CommentUploadProps) {
   const [comment, setComment] = useState<string>('');
-  const [resizeFlag, setResizeFlag] = useState<boolean>(false);
+  const [updateFlag, setUpdateFlag] = useState<boolean>(false);
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
+  const {
+    commentList,
+    setCommentList,
+  } = useCommentState();
 
   const textareaUpdateRef = useRef<TextareaHandle>(null);
 
   useEffect(() => {
     textareaUpdateRef.current?.update();
-  }, [resizeFlag]);
+  }, [updateFlag]);
 
   const handleUploadComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,11 +48,16 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
       controller,
       accessToken,
     }), {
-      onSuccess: () => {
+      onSuccess: async (response) => {
+        const data = await response?.json();
         showToast({ message: '댓글 등록에 성공했습니다.' });
 
+        if (data) {
+          setCommentList(commentList ? [data, ...commentList] : [data]);
+        }
+
         setComment('');
-        setResizeFlag((prev) => !prev);
+        setUpdateFlag((prev) => !prev);
       },
       onError: () => {
         showToast({

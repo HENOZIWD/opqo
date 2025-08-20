@@ -1,11 +1,31 @@
+'use client';
+
 import { commentListStyle } from '../styles/commentListStyle.css';
 import { Comment as CommentType } from '../utils/type';
 import Comment from './comment';
+import { useCommentState } from '../hooks/useCommentState';
+import { useEffect, useState } from 'react';
 
 interface CommentListProps { data: CommentType[] | null }
 
 export default function CommentList({ data }: CommentListProps) {
-  if (!data) {
+  const {
+    commentList,
+    setCommentList,
+  } = useCommentState();
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setCommentList(data);
+    setIsLoading(false);
+  }, [data, setCommentList]);
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (!commentList) {
     return (
       <div className={commentListStyle.container}>
         댓글을 불러오지 못했습니다.
@@ -15,8 +35,8 @@ export default function CommentList({ data }: CommentListProps) {
 
   return (
     <ul className={commentListStyle.container}>
-      {data.length > 0
-        ? data.map(({
+      {commentList.length > 0
+        ? commentList.map(({
           id,
           comment,
           createdDate,
