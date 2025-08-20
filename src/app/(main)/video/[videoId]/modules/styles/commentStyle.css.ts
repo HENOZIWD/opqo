@@ -5,12 +5,14 @@ export const commentStyle = {
   container: style({
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: '1rem',
   }),
 
   channelImage: style({
     width: '2rem',
     height: '2rem',
+    flexShrink: 0,
   }),
 
   commentWrapper: style({
@@ -18,6 +20,7 @@ export const commentStyle = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: '0.5rem',
+    flexGrow: 1,
   }),
 
   channelName: style({
@@ -33,5 +36,13 @@ export const commentStyle = {
   createdDate: style({
     fontSize: '0.875rem',
     color: colorStyleVars.gray,
+  }),
+
+  deleteButton: style({
+    'display': 'flex',
+    'padding': '0.5rem',
+    'borderRadius': 9999,
+
+    ':hover': { backgroundColor: colorStyleVars.lightGrayShadow },
   }),
 };
