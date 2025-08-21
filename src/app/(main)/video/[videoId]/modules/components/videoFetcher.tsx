@@ -61,7 +61,10 @@ export default async function VideoFetcher({ videoId }: VideoFetcherProps) {
       />
       <CommentStateProvider>
         {accessToken ? <CommentUploader videoId={data.id} /> : null}
-        <CommentList data={commentData} />
+        <CommentList
+          data={commentData?.data ?? null}
+          count={commentData?.count ?? 0}
+        />
       </CommentStateProvider>
     </div>
   );

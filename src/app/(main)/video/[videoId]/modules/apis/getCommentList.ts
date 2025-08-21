@@ -5,7 +5,10 @@ import { accessTokenToBearer } from '@/utils/token';
 import { Comment } from '../utils/type';
 
 interface GetCommentListParams extends AuthenticationParams { videoId: string }
-type GetCommentListResponse = Comment[];
+interface GetCommentListResponse {
+  count: number;
+  data: Comment[];
+}
 
 export async function getCommentList({
   videoId,

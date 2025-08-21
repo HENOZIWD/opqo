@@ -22,6 +22,8 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
   const {
     commentList,
     setCommentList,
+    commentCount,
+    setCommentCount,
   } = useCommentState();
 
   const textareaUpdateRef = useRef<TextareaHandle>(null);
@@ -54,6 +56,7 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
 
         if (data) {
           setCommentList(commentList ? [data, ...commentList] : [data]);
+          setCommentCount(commentCount + 1);
         }
 
         setComment('');
