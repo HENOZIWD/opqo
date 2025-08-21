@@ -20,9 +20,7 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
   const { fetchHandler } = useFetch();
   const { showToast } = useToast();
   const {
-    commentList,
     setCommentList,
-    commentCount,
     setCommentCount,
   } = useCommentState();
 
@@ -55,8 +53,8 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
         showToast({ message: '댓글 등록에 성공했습니다.' });
 
         if (data) {
-          setCommentList(commentList ? [data, ...commentList] : [data]);
-          setCommentCount(commentCount + 1);
+          setCommentList((prev) => prev ? [data, ...prev] : [data]);
+          setCommentCount((prev) => prev + 1);
         }
 
         setComment('');

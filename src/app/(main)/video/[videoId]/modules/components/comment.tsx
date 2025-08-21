@@ -22,9 +22,7 @@ export default function Comment({
 }: CommentProps) {
   const { fetchHandler } = useFetch();
   const {
-    commentList,
     setCommentList,
-    commentCount,
     setCommentCount,
   } = useCommentState();
   const { showToast } = useToast();
@@ -42,8 +40,8 @@ export default function Comment({
       onError: () => {},
       onFinal: () => {
         showToast({ message: '댓글을 삭제했습니다.' });
-        setCommentList(commentList?.filter((e) => e.id !== id) ?? null);
-        setCommentCount(commentCount - 1);
+        setCommentList((prev) => prev?.filter((e) => e.id !== id) ?? null);
+        setCommentCount((prev) => prev - 1);
       },
     });
   };
