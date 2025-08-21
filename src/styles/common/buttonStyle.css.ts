@@ -12,6 +12,7 @@ const buttonDefaultStyle = style({
   'fontWeight': 900,
   'fontSize': '1.125rem',
   'justifySelf': 'center',
+  'justifyContent': 'center',
 
   ':disabled': {
     background: colorStyleVars.lightGray,
