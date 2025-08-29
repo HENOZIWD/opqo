@@ -26,15 +26,15 @@ export function useFetch() {
       onError,
       onFinal,
     }: {
-      onSuccess: (response?: KyResponse<T>) => void;
-      onError: (error?: KyResponse<BadRequestResponse> | TimeoutError) => void;
+      onSuccess: (response: KyResponse<T>) => void;
+      onError: (error: KyResponse<BadRequestResponse> | TimeoutError) => void;
       onFinal?: () => void;
     },
   ) => {
     const controller = createAbortController();
 
-    const successAsyncFn = async (response?: KyResponse<T>) => onSuccess(response);
-    const errorAsyncFn = async (errorResponse?: KyResponse<BadRequestResponse> | TimeoutError) => onError(errorResponse);
+    const successAsyncFn = async (response: KyResponse<T>) => onSuccess(response);
+    const errorAsyncFn = async (errorResponse: KyResponse<BadRequestResponse> | TimeoutError) => onError(errorResponse);
 
     try {
       const response = await fetchFn({
