@@ -15,6 +15,7 @@ interface VideoPlayerProps {
   duration: number;
   hlsMode?: boolean;
   watchProgress?: number;
+  liveMode?: boolean;
 }
 
 export default function VideoPlayer({
@@ -24,6 +25,7 @@ export default function VideoPlayer({
   duration,
   hlsMode = false,
   watchProgress,
+  liveMode = false,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -60,7 +62,14 @@ export default function VideoPlayer({
     }
 
     if (hlsMode && !video.canPlayType('application/vnd.apple.mpegurl') && Hls.isSupported()) {
-      const hls = new Hls();
+      const hls = new Hls(liveMode
+        ? {
+          liveSyncDurationCount: 3,
+          enableWorker: true,
+          maxBufferLength: 5,
+          startLevel: -1,
+        }
+        : {});
       hlsRef.current = hls;
 
       hls.loadSource(source);
@@ -305,7 +314,15 @@ export default function VideoPlayer({
         key={source}
         className={videoPlayerStyle.video}
         ref={videoRef}
-        onPlay={() => setIsPlaying(true)}
+        onPlay={() => {
+          setIsPlaying(true);
+
+          if (liveMode && hlsRef.current && videoRef.current) {
+            hlsRef.current.startLoad(-1);
+            videoRef.current.currentTime = videoRef.current.duration;
+            setCurrentTime(videoRef.current.currentTime);
+          }
+        }}
         onPause={() => setIsPlaying(false)}
         onEnded={() => setIsPlaying(false)}
         onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
@@ -330,6 +347,7 @@ export default function VideoPlayer({
           handleMuteVolume={handleMuteVolume}
           handleFullscreen={handleFullscreen}
           handlePlayPause={handlePlayPause}
+          liveMode={liveMode}
         />
       </div>
       {isBuffering
