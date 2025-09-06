@@ -19,7 +19,7 @@ export default async function LiveStreamFetcher({ channelId }: LiveStreamFetcher
         {data.isStreaming
           ? (
             <VideoPlayer
-              source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/live/${data.userId}/index.m3u8`}
+              source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/live/${channelId}/index.m3u8`}
               title={data.title}
               duration={0}
               hlsMode
