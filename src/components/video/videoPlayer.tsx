@@ -93,6 +93,7 @@ export default function VideoPlayer({
     }
 
     video.currentTime = watchProgress ?? 0;
+    setIsMuted(true);
 
     return () => {
       if (hlsRef.current) {
@@ -109,6 +110,16 @@ export default function VideoPlayer({
 
     hlsRef.current.currentLevel = currentResolutionLevel.level;
   }, [currentResolutionLevel]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    video.volume = volume;
+  }, [volume]);
 
   const handleShowPanel = () => {
     if (!isPanelShown) {
@@ -219,12 +230,10 @@ export default function VideoPlayer({
 
     if (dir === 'UP') {
       const changedVolume = Math.min(Number.parseFloat((currentVolume + 0.05).toFixed(2)), 1);
-      videoRef.current.volume = changedVolume;
       setVolume(changedVolume);
     }
     else if (dir === 'DOWN') {
       const changedVolume = Math.max(Number.parseFloat((currentVolume - 0.05).toFixed(2)), 0);
-      videoRef.current.volume = changedVolume;
       setVolume(changedVolume);
     }
   };
@@ -334,6 +343,7 @@ export default function VideoPlayer({
         playsInline
         preload="metadata"
         autoPlay
+        muted
       />
       <figcaption className={`${videoPlayerStyle.title}${isPanelShown ? '' : ` ${videoPlayerStyle.hidden}`}`}>
         {title}

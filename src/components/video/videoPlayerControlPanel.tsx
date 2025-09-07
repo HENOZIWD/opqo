@@ -87,7 +87,6 @@ export default function VideoPlayerControlPanel({
       setIsMuted(false);
     }
 
-    videoRef.current.volume = value;
     setVolume(value);
   };
 
