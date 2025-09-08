@@ -8,6 +8,8 @@ interface ChannelProfileProps {
   description: string;
   createdDate: string;
   picture: string;
+  id: string;
+  isStreaming: boolean;
 }
 
 export default function ChannelProfile({
@@ -16,6 +18,8 @@ export default function ChannelProfile({
   description,
   createdDate,
   picture,
+  id,
+  isStreaming,
 }: ChannelProfileProps) {
   return (
     <div className={channelProfileStyle.container}>
@@ -23,6 +27,8 @@ export default function ChannelProfile({
         <ChannelImage
           channelName={name}
           url={picture}
+          channelId={id}
+          isStreaming={isStreaming}
         />
       </div>
       <div className={channelProfileStyle.info}>

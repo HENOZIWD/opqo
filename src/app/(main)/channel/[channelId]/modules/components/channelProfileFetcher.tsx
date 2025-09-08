@@ -19,6 +19,8 @@ export default async function ChannelProfileFetcher({ channelId }: ChannelProfil
       description={data.description}
       createdDate={data.createdDate}
       picture={data.picture}
+      id={data.id}
+      isStreaming={data.isStreaming}
     />
   );
 }
