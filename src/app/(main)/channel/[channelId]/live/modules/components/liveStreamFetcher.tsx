@@ -20,6 +20,7 @@ export default async function LiveStreamFetcher({ channelId }: LiveStreamFetcher
           ? (
             <VideoPlayer
               source={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/live/${channelId}/index.m3u8`}
+              thumbnail={`${process.env.NEXT_PUBLIC_CDN_VIDEO_URL}/live/${channelId}/thumbnail.webp`}
               title={data.title}
               duration={0}
               hlsMode

@@ -3,6 +3,7 @@ import { videoListStyle } from '@/styles/video/videoListStyle.css';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { getChannelVideoList } from '../apis/getChannelVideoList';
 import { getAccessTokenCookie } from '@/serverActions/token';
+import LiveCard from './liveCard';
 
 interface ChannelVideoListFetcherProps { channelId: string }
 
@@ -19,8 +20,21 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
 
   return (
     <ul className={videoListStyle.list}>
-      {data.length > 0
-        ? data.map(({
+      {data.streamingInfo.isStreaming
+        ? (
+          <li
+            className={videoListStyle.card}
+            key="liveStreaming"
+          >
+            <LiveCard
+              channelId={data.streamingInfo.userId}
+              title={data.streamingInfo.title}
+            />
+          </li>
+        )
+        : null}
+      {data.videoList.length > 0
+        ? data.videoList.map(({
           id,
           title,
           createdDate,
