@@ -12,7 +12,7 @@ export const streamKeyGuideStyle = {
 
   imageWrapper: style({
     position: 'relative',
-    maxWidth: '48rem',
+    maxWidth: '64rem',
     aspectRatio: '19/12',
     margin: '1rem 0',
   }),
