@@ -6,6 +6,7 @@ import { getAccessTokenCookie } from '@/serverActions/token';
 import { fetchHandlerWithServerComponent } from '@/utils/handler';
 import { getLiveStreamConfig } from './modules/apis/getLiveStreamConfig';
 import { studioInfoStyle } from '../info/modules/styles/studioInfoStyle.css';
+import StreamKeyGuide from './modules/components/streamKeyGuide';
 
 export const metadata: Metadata = { title: '라이브 설정' };
 
@@ -22,6 +23,7 @@ export default async function LiveStreamConfingPage() {
       <h1 className={pageStyle.pageTitle}>라이브 설정</h1>
       <LiveStreamConfigForm config={data} />
       <StreamKeyInfo />
+      <StreamKeyGuide />
     </main>
   );
 }
