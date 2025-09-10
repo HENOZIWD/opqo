@@ -17,6 +17,7 @@ interface VideoPlayerControlPanelProps {
   handleMuteVolume: () => void;
   handleFullscreen: () => void;
   handlePlayPause: () => void;
+  liveMode: boolean;
 }
 
 export default function VideoPlayerControlPanel({
@@ -27,6 +28,7 @@ export default function VideoPlayerControlPanel({
   handleMuteVolume,
   handleFullscreen,
   handlePlayPause,
+  liveMode,
 }: VideoPlayerControlPanelProps) {
   const {
     isPlaying,
@@ -85,23 +87,26 @@ export default function VideoPlayerControlPanel({
       setIsMuted(false);
     }
 
-    videoRef.current.volume = value;
     setVolume(value);
   };
 
   return (
     <div className={videoPlayerControlPanelStyle.container}>
-      <Slider
-        name="동영상 구간 탐색"
-        min={0}
-        max={duration}
-        step="any"
-        value={currentTime}
-        mid={bufferedProgress}
-        onChange={handleSeek}
-        mouseDownAction={handleStartSeek}
-        mouseUpAction={handleEndSeek}
-      />
+      {liveMode
+        ? null
+        : (
+          <Slider
+            name="동영상 구간 탐색"
+            min={0}
+            max={duration}
+            step="any"
+            value={currentTime}
+            mid={bufferedProgress}
+            onChange={handleSeek}
+            mouseDownAction={handleStartSeek}
+            mouseUpAction={handleEndSeek}
+          />
+        )}
       <div className={videoPlayerControlPanelStyle.panel}>
         <button
           onClick={handlePlayPause}
@@ -134,15 +139,19 @@ export default function VideoPlayerControlPanel({
         <div>
           {isMuted ? 0 : (volume * 100).toFixed(0)}
         </div>
-        <div>
-          {numberToTime(currentTime)}
-          {' '}
-          /
-          {' '}
-          {numberToTime(duration)}
-        </div>
+        {!liveMode
+          ? (
+            <div>
+              {numberToTime(currentTime)}
+              {' '}
+              /
+              {' '}
+              {numberToTime(duration)}
+            </div>
+          )
+          : null}
         <div className={videoPlayerControlPanelStyle.rightSection}>
-          {resolutionLevels.length > 0
+          {!liveMode && resolutionLevels.length > 0
             ? (
               <Popover.Root>
                 <Popover.Trigger asChild>

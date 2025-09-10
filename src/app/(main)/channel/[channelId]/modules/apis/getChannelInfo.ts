@@ -9,6 +9,7 @@ interface GetChannelInfoResponse {
   description: string;
   createdDate: string;
   picture: string;
+  isStreaming: boolean;
 }
 
 export async function getChannelInfo({ channelId }: GetChannelInfoParams) {

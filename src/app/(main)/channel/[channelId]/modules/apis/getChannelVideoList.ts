@@ -3,8 +3,7 @@ import { FETCH_CACHE_POLICY } from '@/apis/constant';
 import { AuthenticationParams } from '@/apis/type';
 import { accessTokenToBearer } from '@/utils/token';
 
-interface GetChannelVideoListParams extends AuthenticationParams { channelId: string }
-interface GetChannelVideoListResponse {
+interface Video {
   id: string;
   title: string;
   createdDate: string;
@@ -12,11 +11,22 @@ interface GetChannelVideoListResponse {
   watchProgress?: number;
 }
 
+interface GetChannelVideoListParams extends AuthenticationParams { channelId: string }
+interface GetChannelVideoListResponse {
+  streamingInfo: {
+    userId: string;
+    title: string;
+    isStreaming: boolean;
+    streamStartDate: Date;
+  };
+  videoList: Video[];
+}
+
 export async function getChannelVideoList({
   channelId,
   accessToken,
 }: GetChannelVideoListParams) {
-  return fetchInstance.get<GetChannelVideoListResponse[]>(
+  return fetchInstance.get<GetChannelVideoListResponse>(
     `channel/${channelId}/videoList`,
     {
       headers: { Authorization: accessTokenToBearer(accessToken) },

@@ -7,8 +7,9 @@ import { studioLayoutStyle } from './modules/styles/studioLayoutStyle.css';
 
 const PATH_INFO = '/studio/info';
 const PATH_CONTENTS = '/studio/contents';
+const PATH_LIVESTREAMCONFIG = '/studio/liveStreamConfig';
 
-type CurrentPath = typeof PATH_INFO | typeof PATH_CONTENTS | null;
+type CurrentPath = typeof PATH_INFO | typeof PATH_CONTENTS | typeof PATH_LIVESTREAMCONFIG | null;
 
 export default function StudioLayout({ children }: { children: React.ReactNode }) {
   const [currentPath, setCurrentPath] = useState<CurrentPath>(null);
@@ -20,6 +21,9 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
     }
     else if (pathname.startsWith(PATH_CONTENTS)) {
       setCurrentPath(PATH_CONTENTS);
+    }
+    else if (pathname.startsWith(PATH_LIVESTREAMCONFIG)) {
+      setCurrentPath(PATH_LIVESTREAMCONFIG);
     }
   }, [pathname]);
 
@@ -44,6 +48,15 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
               aria-current={currentPath === PATH_CONTENTS ? 'page' : undefined}
             >
               콘텐츠
+            </Link>
+          </li>
+          <li>
+            <Link
+              className={`${studioLayoutStyle.menu}${currentPath === PATH_LIVESTREAMCONFIG ? ` ${studioLayoutStyle.currentMenu}` : ''}`}
+              href={PATH_LIVESTREAMCONFIG}
+              aria-current={currentPath === PATH_LIVESTREAMCONFIG ? 'page' : undefined}
+            >
+              라이브
             </Link>
           </li>
         </ul>

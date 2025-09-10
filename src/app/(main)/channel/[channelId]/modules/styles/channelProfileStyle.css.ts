@@ -18,6 +18,7 @@ export const channelProfileStyle = {
   }),
 
   image: style({
+    position: 'relative',
     width: '9rem',
     height: '9rem',
     flexShrink: 0,
