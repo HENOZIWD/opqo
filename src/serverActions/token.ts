@@ -1,5 +1,6 @@
 'use server';
 
+import { parseJwt } from '@/utils/token';
 import { cookies } from 'next/headers';
 
 const ACCESS_TOKEN = 'accessToken';
@@ -36,4 +37,20 @@ export async function deleteAccessTokenCookie() {
   const cookie = await cookies();
 
   cookie.delete(ACCESS_TOKEN);
+}
+
+export async function getUserDataFromAccessToken() {
+  const accessToken = await getAccessTokenCookie();
+
+  if (!accessToken) {
+    return null;
+  }
+
+  const decodedToken = parseJwt(accessToken);
+
+  if (!decodedToken) {
+    return null;
+  }
+
+  return decodedToken;
 }

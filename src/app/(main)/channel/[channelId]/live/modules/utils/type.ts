@@ -8,3 +8,10 @@ export interface LiveStreamInfo {
     picture: string;
   };
 }
+
+export interface MessageInfo {
+  roomId: string;
+  id: string;
+  name: string;
+  message: string;
+}

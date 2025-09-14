@@ -1,0 +1,59 @@
+import { colorStyleVars } from '@/styles/constants';
+import { style } from '@vanilla-extract/css';
+import { calc } from '@vanilla-extract/css-utils';
+
+export const chatRoomStyle = {
+  container: style({
+    position: 'sticky',
+    top: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem',
+    padding: '1rem',
+    boxShadow: `-1px 0 8px -4px ${colorStyleVars.blackShadow}`,
+    height: calc.subtract('100dvh', '3.75rem'),
+    width: '24rem',
+  }),
+
+  chatRoomTitle: style({
+    fontWeight: 900,
+    fontSize: '1.25rem',
+    textAlign: 'center',
+  }),
+
+  chatRoom: style({
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+    flexGrow: 1,
+  }),
+
+  message: style({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '0.5rem',
+  }),
+
+  name: style({ fontWeight: 700 }),
+
+  inputLabel: style({
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    padding: 0,
+    margin: '-1px',
+    overflow: 'hidden',
+    clip: 'rect(0, 0, 0, 0)',
+    whiteSpace: 'nowrap',
+    border: 0,
+  }),
+
+  inputWrapper: style({
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '0.5rem',
+    alignItems: 'flex-start',
+  }),
+
+  input: style({ flexGrow: 1 }),
+};

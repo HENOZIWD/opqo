@@ -2,6 +2,10 @@ import { colorStyleVars } from '@/styles/constants';
 import { style } from '@vanilla-extract/css';
 
 export const liveStreamPageStyle = {
+  container: style({ display: 'flex' }),
+
+  liveWrapper: style({ flexGrow: 1 }),
+
   live: style({
     width: '100%',
     aspectRatio: '64/27',
@@ -18,6 +22,4 @@ export const liveStreamPageStyle = {
     fontSize: '1.25rem',
     fontWeight: 700,
   }),
-
-  channelInfo: style({}),
 };
