@@ -15,6 +15,8 @@ export const chatRoomStyle = {
     width: '24rem',
   }),
 
+  chatRoomConnecting: style({ textAlign: 'center' }),
+
   chatRoomTitle: style({
     fontWeight: 900,
     fontSize: '1.25rem',

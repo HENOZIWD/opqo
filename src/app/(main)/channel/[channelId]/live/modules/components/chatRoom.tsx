@@ -63,7 +63,7 @@ export default function ChatRoom({
   return (
     <div className={chatRoomStyle.container}>
       {!isChatRoomConnected
-        ? <div>채팅방 연결중...</div>
+        ? <div className={chatRoomStyle.chatRoomConnecting}>채팅방 연결중...</div>
         : (
           <>
             <h2 className={chatRoomStyle.chatRoomTitle}>채팅</h2>
