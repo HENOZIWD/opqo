@@ -13,6 +13,8 @@ interface ChatRoomProps {
   channelId: string;
 }
 
+const MAX_MESSAGE_AMOUNT = 100;
+
 let socket: Socket;
 
 export default function ChatRoom({
@@ -32,7 +34,7 @@ export default function ChatRoom({
     });
 
     socket.on('chat message', (msg: MessageInfo) => {
-      setMessages((prev) => [...prev, msg]);
+      setMessages((prev) => [...prev, msg].slice(-MAX_MESSAGE_AMOUNT));
     });
 
     return () => {
