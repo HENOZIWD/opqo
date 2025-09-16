@@ -1,12 +1,13 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { MessageInfo } from '../utils/type';
 import { io, Socket } from 'socket.io-client';
 import { AccessToken } from '@/utils/type';
 import Input from '@/components/common/input';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import { chatRoomStyle } from '../styles/chatRoomStyle.css';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 interface ChatRoomProps {
   userData: AccessToken | null;
@@ -24,6 +25,9 @@ export default function ChatRoom({
   const [messages, setMessages] = useState<MessageInfo[]>([]);
   const [input, setInput] = useState('');
   const [isChatRoomConnected, setIsChatRoomConnected] = useState<boolean>(false);
+  const [isChatRoomBottom, setIsChatRoomBottom] = useState<boolean>(true);
+  const chatRoomRef = useRef<HTMLUListElement>(null);
+  const bottomRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
     socket = io(process.env.NEXT_PUBLIC_SERVER_URL);
@@ -41,6 +45,36 @@ export default function ChatRoom({
       socket.disconnect();
     };
   }, [channelId]);
+
+  useEffect(() => {
+    if (!chatRoomRef.current || !bottomRef.current) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setIsChatRoomBottom(entries[0].isIntersecting);
+      },
+      {
+        root: chatRoomRef.current,
+        threshold: 0,
+      },
+    );
+
+    observer.observe(bottomRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isChatRoomConnected]);
+
+  useEffect(() => {
+    if (!isChatRoomBottom || !bottomRef.current) {
+      return;
+    }
+
+    bottomRef.current.scrollIntoView({ behavior: 'instant' });
+  }, [messages, isChatRoomBottom]);
 
   const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
     if (!userData || !socket.connected || !socket.id) {
@@ -62,6 +96,14 @@ export default function ChatRoom({
     }
   };
 
+  const handleChatRoomScrollToBottom = () => {
+    if (!bottomRef.current) {
+      return;
+    }
+
+    bottomRef.current.scrollIntoView({ behavior: 'instant' });
+  };
+
   return (
     <div className={chatRoomStyle.container}>
       {!isChatRoomConnected
@@ -69,7 +111,10 @@ export default function ChatRoom({
         : (
           <>
             <h2 className={chatRoomStyle.chatRoomTitle}>채팅</h2>
-            <ul className={chatRoomStyle.chatRoom}>
+            <ul
+              ref={chatRoomRef}
+              className={chatRoomStyle.chatRoom}
+            >
               {messages.map(({
                 id,
                 name,
@@ -83,7 +128,24 @@ export default function ChatRoom({
                   <div>{message}</div>
                 </li>
               ))}
+              <li
+                key="bottom"
+                ref={bottomRef}
+                className={chatRoomStyle.bottom}
+              />
             </ul>
+            {!isChatRoomBottom
+              ? (
+                <button
+                  type="button"
+                  onClick={handleChatRoomScrollToBottom}
+                  title="채팅창 맨 아래로 스크롤"
+                  aria-label="채팅창 맨 아래로 스크롤"
+                >
+                  <ChevronDownIcon className={chatRoomStyle.toBottom} />
+                </button>
+              )
+              : null}
             <form
               onSubmit={handleSendMessage}
               className={chatRoomStyle.inputWrapper}

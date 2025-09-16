@@ -43,6 +43,24 @@ export const chatRoomStyle = {
     whiteSpace: 'nowrap',
   }),
 
+  bottom: style({
+    height: '2rem',
+    width: '100%',
+    flexShrink: 0,
+  }),
+
+  toBottom: style({
+    position: 'absolute',
+    width: '2rem',
+    height: '2rem',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    bottom: '1rem',
+    borderRadius: '9999px',
+    background: colorStyleVars.lightGrayShadow,
+    padding: '0.25rem',
+  }),
+
   inputLabel: style({
     position: 'absolute',
     width: '1px',
