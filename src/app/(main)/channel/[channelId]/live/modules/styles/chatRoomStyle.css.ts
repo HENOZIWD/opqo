@@ -28,15 +28,20 @@ export const chatRoomStyle = {
     flexDirection: 'column',
     gap: '0.5rem',
     flexGrow: 1,
+    overflowY: 'auto',
   }),
 
   message: style({
     display: 'flex',
     flexDirection: 'row',
     gap: '0.5rem',
+    wordBreak: 'break-all',
   }),
 
-  name: style({ fontWeight: 700 }),
+  name: style({
+    fontWeight: 700,
+    whiteSpace: 'nowrap',
+  }),
 
   inputLabel: style({
     position: 'absolute',
