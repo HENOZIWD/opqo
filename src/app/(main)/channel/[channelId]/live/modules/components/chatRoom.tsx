@@ -7,7 +7,7 @@ import { AccessToken } from '@/utils/type';
 import Input from '@/components/common/input';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import { chatRoomStyle } from '../styles/chatRoomStyle.css';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { ChatBubbleIcon, ChevronDownIcon, Cross1Icon } from '@radix-ui/react-icons';
 
 interface ChatRoomProps {
   userData: AccessToken | null;
@@ -26,6 +26,8 @@ export default function ChatRoom({
   const [input, setInput] = useState('');
   const [isChatRoomConnected, setIsChatRoomConnected] = useState<boolean>(false);
   const [isChatRoomBottom, setIsChatRoomBottom] = useState<boolean>(true);
+  const [isChatRoomExpanded, setIsChatRoomExpanded] = useState<boolean>(true);
+
   const chatRoomRef = useRef<HTMLUListElement>(null);
   const bottomRef = useRef<HTMLLIElement>(null);
 
@@ -104,13 +106,42 @@ export default function ChatRoom({
     bottomRef.current.scrollIntoView({ behavior: 'instant' });
   };
 
+  const handleToggleChatRoom = () => {
+    setIsChatRoomExpanded((prev) => !prev);
+  };
+
+  if (!isChatRoomExpanded) {
+    return (
+      <div className={chatRoomStyle.expandIconWrapper}>
+        <button
+          type="button"
+          title="채팅방 보이기"
+          aria-label="채팅방 보이기"
+          onClick={handleToggleChatRoom}
+        >
+          <ChatBubbleIcon className={chatRoomStyle.expandIcon} />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className={chatRoomStyle.container}>
       {!isChatRoomConnected
         ? <div className={chatRoomStyle.chatRoomConnecting}>채팅방 연결중...</div>
         : (
           <>
-            <h2 className={chatRoomStyle.chatRoomTitle}>채팅</h2>
+            <div className={chatRoomStyle.titleWrapper}>
+              <button
+                type="button"
+                title="채팅방 숨기기"
+                aria-label="채팅방 숨기기"
+                onClick={handleToggleChatRoom}
+              >
+                <Cross1Icon className={chatRoomStyle.foldIcon} />
+              </button>
+              <h2 className={chatRoomStyle.chatRoomTitle}>채팅</h2>
+            </div>
             <ul
               ref={chatRoomRef}
               className={chatRoomStyle.chatRoom}
@@ -142,7 +173,7 @@ export default function ChatRoom({
                   title="채팅창 맨 아래로 스크롤"
                   aria-label="채팅창 맨 아래로 스크롤"
                 >
-                  <ChevronDownIcon className={chatRoomStyle.toBottom} />
+                  <ChevronDownIcon className={chatRoomStyle.toBottomIcon} />
                 </button>
               )
               : null}

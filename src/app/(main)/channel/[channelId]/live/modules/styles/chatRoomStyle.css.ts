@@ -33,10 +33,53 @@ export const chatRoomStyle = {
 
   chatRoomConnecting: style({ textAlign: 'center' }),
 
+  titleWrapper: style({
+    'display': 'flex',
+    'flexDirection': 'row',
+    'alignItems': 'center',
+
+    '@media': {
+      [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
+        flexDirection: 'row-reverse',
+        padding: '0 1rem',
+      },
+    },
+  }),
+
+  expandIconWrapper: style({
+    'background': colorStyleVars.white,
+    'borderRadius': '0.25rem',
+    'position': 'absolute',
+    'top': '1rem',
+    'right': '1rem',
+    'boxShadow': `0 0 8px 4px ${colorStyleVars.lightGrayShadow}`,
+
+    '@media': {
+      [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
+        top: 'auto',
+        bottom: '2rem',
+        right: '2rem',
+        boxShadow: `0 0 8px 0 ${colorStyleVars.blackShadow}`,
+      },
+    },
+  }),
+
+  expandIcon: style({
+    width: '1.875rem',
+    height: '1.875rem',
+    padding: '0.375rem',
+  }),
+
+  foldIcon: style({
+    width: '1rem',
+    height: '1rem',
+  }),
+
   chatRoomTitle: style({
     fontWeight: 900,
     fontSize: '1.25rem',
     textAlign: 'center',
+    flexGrow: 1,
   }),
 
   chatRoom: style({
@@ -65,7 +108,7 @@ export const chatRoomStyle = {
     flexShrink: 0,
   }),
 
-  toBottom: style({
+  toBottomIcon: style({
     position: 'absolute',
     width: '2rem',
     height: '2rem',
