@@ -1,18 +1,34 @@
-import { colorStyleVars } from '@/styles/constants';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 
 export const chatRoomStyle = {
   container: style({
-    position: 'sticky',
-    top: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-    padding: '1rem',
-    boxShadow: `-1px 0 8px -4px ${colorStyleVars.blackShadow}`,
-    height: calc.subtract('100dvh', '3.75rem'),
-    width: '24rem',
+    'position': 'sticky',
+    'top': 0,
+    'display': 'flex',
+    'flexDirection': 'column',
+    'gap': '1rem',
+    'padding': '1rem',
+    'boxShadow': `-1px 0 8px -4px ${colorStyleVars.blackShadow}`,
+    'height': calc.subtract('100dvh', '3.75rem'),
+    'width': '24rem',
+
+    '@media': {
+      [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
+        position: 'fixed',
+        top: 'auto',
+        bottom: 0,
+        width: calc.subtract('100%', '2rem'),
+        height: calc('100dvh')
+          .subtract(calc('100dvw').subtract('2rem').multiply(27).divide(64))
+          .subtract('3.75rem')
+          .toString(),
+        padding: '1rem 0',
+        boxShadow: 'none',
+        background: colorStyleVars.white,
+      },
+    },
   }),
 
   chatRoomConnecting: style({ textAlign: 'center' }),

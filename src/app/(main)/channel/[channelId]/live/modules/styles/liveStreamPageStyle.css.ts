@@ -1,8 +1,13 @@
-import { colorStyleVars } from '@/styles/constants';
+import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
 import { style } from '@vanilla-extract/css';
 
 export const liveStreamPageStyle = {
-  container: style({ display: 'flex' }),
+  container: style({
+    'display': 'flex',
+    'flexDirection': 'row',
+
+    '@media': { [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: { flexDirection: 'column' } },
+  }),
 
   liveWrapper: style({ flexGrow: 1 }),
 
