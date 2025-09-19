@@ -31,5 +31,17 @@ export const liveStreamInfoStyle = {
     fontSize: '1.25rem',
   }),
 
-  elapsedTime: style({ margin: '1rem 0.5rem' }),
+  info: style({
+    'margin': '1rem 0.5rem',
+    'display': 'flex',
+    'flexDirection': 'row',
+    'gap': '1rem',
+
+    '@media': {
+      [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
+        flexDirection: 'column',
+        gap: '0.5rem',
+      },
+    },
+  }),
 };

@@ -3,6 +3,7 @@ export interface LiveStreamInfo {
   isStreaming: boolean;
   streamStartDate: string;
   userId: string;
+  viewerCount: number;
   user: {
     name: string;
     picture: string;
