@@ -18,6 +18,7 @@ interface GetChannelVideoListResponse {
     title: string;
     isStreaming: boolean;
     streamStartDate: Date;
+    viewerCount: number;
   };
   videoList: Video[];
 }

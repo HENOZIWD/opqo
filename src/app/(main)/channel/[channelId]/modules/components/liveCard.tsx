@@ -7,11 +7,13 @@ import { liveCardStyle } from '../styles/liveCardStyle.css';
 interface LiveCardProps {
   channelId: string;
   title: string;
+  viewerCount: number;
 }
 
 export default function LiveCard({
   channelId,
   title,
+  viewerCount,
 }: LiveCardProps) {
   return (
     <article className={videoCardStyle.container}>
@@ -40,6 +42,11 @@ export default function LiveCard({
           >
             <h3 className={videoCardStyle.title}>{title}</h3>
           </Link>
+          <div>
+            {viewerCount}
+            {' '}
+            명 시청 중
+          </div>
         </div>
       </div>
     </article>
