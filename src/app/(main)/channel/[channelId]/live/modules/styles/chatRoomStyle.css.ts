@@ -141,4 +141,6 @@ export const chatRoomStyle = {
   }),
 
   input: style({ flexGrow: 1 }),
+
+  hidden: style({ display: 'none' }),
 };

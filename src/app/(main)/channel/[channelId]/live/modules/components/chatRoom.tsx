@@ -110,106 +110,107 @@ export default function ChatRoom({
     setIsChatRoomExpanded((prev) => !prev);
   };
 
-  if (!isChatRoomExpanded) {
-    return (
-      <div className={chatRoomStyle.expandIconWrapper}>
-        <button
-          type="button"
-          title="채팅방 보이기"
-          aria-label="채팅방 보이기"
-          onClick={handleToggleChatRoom}
-        >
-          <ChatBubbleIcon className={chatRoomStyle.expandIcon} />
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className={chatRoomStyle.container}>
-      {!isChatRoomConnected
-        ? <div className={chatRoomStyle.chatRoomConnecting}>채팅방 연결중...</div>
-        : (
-          <>
-            <div className={chatRoomStyle.titleWrapper}>
-              <button
-                type="button"
-                title="채팅방 숨기기"
-                aria-label="채팅방 숨기기"
-                onClick={handleToggleChatRoom}
-              >
-                <Cross1Icon className={chatRoomStyle.foldIcon} />
-              </button>
-              <h2 className={chatRoomStyle.chatRoomTitle}>채팅</h2>
-            </div>
-            <ul
-              ref={chatRoomRef}
-              className={chatRoomStyle.chatRoom}
+    <>
+      {!isChatRoomExpanded
+        ? (
+          <div className={chatRoomStyle.expandIconWrapper}>
+            <button
+              type="button"
+              title="채팅방 보이기"
+              aria-label="채팅방 보이기"
+              onClick={handleToggleChatRoom}
             >
-              {messages.map(({
-                id,
-                name,
-                message,
-              }) => (
-                <li
-                  key={id}
-                  className={chatRoomStyle.message}
-                >
-                  <div className={chatRoomStyle.name}>{name}</div>
-                  <div>{message}</div>
-                </li>
-              ))}
-              <li
-                key="bottom"
-                ref={bottomRef}
-                className={chatRoomStyle.bottom}
-              />
-            </ul>
-            {!isChatRoomBottom
-              ? (
+              <ChatBubbleIcon className={chatRoomStyle.expandIcon} />
+            </button>
+          </div>
+        )
+        : null}
+      <div className={`${chatRoomStyle.container} ${!isChatRoomExpanded ? chatRoomStyle.hidden : ''}`}>
+        {!isChatRoomConnected
+          ? <div className={chatRoomStyle.chatRoomConnecting}>채팅방 연결중...</div>
+          : (
+            <>
+              <div className={chatRoomStyle.titleWrapper}>
                 <button
                   type="button"
-                  onClick={handleChatRoomScrollToBottom}
-                  title="채팅창 맨 아래로 스크롤"
-                  aria-label="채팅창 맨 아래로 스크롤"
+                  title="채팅방 숨기기"
+                  aria-label="채팅방 숨기기"
+                  onClick={handleToggleChatRoom}
                 >
-                  <ChevronDownIcon className={chatRoomStyle.toBottomIcon} />
+                  <Cross1Icon className={chatRoomStyle.foldIcon} />
                 </button>
-              )
-              : null}
-            <form
-              onSubmit={handleSendMessage}
-              className={chatRoomStyle.inputWrapper}
-            >
-              <div className={chatRoomStyle.input}>
-                <label
-                  htmlFor="chat"
-                  className={chatRoomStyle.inputLabel}
-                >
-                  채팅 메시지 전송하기
-                </label>
-                <Input
-                  id="chat"
-                  value={input}
-                  onChange={(e) => setInput(e.currentTarget.value)}
-                  placeholder={userData ? '메시지를 입력하세요.' : '로그인이 필요합니다.'}
-                  disabled={userData === null}
-                  autoTrim
-                />
+                <h2 className={chatRoomStyle.chatRoomTitle}>채팅</h2>
               </div>
-              {userData
+              <ul
+                ref={chatRoomRef}
+                className={chatRoomStyle.chatRoom}
+              >
+                {messages.map(({
+                  id,
+                  name,
+                  message,
+                }) => (
+                  <li
+                    key={id}
+                    className={chatRoomStyle.message}
+                  >
+                    <div className={chatRoomStyle.name}>{name}</div>
+                    <div>{message}</div>
+                  </li>
+                ))}
+                <li
+                  key="bottom"
+                  ref={bottomRef}
+                  className={chatRoomStyle.bottom}
+                />
+              </ul>
+              {!isChatRoomBottom
                 ? (
                   <button
-                    type="submit"
-                    className={buttonStyle.default}
+                    type="button"
+                    onClick={handleChatRoomScrollToBottom}
+                    title="채팅창 맨 아래로 스크롤"
+                    aria-label="채팅창 맨 아래로 스크롤"
                   >
-                    전송
+                    <ChevronDownIcon className={chatRoomStyle.toBottomIcon} />
                   </button>
                 )
                 : null}
-            </form>
-          </>
-        )}
-    </div>
+              <form
+                onSubmit={handleSendMessage}
+                className={chatRoomStyle.inputWrapper}
+              >
+                <div className={chatRoomStyle.input}>
+                  <label
+                    htmlFor="chat"
+                    className={chatRoomStyle.inputLabel}
+                  >
+                    채팅 메시지 전송하기
+                  </label>
+                  <Input
+                    id="chat"
+                    value={input}
+                    onChange={(e) => setInput(e.currentTarget.value)}
+                    placeholder={userData ? '메시지를 입력하세요.' : '로그인이 필요합니다.'}
+                    disabled={userData === null}
+                    autoTrim
+                  />
+                </div>
+                {userData
+                  ? (
+                    <button
+                      type="submit"
+                      className={buttonStyle.default}
+                    >
+                      전송
+                    </button>
+                  )
+                  : null}
+              </form>
+            </>
+          )}
+      </div>
+    </>
   );
 }
