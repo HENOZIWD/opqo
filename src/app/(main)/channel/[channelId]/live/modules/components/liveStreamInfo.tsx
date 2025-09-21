@@ -10,7 +10,18 @@ export default function LiveStreamInfo({ data }: LiveStreamInfoProps) {
   return (
     <div className={liveStreamInfoStyle.container}>
       <h1 className={liveStreamInfoStyle.title}>{data.title}</h1>
-      {data.isStreaming ? <ElapsedTime startTime={data.streamStartDate} /> : null}
+      {data.isStreaming
+        ? (
+          <div className={liveStreamInfoStyle.info}>
+            <ElapsedTime startTime={data.streamStartDate} />
+            <div>
+              {data.viewerCount}
+              {' '}
+              명 시청 중
+            </div>
+          </div>
+        )
+        : null}
       <div className={liveStreamInfoStyle.channel}>
         <div className={liveStreamInfoStyle.channelImage}>
           <ChannelImage

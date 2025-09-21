@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { liveStreamInfoStyle } from '../styles/liveStreamInfoStyle.css';
 import { formatElapsedTime } from '../utils/format';
 
 interface ElapsedTimeProps { startTime: string }
@@ -19,7 +18,7 @@ export default function ElapsedTime({ startTime }: ElapsedTimeProps) {
   }, [startTime]);
 
   return (
-    <div className={liveStreamInfoStyle.elapsedTime}>
+    <div>
       스트리밍 중:
       {' '}
       {formatElapsedTime(elapsedTime)}

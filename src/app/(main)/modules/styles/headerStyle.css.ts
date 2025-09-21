@@ -13,6 +13,7 @@ export const headerStyle = {
     alignItems: 'center',
     padding: '0 2rem',
     borderBottom: `1px solid ${colorStyleVars.lightGrayShadow}`,
+    height: '3.75rem',
   }),
 
   logo: style({
