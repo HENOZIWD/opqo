@@ -13,6 +13,7 @@ export const chatRoomStyle = {
     'boxShadow': `-1px 0 8px -4px ${colorStyleVars.blackShadow}`,
     'height': calc.subtract('100dvh', '3.75rem'),
     'width': '24rem',
+    'flexShrink': 0,
 
     '@media': {
       [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
