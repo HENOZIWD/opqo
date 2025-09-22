@@ -28,7 +28,7 @@ export default function StreamKeyGuide() {
             <li>
               방송 탭을 선택한 뒤 우측 서버 항목에
               {' '}
-              <strong>rtmp://api.opqo.kr/live</strong>
+              <strong>rtmp://live.opqo.kr/live</strong>
               를 입력합니다.
             </li>
             <li>스트림 키 항목에 발급받은 스트림 키를 복사하여 붙여넣습니다.</li>
