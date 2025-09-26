@@ -6,6 +6,8 @@
 
 <img width="720" alt="OpqO 동영상 플레이어" src="https://github.com/user-attachments/assets/84af1066-e13b-4e6e-9aef-ce541c7bf474" />
 
+<img width="720" alt="라이브 스트리밍" src="https://github.com/user-attachments/assets/1155b0fe-6960-43e6-8e47-68f3fd6a39ce" />
+
 ## 소개
 
 동영상을 업로드하고 스트리밍할 수 있는 동영상 공유 플랫폼입니다.
@@ -33,6 +35,15 @@
 - 동영상 시청 기록을 저장하여 마지막으로 시청한 시점부터 이어서 시청할 수 있습니다.
 - 동영상 썸네일에 시청 여부를 표시하여 제공합니다.
 
+### 라이브 스트리밍
+
+- RTMP 프로토콜 및 HLS 프토콜을 통해 라이브 스트리밍을 송출하고 시청할 수 있습니다.
+- 스트림 키를 사용하여 사용자 별로 라이브 스트리밍 송출 권한을 관리합니다.
+
+### 실시간 채팅
+
+- Socket.IO 라이브러리를 사용하여 라이브 스트리밍 시청 페이지에서 실시간으로 다른 사용자들과 소통할 수 있습니다.
+
 ## 사용 기술
 
 - [**React**](https://react.dev/): 컴포넌트 기반 아키텍처로 UI를 구축합니다.
@@ -41,7 +52,10 @@
 - [**vanilla-extract**](https://vanilla-extract.style/): 빌드 타임 CSS 라이브러리를 사용하여 Server-Component에서 사용성을 높이고, 스타일 재사용성 및 확장성을 높입니다.
 - [**Jotai**](https://jotai.org/): 클라이언트 상태 관리를 통해 안정적인 UI를 제공합니다.
 - [**Ky**](https://github.com/sindresorhus/ky): Fetch API 기반 HTTP 클라이언트를 사용하여 웹 표준 및 Next.js의 Data Cache 등 다양한 기능과의 호환성을 높입니다.
-- [**React Hook Form**](https://react-hook-form.com/): 시용자 입력을 검증하여 신뢰성을 높이고 입력 시 불필요한 렌더링을 최소화하여 페이지 성능을 향상시킵니다.
+- [**React Hook Form**](https://react-hook-form.com/): 사용자 입력을 검증하여 신뢰성을 높이고 입력 시 불필요한 렌더링을 최소화하여 페이지 성능을 향상시킵니다.
+- [**JWT**](https://github.com/auth0/node-jsonwebtoken): 인증 토큰을 검증하고 디코딩합니다.
+- [**HTTP Live Streaming**](https://github.com/video-dev/hls.js): 네트워크 환경에 따른 동적 화질을 지원하여 안정적인 시청 환경을 제공합니다.
+- [**Socket.IO**](https://socket.io/): WebSocket 기반의 실시간 양방향 통신을 지원합니다.
 - [**ESLint**](https://eslint.org/): 코드 컨벤션을 일정하게 유지하여 개발 생산성을 높입니다.
 - **[webpack](https://webpack.kr/), [SWC](https://swc.rs/)**: 빠른 빌드 및 배포로 개발 생산성을 높입니다.
 - [**Github Actions**](https://github.com/features/actions): release 시 자동으로 빌드를 수행하여 개발 생산성을 높입니다.
