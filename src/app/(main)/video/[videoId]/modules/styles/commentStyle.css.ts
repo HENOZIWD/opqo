@@ -1,4 +1,4 @@
-import { colorStyleVars } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const commentStyle = {
@@ -33,16 +33,13 @@ export const commentStyle = {
     whiteSpace: 'pre-wrap',
   }),
 
-  createdDate: style({
-    fontSize: '0.875rem',
-    color: colorStyleVars.gray,
-  }),
+  createdDate: style({ fontSize: '0.875rem' }),
 
   deleteButton: style({
     'display': 'flex',
     'padding': '0.5rem',
     'borderRadius': 9999,
 
-    ':hover': { backgroundColor: colorStyleVars.lightGrayShadow },
+    ':hover': { backgroundColor: theme.color.lightShadow },
   }),
 };

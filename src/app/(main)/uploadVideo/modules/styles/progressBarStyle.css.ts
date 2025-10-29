@@ -1,4 +1,4 @@
-import { colorStyleVars } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const progressBarStyle = {
@@ -14,7 +14,7 @@ export const progressBarStyle = {
 
   background: style({
     position: 'relative',
-    background: colorStyleVars.lightGray,
+    background: theme.color.gray,
     width: '100%',
     height: '1rem',
     borderRadius: 9999,
@@ -23,7 +23,7 @@ export const progressBarStyle = {
 
   progress: style({
     position: 'relative',
-    background: colorStyleVars.blue,
+    background: theme.color.brand,
     height: '1rem',
     borderRadius: '0.25rem',
   }),

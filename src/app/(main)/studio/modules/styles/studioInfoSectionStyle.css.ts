@@ -1,4 +1,3 @@
-import { colorStyleVars } from '@/styles/constants';
 import { style } from '@vanilla-extract/css';
 
 export const studioInfoSectionStyle = {
@@ -10,7 +9,6 @@ export const studioInfoSectionStyle = {
 
   title: style({
     fontSize: '0.875rem',
-    color: colorStyleVars.gray,
     fontWeight: 400,
   }),
 

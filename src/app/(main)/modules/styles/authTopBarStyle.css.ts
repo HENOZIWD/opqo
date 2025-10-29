@@ -1,4 +1,4 @@
-import { colorStyleVars } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const authTopBarStyle = {
@@ -25,10 +25,10 @@ export const authTopBarStyle = {
     gap: '1rem',
     padding: '1rem 0.5rem',
     borderRadius: '0.5rem',
-    background: colorStyleVars.white,
+    background: theme.color.background,
     zIndex: 9999,
     width: '16rem',
-    boxShadow: `0 0 1px 1px ${colorStyleVars.lightGray}`,
+    boxShadow: `0 0 1px 1px ${theme.color.lightShadow}`,
   }),
 
   channelInfo: style({
@@ -54,7 +54,7 @@ export const authTopBarStyle = {
     'fontSize': '0.875rem',
 
     ':hover': {
-      background: colorStyleVars.lightGrayShadow,
+      background: theme.color.lightShadow,
       borderRadius: '0.375rem',
     },
   }),

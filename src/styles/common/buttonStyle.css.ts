@@ -1,11 +1,11 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars } from '../constants';
+import { theme } from '../theme.css';
 
 const buttonDefaultStyle = style({
   'display': 'flex',
   'borderRadius': 9999,
-  'background': colorStyleVars.black,
-  'color': colorStyleVars.white,
+  'background': theme.color.text,
+  'color': theme.color.background,
   'cursor': 'pointer',
   'whiteSpace': 'nowrap',
   'padding': '0.625rem 1.25rem',
@@ -14,7 +14,7 @@ const buttonDefaultStyle = style({
   'justifyContent': 'center',
 
   ':disabled': {
-    background: colorStyleVars.lightGray,
+    background: theme.color.gray,
     cursor: 'default',
   },
 });

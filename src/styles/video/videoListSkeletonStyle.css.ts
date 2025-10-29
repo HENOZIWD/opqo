@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars } from '../constants';
+import { theme } from '../theme.css';
 
 export const videoListSkeletonStyle = {
   container: style({
@@ -14,14 +14,14 @@ export const videoListSkeletonStyle = {
     position: 'relative',
     width: '100%',
     aspectRatio: '16/9',
-    background: colorStyleVars.lightGray,
+    background: theme.color.gray,
     borderRadius: '0.5rem',
   }),
 
   text: style({
     width: '100%',
     height: '1.5rem',
-    background: colorStyleVars.lightGray,
+    background: theme.color.gray,
     borderRadius: '0.5rem',
   }),
 };

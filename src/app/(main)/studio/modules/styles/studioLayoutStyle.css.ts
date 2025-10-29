@@ -1,13 +1,14 @@
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const studioLayoutStyle = {
   navigationBar: style({
     'position': 'fixed',
     'width': '17.5rem',
-    'borderRight': `1px solid ${colorStyleVars.lightGrayShadow}`,
+    'borderRight': `1px solid ${theme.color.lightShadow}`,
     'height': '100%',
-    'background': colorStyleVars.white,
+    'background': theme.color.background,
 
     '@media': {
       [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
@@ -15,7 +16,7 @@ export const studioLayoutStyle = {
         width: '100%',
         height: 'auto',
         borderRight: 0,
-        borderBottom: `1px solid ${colorStyleVars.lightGrayShadow}`,
+        borderBottom: `1px solid ${theme.color.lightShadow}`,
       },
     },
   }),
@@ -40,12 +41,12 @@ export const studioLayoutStyle = {
 
   currentMenu: style({
     'fontWeight': 700,
-    'borderRight': `0.5rem solid ${colorStyleVars.blue}`,
+    'borderRight': `0.5rem solid ${theme.color.brand}`,
 
     '@media': {
       [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
         borderRight: 0,
-        borderLeft: `0.5rem solid ${colorStyleVars.blue}`,
+        borderLeft: `0.5rem solid ${theme.color.brand}`,
       },
     },
   }),

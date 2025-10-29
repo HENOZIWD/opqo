@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars } from '../constants';
+import { theme } from '../theme.css';
 
 const inputWrapperStyle = style({
   display: 'flex',
@@ -8,7 +8,7 @@ const inputWrapperStyle = style({
 });
 
 const inputContainerStyle = style({
-  'border': `1px solid ${colorStyleVars.black}`,
+  'border': `1px solid ${theme.color.text}`,
   'outline': 'none',
   'borderRadius': '1rem',
   'padding': '1rem 1.5rem',
@@ -16,17 +16,17 @@ const inputContainerStyle = style({
   'width': '100%',
   'transition': 'box-shadow 0.25s',
   'background': 'inherit',
-  'color': colorStyleVars.black,
+  'color': theme.color.text,
 
-  ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.blackShadow}` },
+  ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${theme.color.shadow}` },
 
-  ':disabled': { background: colorStyleVars.lightGray },
+  ':disabled': { background: theme.color.gray },
 });
 
 const inputErrorStyle = style({
-  'border': `1px solid ${colorStyleVars.red}`,
+  'border': `1px solid ${theme.color.error}`,
 
-  ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.redShadow}` },
+  ':focus': { boxShadow: `0 0 0.25rem 0.25rem ${theme.color.errorShadow}` },
 });
 
 const inputCounterStyle = style({
