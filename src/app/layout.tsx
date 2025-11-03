@@ -5,6 +5,7 @@ import ToastProvider from '@/contexts/toast';
 import TokenProvider from '@/contexts/token';
 import { getAccessTokenCookie } from '@/serverActions/token';
 import DateTimeFormatProvider from './modules/components/DateTimeFormatProvider';
+import { ThemeProvider } from 'next-themes';
 
 export const metadata: Metadata = {
   title: {
@@ -38,11 +39,13 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <DateTimeFormatProvider>
       <body className={`${myFont.className}`}>
-        <ToastProvider>
-          <TokenProvider token={accessToken ?? null}>
-            {children}
-          </TokenProvider>
-        </ToastProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            <TokenProvider token={accessToken ?? null}>
+              {children}
+            </TokenProvider>
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </DateTimeFormatProvider>
   );

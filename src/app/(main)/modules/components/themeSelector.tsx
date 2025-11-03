@@ -1,19 +1,28 @@
 'use client';
 
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
-import { useAtom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { themeSelectorStyle } from '../styles/themeSelectorStyle.css';
-
-const themeAtom = atomWithStorage('theme', 'light');
+import { useTheme } from 'next-themes';
 
 export default function ThemeSelector() {
-  const [theme, setTheme] = useAtom(themeAtom);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const {
+    theme,
+    setTheme,
+  } = useTheme();
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme ?? 'light');
   }, [theme]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <button
