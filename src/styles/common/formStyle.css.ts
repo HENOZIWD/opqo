@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '../constants';
+import { MEDIA_QUERY_THRESHOLD } from '../constants';
+import { theme } from '../theme.css';
 
 export const formContainerStyle = style({
   'width': '33rem',
@@ -15,7 +16,7 @@ export const formStyle = {
   container: formContainerStyle,
 
   error: style({
-    'color': colorStyleVars.red,
+    'color': theme.color.error,
 
     '::before': {
       content: '•',

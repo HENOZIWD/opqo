@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '../constants';
+import { MEDIA_QUERY_THRESHOLD } from '../constants';
 import { calc } from '@vanilla-extract/css-utils';
+import { theme } from '../theme.css';
 
 export const toastStyle = {
   container: style({
@@ -8,16 +9,16 @@ export const toastStyle = {
     'minWidth': '22.5rem',
     'padding': '1rem 2rem',
     'fontSize': '1rem',
-    'border': `1px solid ${colorStyleVars.black}`,
+    'border': `1px solid ${theme.color.text}`,
     'borderRadius': '0.5rem',
-    'boxShadow': `0 0 0.25rem 0.25rem ${colorStyleVars.blackShadow}`,
+    'boxShadow': `0 0 0.25rem 0.25rem ${theme.color.shadow}`,
     'top': 0,
     'left': '50%',
     'transition': 'transform 0.5s',
     'transform': 'translateX(-50%) translateY(-5rem)',
     'whiteSpace': 'pre',
     'textAlign': 'center',
-    'background': colorStyleVars.white,
+    'background': theme.color.background,
     'zIndex': 9999,
 
     '@media': {
@@ -30,9 +31,9 @@ export const toastStyle = {
   }),
 
   error: style({
-    border: `1px solid ${colorStyleVars.red}`,
-    color: colorStyleVars.red,
-    boxShadow: `0 0 0.25rem 0.25rem ${colorStyleVars.redShadow}`,
+    border: `1px solid ${theme.color.error}`,
+    color: theme.color.error,
+    boxShadow: `0 0 0.25rem 0.25rem ${theme.color.errorShadow}`,
   }),
 
   show: style({ transform: 'translateX(-50%) translateY(3rem)' }),

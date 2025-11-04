@@ -1,5 +1,6 @@
 import { globalStyle } from '@vanilla-extract/css';
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from './constants';
+import { MEDIA_QUERY_THRESHOLD } from './constants';
+import { theme } from './theme.css';
 
 globalStyle('html, body', {
   height: '100%',
@@ -9,8 +10,8 @@ globalStyle('html, body', {
 });
 
 globalStyle('body', {
-  color: colorStyleVars.black,
-  background: colorStyleVars.white,
+  color: theme.color.text,
+  background: theme.color.background,
   fontFamily: 'Arial, Helvetica, sans-serif',
   WebkitFontSmoothing: 'antialiased',
   MozOsxFontSmoothing: 'grayscale',

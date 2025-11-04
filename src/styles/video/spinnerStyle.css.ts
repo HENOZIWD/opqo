@@ -1,5 +1,5 @@
 import { keyframes, style } from '@vanilla-extract/css';
-import { colorStyleVars } from '../constants';
+import { theme } from '../theme.css';
 
 const rotateKeyframes = keyframes({ '100%': { transform: 'rotate(360deg)' } });
 const dashKeyframes = keyframes({
@@ -27,7 +27,7 @@ export const spinnerStyle = {
   }),
 
   path: style({
-    stroke: colorStyleVars.blue,
+    stroke: theme.color.brand,
     strokeLinecap: 'round',
     animation: `${dashKeyframes} 1.5s ease-in-out infinite`,
   }),

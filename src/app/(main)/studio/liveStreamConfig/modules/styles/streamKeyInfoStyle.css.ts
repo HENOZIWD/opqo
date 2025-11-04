@@ -1,4 +1,5 @@
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const streamKeyInfoStyle = {
@@ -14,7 +15,7 @@ export const streamKeyInfoStyle = {
   }),
 
   warning: style({
-    color: colorStyleVars.red,
+    color: theme.color.error,
     display: 'flex',
     flexDirection: 'column',
     gap: '0.5rem',

@@ -1,4 +1,5 @@
 import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const liveStreamPageStyle = {
@@ -23,7 +24,7 @@ export const liveStreamPageStyle = {
     justifyContent: 'center',
     alignItems: 'center',
     background: colorStyleVars.black,
-    color: colorStyleVars.white,
+    color: theme.color.text,
     fontSize: '1.25rem',
     fontWeight: 700,
   }),

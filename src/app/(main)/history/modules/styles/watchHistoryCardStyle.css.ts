@@ -1,4 +1,5 @@
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 
 export const watchHistoryCardStyle = {
@@ -62,6 +63,6 @@ export const watchHistoryCardStyle = {
     'padding': '0.5rem',
     'borderRadius': '9999px',
 
-    ':hover': { background: colorStyleVars.lightGrayShadow },
+    ':hover': { background: theme.color.lightShadow },
   }),
 };

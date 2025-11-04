@@ -1,4 +1,5 @@
-import { colorStyleVars, MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { MEDIA_QUERY_THRESHOLD } from '@/styles/constants';
+import { theme } from '@/styles/theme.css';
 import { style } from '@vanilla-extract/css';
 import { calc } from '@vanilla-extract/css-utils';
 
@@ -10,7 +11,7 @@ export const chatRoomStyle = {
     'flexDirection': 'column',
     'gap': '1rem',
     'padding': '1rem',
-    'boxShadow': `-1px 0 8px -4px ${colorStyleVars.blackShadow}`,
+    'boxShadow': `-1px 0 8px -4px ${theme.color.shadow}`,
     'height': calc.subtract('100dvh', '3.75rem'),
     'width': '24rem',
     'flexShrink': 0,
@@ -27,7 +28,7 @@ export const chatRoomStyle = {
           .toString(),
         padding: '1rem 0',
         boxShadow: 'none',
-        background: colorStyleVars.white,
+        background: theme.color.background,
       },
     },
   }),
@@ -48,19 +49,19 @@ export const chatRoomStyle = {
   }),
 
   expandIconWrapper: style({
-    'background': colorStyleVars.white,
+    'background': theme.color.background,
     'borderRadius': '0.25rem',
     'position': 'absolute',
     'top': '1rem',
     'right': '1rem',
-    'boxShadow': `0 0 8px 4px ${colorStyleVars.lightGrayShadow}`,
+    'boxShadow': `0 0 8px 4px ${theme.color.lightShadow}`,
 
     '@media': {
       [`screen and (width < ${MEDIA_QUERY_THRESHOLD})`]: {
         top: 'auto',
         bottom: '2rem',
         right: '2rem',
-        boxShadow: `0 0 8px 0 ${colorStyleVars.blackShadow}`,
+        boxShadow: `0 0 8px 0 ${theme.color.shadow}`,
       },
     },
   }),
@@ -117,7 +118,7 @@ export const chatRoomStyle = {
     transform: 'translateX(-50%)',
     bottom: '1rem',
     borderRadius: '9999px',
-    background: colorStyleVars.lightGrayShadow,
+    background: theme.color.lightShadow,
     padding: '0.25rem',
   }),
 

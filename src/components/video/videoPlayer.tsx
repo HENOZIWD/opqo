@@ -61,7 +61,7 @@ export default function VideoPlayer({
       return;
     }
 
-    if (hlsMode && !video.canPlayType('application/vnd.apple.mpegurl') && Hls.isSupported()) {
+    if (hlsMode && Hls.isSupported()) {
       const hls = new Hls(liveMode
         ? {
           liveSyncDurationCount: 3,

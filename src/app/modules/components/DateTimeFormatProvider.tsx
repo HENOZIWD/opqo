@@ -33,7 +33,10 @@ export default function DateTimeFormatProvider({ children }: DateTimeFormatProvi
   }, [locale, timeZone, setLocale, setTimeZone]);
 
   return (
-    <html lang={locale}>
+    <html
+      lang={locale}
+      suppressHydrationWarning
+    >
       {children}
     </html>
   );
