@@ -1,6 +1,6 @@
 import ChannelImage from '@/components/channel/channelImage';
-import { formatDateString } from '@/utils/dateFormat';
 import { channelProfileStyle } from '../styles/channelProfileStyle.css';
+import Date from '@/components/common/date';
 
 interface ChannelProfileProps {
   email: string;
@@ -44,7 +44,10 @@ export default function ChannelProfile({
         <div>
           가입일
           {' '}
-          {formatDateString(createdDate)}
+          <Date
+            dateStr={createdDate}
+            type="date"
+          />
         </div>
       </div>
     </div>
