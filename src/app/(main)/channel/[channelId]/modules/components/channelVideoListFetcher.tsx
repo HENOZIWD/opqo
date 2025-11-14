@@ -20,7 +20,7 @@ export default async function ChannelVideoListFetcher({ channelId }: ChannelVide
 
   return (
     <ul className={videoListStyle.list}>
-      {data.streamingInfo.isStreaming
+      {data.streamingInfo?.isStreaming
         ? (
           <li
             className={videoListStyle.card}
