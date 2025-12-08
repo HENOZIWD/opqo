@@ -17,7 +17,10 @@ interface CommentUploadProps { videoId: string }
 export default function CommentUploader({ videoId }: CommentUploadProps) {
   const [comment, setComment] = useState<string>('');
   const [updateFlag, setUpdateFlag] = useState<boolean>(false);
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const { showToast } = useToast();
   const {
     setCommentList,
@@ -88,7 +91,7 @@ export default function CommentUploader({ videoId }: CommentUploadProps) {
         <button
           type="submit"
           className={buttonStyle.default}
-          disabled={!comment.trim()}
+          disabled={!comment.trim() || isFetching}
         >
           등록
         </button>

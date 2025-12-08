@@ -20,7 +20,10 @@ export default function Comment({
   isOwn,
   user,
 }: CommentProps) {
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const {
     setCommentList,
     setCommentCount,
@@ -77,6 +80,7 @@ export default function Comment({
             title="댓글 삭제"
             aria-label="댓글 삭제"
             onClick={handleDeleteComment}
+            disabled={isFetching}
           >
             <Cross1Icon />
           </button>
