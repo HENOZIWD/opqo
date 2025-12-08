@@ -62,7 +62,10 @@ export default function StudioInfo({
     description,
   });
 
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const { showToast } = useToast();
 
   const handleUpdateStudioInfo = async (data: UpdateStudioInfo) => {
@@ -206,6 +209,7 @@ export default function StudioInfo({
                 key="완료"
                 className={buttonStyle.small}
                 type="submit"
+                disabled={isFetching}
               >
                 완료
               </button>
@@ -218,6 +222,7 @@ export default function StudioInfo({
                 className={buttonStyle.small}
                 type="button"
                 onClick={handleDeleteChannel}
+                disabled={isFetching}
               >
                 채널 삭제
               </button>

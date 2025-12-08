@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAbortController } from './useAbortController';
 import { useToken } from './useToken';
 import { HTTPError, KyResponse, TimeoutError } from 'ky';
@@ -13,6 +14,8 @@ interface BadRequestResponse {
 }
 
 export function useFetch() {
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
   const { createAbortController } = useAbortController();
   const { accessToken } = useToken();
 
@@ -36,6 +39,8 @@ export function useFetch() {
     const successAsyncFn = async (response: KyResponse<T>) => onSuccess(response);
     const errorAsyncFn = async (errorResponse: KyResponse<BadRequestResponse> | TimeoutError) => onError(errorResponse);
 
+    setIsFetching(true);
+
     try {
       const response = await fetchFn({
         controller,
@@ -52,9 +57,13 @@ export function useFetch() {
       }
     }
     finally {
+      setIsFetching(false);
       onFinal?.();
     }
   };
 
-  return { fetchHandler };
+  return {
+    fetchHandler,
+    isFetching,
+  };
 }

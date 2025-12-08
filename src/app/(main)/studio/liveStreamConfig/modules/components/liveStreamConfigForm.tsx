@@ -26,7 +26,10 @@ export default function LiveStreamConfigForm({ config }: LiveStreamConfigFormPro
     defaultValues: config,
   });
 
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const { showToast } = useToast();
 
   const handleApplyConfig = (data: LiveStreamConfig) => {
@@ -84,6 +87,7 @@ export default function LiveStreamConfigForm({ config }: LiveStreamConfigFormPro
         <button
           type="submit"
           className={buttonStyle.default}
+          disabled={isFetching}
         >
           적용
         </button>

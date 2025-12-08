@@ -30,7 +30,10 @@ export default function UploadVideoForm() {
   const [thumbnailData, setThumbnailData] = useState<Blob | null>(null);
   const [isVideoUploadComplete, setIsVideoUploadComplete] = useState<boolean>(false);
 
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const { showToast } = useToast();
 
   const handleUploadVideoContent = async (data: UploadVideoContent) => {
@@ -125,6 +128,7 @@ export default function UploadVideoForm() {
               <button
                 className={buttonStyle.default}
                 type="submit"
+                disabled={isFetching}
               >
                 업로드
               </button>

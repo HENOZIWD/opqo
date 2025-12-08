@@ -7,7 +7,10 @@ import { useState } from 'react';
 import { streamKeyInfoStyle } from '../styles/streamKeyInfoStyle.css';
 
 export default function StreamKeyInfo() {
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const [generatedStreamKey, setGeneratedStreamKey] = useState<string>('');
 
   const handleGenerateStreamKey = () => {
@@ -35,6 +38,7 @@ export default function StreamKeyInfo() {
         type="button"
         className={buttonStyle.small}
         onClick={handleGenerateStreamKey}
+        disabled={isFetching}
       >
         스트림 키 발급
       </button>

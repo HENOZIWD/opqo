@@ -13,7 +13,10 @@ import * as Popover from '@radix-ui/react-popover';
 interface AuthTopBarProps { auth: AccessToken | null }
 
 export default function AuthTopBar({ auth }: AuthTopBarProps) {
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
 
   const handleSignout = () => {
     fetchHandler(({ controller }) => signout({ controller }), {
@@ -96,6 +99,7 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
                 className={buttonStyle.small}
                 type="button"
                 onClick={handleSignout}
+                disabled={isFetching}
               >
                 로그아웃
               </button>

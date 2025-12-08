@@ -73,7 +73,10 @@ export default function MyVideoInfo({
     description,
   });
 
-  const { fetchHandler } = useFetch();
+  const {
+    fetchHandler,
+    isFetching,
+  } = useFetch();
   const { showToast } = useToast();
 
   const handleUpdateVideoInfo = async (data: UpdateVideoInfo) => {
@@ -229,6 +232,7 @@ export default function MyVideoInfo({
                 key="완료"
                 className={buttonStyle.small}
                 type="submit"
+                disabled={isEditing}
               >
                 완료
               </button>
@@ -241,6 +245,7 @@ export default function MyVideoInfo({
                 className={buttonStyle.small}
                 type="button"
                 onClick={handleDeleteVideo}
+                disabled={isFetching}
               >
                 삭제
               </button>
