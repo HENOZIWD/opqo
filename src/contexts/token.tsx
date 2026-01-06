@@ -1,6 +1,7 @@
 'use client';
 
 import { refreshToken } from '@/apis/user';
+import { useAbortController } from '@/hooks/useAbortController';
 import { parseJwt } from '@/utils/token';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
@@ -18,10 +19,12 @@ export default function TokenProvider({
   token,
 }: TokenProviderProps) {
   const [accessToken, setAccessToken] = useState<string | null>(token);
+  const { createAbortController } = useAbortController();
 
   const refreshAccessToken = async () => {
     try {
-      const response = await refreshToken();
+      const controller = createAbortController();
+      const response = await refreshToken({ controller });
 
       const refreshedAccessToken = (await response.json()).accessToken;
 
