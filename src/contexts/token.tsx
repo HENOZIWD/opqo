@@ -1,8 +1,6 @@
 'use client';
 
 import { refreshToken } from '@/apis/user';
-import { useAbortController } from '@/hooks/useAbortController';
-import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 
@@ -21,12 +19,9 @@ export default function TokenProvider({
 }: TokenProviderProps) {
   const [accessToken, setAccessToken] = useState<string | null>(token);
 
-  const { createAbortController } = useAbortController();
-
   const refreshAccessToken = async () => {
     try {
-      const controller = createAbortController();
-      const response = await refreshToken({ controller });
+      const response = await refreshToken();
 
       const refreshedAccessToken = (await response.json()).accessToken;
 
@@ -39,11 +34,6 @@ export default function TokenProvider({
       if (!decodedToken) {
         throw new Error('Invalid Token');
       }
-
-      await setAccessTokenCookie({
-        accessToken: refreshedAccessToken,
-        expUnixTimeStamp: decodedToken.exp,
-      });
 
       setAccessToken(refreshedAccessToken);
 
