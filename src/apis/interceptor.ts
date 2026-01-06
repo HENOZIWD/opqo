@@ -1,4 +1,3 @@
-import { setAccessTokenCookie } from '@/serverActions/token';
 import { parseJwt } from '@/utils/token';
 import ky, { KyRequest, KyResponse, NormalizedOptions } from 'ky';
 
@@ -68,11 +67,6 @@ export const tokenRefreshInterceptor = async (
       processQueue(new Error('Invalid Token'), null);
       throw new Error('Invalid Token');
     }
-
-    await setAccessTokenCookie({
-      accessToken,
-      expUnixTimeStamp: decodedToken.exp,
-    });
 
     processQueue(null, accessToken);
 

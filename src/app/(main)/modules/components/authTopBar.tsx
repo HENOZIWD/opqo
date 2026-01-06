@@ -7,7 +7,6 @@ import { signout } from '../apis/signout';
 import { authTopBarStyle } from '../styles/authTopBarStyle.css';
 import ChannelImage from '@/components/channel/channelImage';
 import { buttonStyle } from '@/styles/common/buttonStyle.css';
-import { deleteAccessTokenCookie } from '@/serverActions/token';
 import * as Popover from '@radix-ui/react-popover';
 
 interface AuthTopBarProps { auth: AccessToken | null }
@@ -20,12 +19,8 @@ export default function AuthTopBar({ auth }: AuthTopBarProps) {
 
   const handleSignout = () => {
     fetchHandler(({ controller }) => signout({ controller }), {
-      onSuccess: () => { },
+      onSuccess: () => { window.location.reload(); },
       onError: () => { },
-      onFinal: async () => {
-        await deleteAccessTokenCookie();
-        window.location.reload();
-      },
     });
   };
 
