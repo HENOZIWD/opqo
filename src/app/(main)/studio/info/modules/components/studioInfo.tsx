@@ -23,7 +23,6 @@ import { buttonStyle } from '@/styles/common/buttonStyle.css';
 import Input from '@/components/common/input';
 import Textarea from '@/components/common/textarea';
 import { deleteChannel } from '../apis/deleteChannel';
-import { deleteAccessTokenCookie } from '@/serverActions/token';
 import Date from '@/components/common/date';
 
 interface StudioInfoProps {
@@ -103,8 +102,6 @@ export default function StudioInfo({
     }), {
       onSuccess: async () => {
         showToast({ message: DELETE_CHANNEL_SUCCEEDED });
-        await deleteAccessTokenCookie();
-
         window.location.href = '/';
       },
       onError: () => {

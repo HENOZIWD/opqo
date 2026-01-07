@@ -11,5 +11,6 @@ export async function deleteChannel({
   return fetchInstance.delete<void>('channel', {
     headers: { Authorization: accessTokenToBearer(accessToken) },
     signal: controller.signal,
+    credentials: 'include',
   });
 }
