@@ -1,7 +1,5 @@
 # OpqO
 
-[https://opqo.kr](https://opqo.kr)
-
 <img width="720" alt="OpqO 홈 페이지" src="https://github.com/user-attachments/assets/c4be9c5a-9136-490d-98bc-2d025867bbce" />
 
 <img width="720" alt="OpqO 동영상 플레이어" src="https://github.com/user-attachments/assets/84af1066-e13b-4e6e-9aef-ce541c7bf474" />
